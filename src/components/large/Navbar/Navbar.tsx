@@ -1,4 +1,6 @@
+import PropertyTypes from "@/components/medium/PropertyTypes/PropertyTypes";
 import Logo from "@/components/small/Logo/Logo";
+
 import React from "react";
 
 interface NavbarProps {}
@@ -6,11 +8,9 @@ interface NavbarProps {}
 const Navbar = ({}: NavbarProps) => {
 	return (
 		<nav className="flex justify-between items-center h-[120px]">
-			<div>
-				<Logo />
-			</div>
-			<div>Middle</div>
-			<div>Right</div>
+			<Logo />
+			<PropertyTypes />
+			<div className="">Right</div>
 		</nav>
 	);
 };

@@ -9,10 +9,10 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
-				primary: "#4FBDBA",
-				primaryLight: "#AEFEFF",
-				primaryDark: "#35858B",
-				text: "#072227",
+				primary: "#007BFF",
+				primaryLight: "#6FAFFF",
+				primaryDark: "#0056b3",
+				text: "#333333",
 			},
 			fontFamily: {
 				body: ["Roboto", "sans-serif"],

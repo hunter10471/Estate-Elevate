@@ -12,6 +12,7 @@
 	max-width: 100%;
 	padding: 0 15px;
 	margin: auto;
+	min-height: calc(100vh - 120px);
 }
 
 @media (min-width: 576px) {
