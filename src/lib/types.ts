@@ -5,3 +5,8 @@ export interface PropertyType {
 	name: string;
 	query: string;
 }
+
+export interface NavLink {
+	name: string;
+	path: string;
+}
