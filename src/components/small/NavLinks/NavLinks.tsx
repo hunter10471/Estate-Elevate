@@ -20,7 +20,7 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 	const pathname = usePathname();
 	const [isOpen, setIsOpen] = useState(false);
 	const navContainer = useRef<HTMLDivElement>(null);
-	const user = true;
+	const user = false;
 	const handleClickOutside = (e: React.MouseEvent<Document>) => {
 		if (
 			navContainer.current &&
@@ -90,8 +90,8 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 			<div
 				ref={navContainer}
 				className={`flex sm:hidden ${
-					user ? "flex-col-reverse" : "flex-col"
-				}  items-center justify-end pt-[10%] gap-5 absolute h-[calc(100vh-120px)] w-[50%] top-0 right-0 bg-slate-900 text-white transition-all ease-in-out duration-500  ${
+					user ? "flex-col-reverse justify-end" : "flex-col justify-center"
+				}  items-center  pt-[10%] gap-5 absolute h-[calc(100vh-120px)] w-[50%] top-0 right-0 bg-slate-900 text-white transition-all ease-in-out duration-500  ${
 					isOpen
 						? "translate-x-[0%] opacity-100"
 						: "translate-x-[100%] opacity-0"
