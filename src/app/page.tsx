@@ -1,3 +1,4 @@
+import SearchBar from "@/components/medium/SearchBar/SearchBar";
 import Image from "next/image";
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
 						all in one place.
 					</span>
 				</div>
+				<SearchBar />
 			</div>
 		</main>
 	);
