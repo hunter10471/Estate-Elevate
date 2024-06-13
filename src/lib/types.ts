@@ -10,3 +10,9 @@ export interface NavLink {
 	name: string;
 	path: string;
 }
+
+export interface CompanyStat {
+	value: string;
+	subtitle: string;
+	img: string;
+}

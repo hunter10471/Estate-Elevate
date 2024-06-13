@@ -7,7 +7,7 @@ interface NavbarProps {}
 
 const Navbar = ({}: NavbarProps) => {
 	return (
-		<nav className="flex justify-between items-center h-[120px]">
+		<nav className="flex justify-between items-center h-[120px] z-[999] sticky top-0 bg-white">
 			<Logo />
 			<NavLinks />
 		</nav>

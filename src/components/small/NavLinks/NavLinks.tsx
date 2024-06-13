@@ -14,6 +14,7 @@ interface NavLinksProps {
 const links: NavLink[] = [
 	{ name: "Home", path: "/" },
 	{ name: "Properties", path: "/properties" },
+	{ name: "Contact", path: "/contact" },
 ];
 
 const NavLinks = ({ mobile }: NavLinksProps) => {
@@ -49,14 +50,16 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 		};
 	}, [isOpen]);
 	return (
-		<div>
+		<div className="z-[999]">
 			<div
-				className={`hidden sm:flex items-center gap-6 lg:gap-12 font-medium font-heading select-none`}
+				className={`hidden sm:flex items-center gap-6 lg:gap-12 font-medium font-heading select-none text-sm lg:text-base`}
 			>
 				{links.map((link) => (
 					<Link
 						key={link.name}
-						className={`${pathname === link.path ? "text-primary" : ""}`}
+						className={`${
+							pathname === link.path ? "text-primary" : "hover:text-text/80"
+						}`}
 						href={link.path}
 					>
 						{link.name}
@@ -67,7 +70,9 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 				) : (
 					<>
 						<Link
-							className={`${pathname === "/login" ? "text-primary" : ""}`}
+							className={`${
+								pathname === "/login" ? "text-primary" : "hover:text-text/80"
+							}`}
 							href={"/login"}
 						>
 							Login
@@ -91,9 +96,9 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 				ref={navContainer}
 				className={`flex sm:hidden ${
 					user ? "flex-col-reverse justify-end" : "flex-col justify-center"
-				}  items-center  pt-[10%] gap-5 absolute h-[calc(100vh-120px)] w-[50%] top-0 right-0 bg-slate-900 text-white transition-all ease-in-out duration-500  ${
+				}  items-center  pt-[10%] gap-5 absolute h-screen w-[50%] top-0 right-0 bg-slate-900 text-white transition-all ease-in-out duration-500  ${
 					isOpen
-						? "translate-x-[0%] opacity-100"
+						? "translate-x-[10%] opacity-100"
 						: "translate-x-[100%] opacity-0"
 				} `}
 			>

@@ -1,9 +1,12 @@
 import SearchBar from "@/components/medium/SearchBar/SearchBar";
+import Button from "@/components/small/Button/Button";
+import CompanyStats from "@/components/small/CompanyStats/CompanyStats";
+import Heading from "@/components/small/Heading/Heading";
 import Image from "next/image";
 
 export default function Home() {
 	return (
-		<main className="flex">
+		<main className="pt-5">
 			<div className="w-full min-h-[300px] lg:min-h-[450px] relative">
 				<Image
 					src={"/hero.jpg"}
@@ -22,6 +25,34 @@ export default function Home() {
 				</div>
 				<SearchBar />
 			</div>
+			<div className="flex justify-center flex-col md:flex-row gap-5 sm:gap-8 mb-[100px] mt-[300px] sm:mt-[200px]">
+				<div className="md:flex-1 flex-none relative max-w-[400px] h-[400px]">
+					<Image
+						className="rounded-lg object-cover"
+						src={"/home-1.jpg"}
+						alt="home"
+						fill
+					/>
+				</div>
+				<div className="flex-1 max-w-[500px]">
+					<Heading text="Unlock the Best Real Estate Deals Today!" />
+					<p className="mt-6 text-justify font-heading font-medium text-xs md:text-sm">
+						At Estate Elevate, we pride ourselves on offering unparalleled real
+						estate deals that cater to every need and budget. Whether you're
+						searching for a cozy rental, a luxurious home for sale, or the
+						perfect commercial property, our curated listings ensure you find
+						exactly what you're looking for. <br /> <br /> Our expert team
+						negotiates the best prices and terms, so you don’t have to. Trust us
+						to guide you through the entire process with transparency and
+						professionalism.
+					</p>
+					<div className="flex mt-6 gap-5">
+						<Button outline text="Learn more" />
+						<Button primary text="Contact us" />
+					</div>
+				</div>
+			</div>
+			<CompanyStats />
 		</main>
 	);
 }
