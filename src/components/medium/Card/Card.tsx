@@ -8,6 +8,7 @@ import { PiBathtub } from "react-icons/pi";
 import { CiPhone } from "react-icons/ci";
 import { MdVerified } from "react-icons/md";
 import { MdOutlineCameraAlt } from "react-icons/md";
+import { FaCircle } from "react-icons/fa";
 
 interface CardProps {
 	price: number;
@@ -17,9 +18,19 @@ interface CardProps {
 	bedroom: number;
 	bathroom: number;
 	img: string;
+	type: string;
 }
 
-const Card = ({ price, name, address, area, bedroom, bathroom, img }: any) => {
+const Card = ({
+	price,
+	name,
+	address,
+	area,
+	bedroom,
+	bathroom,
+	img,
+	type,
+}: any) => {
 	return (
 		<div className="cursor-pointer transition-all hover:scale-95 ">
 			<div className="w-[270px] h-[200px] relative ">
@@ -52,6 +63,14 @@ const Card = ({ price, name, address, area, bedroom, bathroom, img }: any) => {
 			</div>
 			<div className="p-2 font-medium">
 				<div className="flex justify-between my-2">
+					<span className="text-emerald-400 gap-1 flex items-center text-xs">
+						<FaCircle size={8} />
+						For sale
+					</span>
+					<span className="text-orange-400 gap-1 flex items-center text-xs">
+						<FaCircle size={8} />
+						For rent
+					</span>
 					<div className="flex items-center gap-2">
 						<IoHeartOutline
 							className="cursor-pointer p-1 rounded-full hover:bg-gray-300"
@@ -63,8 +82,10 @@ const Card = ({ price, name, address, area, bedroom, bathroom, img }: any) => {
 						/>
 					</div>
 				</div>
-				<span className=" text-lg">$95,000</span>
-				<span>Seaside Villa</span>
+				<div className="flex flex-col gap-2">
+					<span className="text-lg font-bold">$95,000</span>
+					<span>Seaside Villa</span>
+				</div>
 				<span className="flex text-xs items-center gap-1 my-3">
 					<GrLocation size={12} /> 15-H, Askari-V, KHI
 				</span>
