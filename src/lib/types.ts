@@ -16,3 +16,9 @@ export interface CompanyStat {
 	subtitle: string;
 	img: string;
 }
+
+export interface UpcomingProject {
+	id: number;
+	description: string;
+	img: string;
+}

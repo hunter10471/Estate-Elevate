@@ -30,7 +30,7 @@ const stats: CompanyStat[] = [
 
 const CompanyStats = () => {
 	return (
-		<div className="flex justify-evenly items-center flex-wrap gap-5 mb-10">
+		<div className="flex justify-evenly items-center flex-wrap gap-10 my-32 sm:my-40">
 			{stats.map((stat) => (
 				<div key={stat.subtitle} className="flex flex-col items-center">
 					<Image

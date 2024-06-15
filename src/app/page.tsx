@@ -1,4 +1,7 @@
+import CardSlider from "@/components/large/CardSlider/CardSlider";
+import ReviewSlider from "@/components/large/ReviewSlider/ReviewSlider";
 import SearchBar from "@/components/medium/SearchBar/SearchBar";
+import UpcomingProjects from "@/components/medium/UpcomingProjects/UpcomingProjects";
 import Button from "@/components/small/Button/Button";
 import CompanyStats from "@/components/small/CompanyStats/CompanyStats";
 import Heading from "@/components/small/Heading/Heading";
@@ -26,7 +29,7 @@ export default function Home() {
 				<SearchBar />
 			</div>
 			<div className="flex justify-center flex-col md:flex-row gap-5 sm:gap-8 mb-[100px] mt-[300px] sm:mt-[200px]">
-				<div className="md:flex-1 flex-none relative max-w-[400px] h-[400px]">
+				<div className="md:flex-1 flex-none relative w-full md:max-w-[400px] h-[400px]">
 					<Image
 						className="rounded-lg object-cover"
 						src={"/home-1.jpg"}
@@ -53,6 +56,14 @@ export default function Home() {
 				</div>
 			</div>
 			<CompanyStats />
+			<UpcomingProjects />
+			<div className="my-10">
+				<div className="max-w-[400px] my-5 sm:my-10">
+					<Heading text="Recently added trending properties" />
+				</div>
+				<CardSlider />
+			</div>
+			<ReviewSlider />
 		</main>
 	);
 }
