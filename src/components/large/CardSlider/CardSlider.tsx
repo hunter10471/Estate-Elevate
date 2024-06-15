@@ -21,7 +21,7 @@ const CardSlider = () => {
 		}
 	};
 	return (
-		<div className="flex justify-center sm:justify-normal relative w-auto sm:w-fit">
+		<div className="flex justify-center sm:justify-normal relative mx-auto w-auto sm:w-fit">
 			<div className="hidden sm:flex gap-4 absolute right-0 -top-16 ">
 				<button onClick={prev}>
 					<IoIosArrowBack

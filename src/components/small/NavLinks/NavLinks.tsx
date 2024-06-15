@@ -73,13 +73,13 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 							className={`${
 								pathname === "/login" ? "text-primary" : "hover:text-text/80"
 							}`}
-							href={"/login"}
+							href={"/auth/login"}
 						>
 							Login
 						</Link>
 						<Link
 							className="px-6 py-2 rounded-md text-white bg-primary hover:bg-primaryDark transition-all font-normal"
-							href={"/signup"}
+							href={"/auth/signup"}
 						>
 							Signup
 						</Link>
@@ -122,13 +122,13 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 					<>
 						<Link
 							className={`${pathname === "/login" ? "text-primary" : ""}`}
-							href={"/login"}
+							href={"/auth/login"}
 						>
 							Login
 						</Link>
 						<Link
 							className="px-6 py-2 rounded-md text-white bg-primary hover:bg-primaryDark transition-all font-normal"
-							href={"/signup"}
+							href={"/auth/signup"}
 						>
 							Signup
 						</Link>

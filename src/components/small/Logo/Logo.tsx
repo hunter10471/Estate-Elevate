@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { RiBuilding2Line } from "react-icons/ri";
 
@@ -8,7 +9,10 @@ interface LogoProps {
 
 const Logo = ({ dark, small }: LogoProps) => {
 	return (
-		<div className="flex flex-col items-center font-heading uppercase">
+		<Link
+			href={"/"}
+			className="flex flex-col items-center font-heading uppercase cursor-pointer"
+		>
 			<span className="-m-1">
 				<RiBuilding2Line
 					className={`${dark ? "text-white" : "text-primary"} `}
@@ -33,7 +37,7 @@ const Logo = ({ dark, small }: LogoProps) => {
 					Elevate
 				</span>
 			</div>
-		</div>
+		</Link>
 	);
 };
 

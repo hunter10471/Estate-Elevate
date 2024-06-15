@@ -7,6 +7,7 @@ import { MdOutlineBed } from "react-icons/md";
 import { PiBathtub } from "react-icons/pi";
 import { CiPhone } from "react-icons/ci";
 import { MdVerified } from "react-icons/md";
+import { MdOutlineCameraAlt } from "react-icons/md";
 
 interface CardProps {
 	price: number;
@@ -22,6 +23,9 @@ const Card = ({ price, name, address, area, bedroom, bathroom, img }: any) => {
 	return (
 		<div className="cursor-pointer transition-all hover:scale-95 ">
 			<div className="w-[270px] h-[200px] relative ">
+				<div className="bg-white bg-opacity-40 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
+					<MdOutlineCameraAlt size={17} /> 20
+				</div>
 				<div className="bg-white flex items-center gap-2 absolute z-10 bottom-2 w-[90%] mx-[5%] px-2 py-1 rounded-xl">
 					<Image
 						className="rounded-full"
@@ -48,7 +52,6 @@ const Card = ({ price, name, address, area, bedroom, bathroom, img }: any) => {
 			</div>
 			<div className="p-2 font-medium">
 				<div className="flex justify-between my-2">
-					<span className=" text-lg">$95,000</span>
 					<div className="flex items-center gap-2">
 						<IoHeartOutline
 							className="cursor-pointer p-1 rounded-full hover:bg-gray-300"
@@ -60,6 +63,7 @@ const Card = ({ price, name, address, area, bedroom, bathroom, img }: any) => {
 						/>
 					</div>
 				</div>
+				<span className=" text-lg">$95,000</span>
 				<span>Seaside Villa</span>
 				<span className="flex text-xs items-center gap-1 my-3">
 					<GrLocation size={12} /> 15-H, Askari-V, KHI

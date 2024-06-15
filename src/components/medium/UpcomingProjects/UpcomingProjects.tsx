@@ -50,8 +50,8 @@ const UpcomingProjects = () => {
 							>
 								<Image
 									src={"/check.png"}
-									width={24}
-									height={24}
+									width={20}
+									height={20}
 									alt="check-mark"
 								/>{" "}
 								{item.description}
