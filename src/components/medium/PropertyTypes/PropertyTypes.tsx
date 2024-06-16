@@ -18,24 +18,20 @@ const PropertyTypes = () => {
 	const currentQuery = useSearchParams().get("propertyType");
 	const router = useRouter();
 	const updateQuery = (query: string) => {
-		router.push(`/?propertyType=${query}`);
+		router.push(`/properties?propertyType=${query}`);
 	};
 
 	return (
-		<div className="flex items-center justify-between gap-5">
+		<div className="flex flex-[2] items-center justify-center gap-5 flex-wrap lg:flex-nowrap">
 			{propertyTypes.map((property) => (
 				<div
-					className={`flex items-center justify-center gap-2 cursor-pointer px-4 py-2 rounded-full select-none border-2 transition-all ease-in   hover:border-gray-200 hover:shadow-lg ${
-						property.query === currentQuery
-							? "border-gray-200 shadow-lg"
-							: "border-transparent"
-					}  `}
+					className={`flex items-center justify-center gap-2 cursor-pointer pb-1 select-none`}
 					key={property.name}
 					onClick={() => updateQuery(property.query)}
 				>
 					{
 						<property.icon
-							className={`transition-all ease-in ${
+							className={` ${
 								currentQuery === property.query
 									? "text-primary"
 									: "text-gray-400"
@@ -44,7 +40,7 @@ const PropertyTypes = () => {
 						/>
 					}{" "}
 					<span
-						className={` mt-1 transition-all ease-in font-bold ${
+						className={`text-sm mt-1 transition-all ease-in font-semibold whitespace-nowrap ${
 							currentQuery === property.query ? "text-text" : "text-gray-400"
 						} `}
 					>

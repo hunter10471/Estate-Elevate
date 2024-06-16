@@ -22,3 +22,8 @@ export interface UpcomingProject {
 	description: string;
 	img: string;
 }
+
+export interface SortByOption {
+	name: string;
+	value: string;
+}

@@ -32,8 +32,8 @@ const Card = ({
 	type,
 }: any) => {
 	return (
-		<div className="cursor-pointer transition-all hover:scale-95 ">
-			<div className="w-[270px] h-[200px] relative ">
+		<div className="cursor-pointer transition-all hover:scale-95 w-[45%] m-2">
+			<div className="w-full h-[200px] relative">
 				<div className="bg-white bg-opacity-40 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
 					<MdOutlineCameraAlt size={17} /> 20
 				</div>
@@ -42,14 +42,14 @@ const Card = ({
 						className="rounded-full"
 						src={"/no-avatar.jpg"}
 						alt="avatar"
-						width={42}
-						height={42}
+						width={32}
+						height={32}
 					/>
-					<div className="text-xs">
+					<div className="text-[10px] md:text-xs">
 						<span className="flex gap-1 font-bold mb-[2px]">
 							John Doe <MdVerified size={15} className="text-sky-500" />
 						</span>
-						<span className="text-gray-400 flex items-center">
+						<span className="text-gray-400 flex items-center font-medium">
 							<CiPhone className="text-gray-500" size={15} /> (305) 781-5855
 						</span>
 					</div>
@@ -67,10 +67,10 @@ const Card = ({
 						<FaCircle size={8} />
 						For sale
 					</span>
-					<span className="text-orange-400 gap-1 flex items-center text-xs">
+					{/* <span className="text-orange-400 gap-1 flex items-center text-xs">
 						<FaCircle size={8} />
 						For rent
-					</span>
+					</span> */}
 					<div className="flex items-center gap-2">
 						<IoHeartOutline
 							className="cursor-pointer p-1 rounded-full hover:bg-gray-300"
@@ -89,15 +89,15 @@ const Card = ({
 				<span className="flex text-xs items-center gap-1 my-3">
 					<GrLocation size={12} /> 15-H, Askari-V, KHI
 				</span>
-				<div className="flex justify-between items-center">
-					<span className="flex items-center gap-1 text-xs">
+				<div className="flex justify-between items-center gap-1">
+					<span className="flex items-center gap-1 text-[10px] md:text-xs">
 						<LiaVectorSquareSolid className="text-primary" size={18} /> 1400
 						sqft
 					</span>
-					<span className="flex items-center gap-1 text-xs">
+					<span className="flex items-center gap-1 text-[10px] md:text-xs">
 						<MdOutlineBed className="text-primary" size={18} /> 3 Bd
 					</span>
-					<span className="flex items-center gap-1 text-xs">
+					<span className="flex items-center gap-1 text-[10px] md:text-xs">
 						<PiBathtub className="text-primary" size={18} /> 2 Bth
 					</span>
 				</div>
