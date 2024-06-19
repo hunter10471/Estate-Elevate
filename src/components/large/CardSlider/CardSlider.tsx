@@ -1,5 +1,6 @@
 "use client";
 import Card from "@/components/medium/Card/Card";
+import Button from "@/components/small/Button/Button";
 import React, { useState } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
@@ -21,7 +22,7 @@ const CardSlider = () => {
 		}
 	};
 	return (
-		<div className="flex justify-center sm:justify-normal relative mx-auto w-auto sm:w-fit">
+		<div className="flex justify-center sm:justify-normal relative mx-auto">
 			<div className="hidden sm:flex gap-4 absolute right-0 -top-16 ">
 				<button onClick={prev}>
 					<IoIosArrowBack

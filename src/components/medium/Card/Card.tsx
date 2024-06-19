@@ -9,6 +9,7 @@ import { CiPhone } from "react-icons/ci";
 import { MdVerified } from "react-icons/md";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { FaCircle } from "react-icons/fa";
+import Link from "next/link";
 
 interface CardProps {
 	price: number;
@@ -32,8 +33,11 @@ const Card = ({
 	type,
 }: any) => {
 	return (
-		<div className="cursor-pointer transition-all hover:scale-95 w-[45%] m-2">
-			<div className="w-full h-[200px] relative">
+		<Link
+			href={"/properties/id"}
+			className="cursor-pointer transition-all hover:scale-95 m-2"
+		>
+			<div className="w-[250px] h-[200px] relative">
 				<div className="bg-white bg-opacity-40 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
 					<MdOutlineCameraAlt size={17} /> 20
 				</div>
@@ -62,7 +66,7 @@ const Card = ({
 				/>
 			</div>
 			<div className="p-2 font-medium">
-				<div className="flex justify-between my-2">
+				<div className="flex justify-between">
 					<span className="text-emerald-400 gap-1 flex items-center text-xs">
 						<FaCircle size={8} />
 						For sale
@@ -89,7 +93,7 @@ const Card = ({
 				<span className="flex text-xs items-center gap-1 my-3">
 					<GrLocation size={12} /> 15-H, Askari-V, KHI
 				</span>
-				<div className="flex justify-between items-center gap-1">
+				<div className="flex justify-between items-center gap-2">
 					<span className="flex items-center gap-1 text-[10px] md:text-xs">
 						<LiaVectorSquareSolid className="text-primary" size={18} /> 1400
 						sqft
@@ -102,7 +106,7 @@ const Card = ({
 					</span>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };
 

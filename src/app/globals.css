@@ -15,15 +15,9 @@
 	min-height: calc(100vh - 120px);
 }
 
-@media (min-width: 576px) {
-	.container {
-		max-width: 540px;
-	}
-}
-
 @media (min-width: 768px) {
 	.container {
-		max-width: 720px;
+		max-width: 748px;
 	}
 }
 

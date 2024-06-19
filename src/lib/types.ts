@@ -27,3 +27,17 @@ export interface SortByOption {
 	name: string;
 	value: string;
 }
+
+export type FacilityKey =
+	| "gym"
+	| "pool"
+	| "garden"
+	| "park"
+	| "garage"
+	| "community"
+	| "surveillance"
+	| "transport"
+	| "area"
+	| "bedroom"
+	| "bathroom"
+	| "school";
