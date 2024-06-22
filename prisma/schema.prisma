@@ -19,6 +19,7 @@ model User {
     city String?
     state String?
     country String?
+    userType UserType
     lastLogin DateTime?
     isActive Boolean @default(true)
     listings Property[]
@@ -66,4 +67,9 @@ enum PropertyType {
 enum ListingStatus {
     SALE
     RENT
+}
+
+enum UserType {
+  ADMIN
+  USER
 }

@@ -8,11 +8,15 @@ const PropertyResult = () => {
 	const [fullWidth, setFullWidth] = useState(false);
 	const isMap = useStore((state) => state.isMap);
 	return (
-		<div className="flex lg:gap-10 mb-5 transition-all">
+		<div className={`flex ${!isMap ? "" : "lg:gap-10"} mb-5 transition-all`}>
 			<div
-				className={`flex justify-between ${
+				className={`flex justify-between md:justify-normal ${
 					fullWidth && isMap ? "w-[0%] opacity-0" : "w-full opacity-100"
-				} transition-all duration-500 ease-out flex-wrap h-[650px] p-2 overflow-scroll overflow-x-hidden`}
+				} transition-all duration-500 ease-out flex-wrap  p-2 gap-3 md:gap-10 ${
+					!isMap
+						? "overflow-visible"
+						: "md:overflow-scroll md:overflow-x-hidden md:h-[650px]"
+				} `}
 			>
 				<Card />
 				<Card />

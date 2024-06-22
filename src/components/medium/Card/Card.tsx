@@ -35,13 +35,13 @@ const Card = ({
 	return (
 		<Link
 			href={"/properties/id"}
-			className="cursor-pointer transition-all hover:scale-95 m-2"
+			className="cursor-pointer transition-all hover:scale-95"
 		>
-			<div className="w-[250px] h-[200px] relative">
+			<div className="w-[150px] md:w-[250px] h-[150px] md:h-[200px] relative">
 				<div className="bg-white bg-opacity-40 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
 					<MdOutlineCameraAlt size={17} /> 20
 				</div>
-				<div className="bg-white flex items-center gap-2 absolute z-10 bottom-2 w-[90%] mx-[5%] px-2 py-1 rounded-xl">
+				<div className="bg-white hidden md:flex items-center gap-2 absolute z-10 bottom-2 w-[90%] mx-[5%] px-2 py-1 rounded-xl">
 					<Image
 						className="rounded-full"
 						src={"/no-avatar.jpg"}
@@ -65,8 +65,8 @@ const Card = ({
 					fill
 				/>
 			</div>
-			<div className="p-2 font-medium">
-				<div className="flex justify-between">
+			<div className="p-2 font-medium w-full">
+				<div className="flex justify-between w-full">
 					<span className="text-emerald-400 gap-1 flex items-center text-xs">
 						<FaCircle size={8} />
 						For sale
@@ -87,13 +87,13 @@ const Card = ({
 					</div>
 				</div>
 				<div className="flex flex-col gap-2">
-					<span className="text-lg font-bold">$95,000</span>
-					<span>Seaside Villa</span>
+					<span className=" md:text-lg font-bold">$95,000</span>
+					<span className="text-sm md:text-base">Seaside Villa</span>
 				</div>
 				<span className="flex text-xs items-center gap-1 my-3">
 					<GrLocation size={12} /> 15-H, Askari-V, KHI
 				</span>
-				<div className="flex justify-between items-center gap-2">
+				<div className="hidden md:flex justify-between items-center gap-2">
 					<span className="flex items-center gap-1 text-[10px] md:text-xs">
 						<LiaVectorSquareSolid className="text-primary" size={18} /> 1400
 						sqft

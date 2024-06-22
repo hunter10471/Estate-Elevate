@@ -1,5 +1,6 @@
 import Filterbar from "@/components/medium/Filterbar/Filterbar";
 import PropertyResult from "@/components/medium/PropertyResult/PropertyResult";
+import Button from "@/components/small/Button/Button";
 import Heading from "@/components/small/Heading/Heading";
 import SortBy from "@/components/small/SortBy/SortBy";
 import React from "react";
@@ -15,7 +16,10 @@ const page = () => {
 						10,595 results found
 					</span>
 				</div>
-				<SortBy />
+				<div className="flex flex-col items-end gap-2">
+					<Button text="List Property" primary />
+					<SortBy />
+				</div>
 			</div>
 			<PropertyResult />
 		</div>

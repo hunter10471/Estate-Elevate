@@ -18,12 +18,12 @@ const SortBy = () => {
 		setOpen(false);
 	};
 	return (
-		<div className="flex gap-1 font-semibold mt-2 lg:mt-10 relative lg:text-sm text-xs">
+		<div className="flex gap-1 font-semibold mt-2 relative lg:text-sm text-xs">
 			<span className="whitespace-nowrap mr-[170px]">Sort by:</span>
 			<div
-				className={`flex flex-col gap-2 transition-all ease-in-out duration-300 select-none ${
-					!open ? "h-[30px]" : "h-[180px]"
-				} overflow-hidden absolute ml-14 bg-white z-[99999] pb-2 px-2 rounded-lg`}
+				className={`flex flex-col gap-2 transition-all ease-in-out rounded-lg duration-300 select-none ${
+					!open ? "h-[30px]" : "h-[180px] sm:h-[200px]"
+				} overflow-hidden absolute ml-14 bg-white z-[9999] pb-2 px-2 rounded-lg`}
 			>
 				<span className="text-primary px-2">{options[value].name}</span>
 				{options.map((option, index) => (

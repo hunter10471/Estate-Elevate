@@ -29,7 +29,7 @@ const Map = ({ setFullWidth, fullWidth }: MapProps) => {
 			{setFullWidth && (
 				<button
 					onClick={() => setFullWidth((prev: any) => !prev)}
-					className="absolute right-5 top-5 bg-white p-2 rounded-full z-[9999] hover:scale-110 transition-all"
+					className="absolute right-5 top-5 bg-white p-2 rounded-full z-[999] hover:scale-110 transition-all"
 				>
 					{fullWidth ? (
 						<AiOutlineFullscreenExit size={25} />

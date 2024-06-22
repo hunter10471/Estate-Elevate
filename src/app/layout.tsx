@@ -26,7 +26,7 @@ export default function RootLayout({
 			<body>
 				<div className="container relative font-heading text-text overflow-hidden">
 					<Navbar />
-					{children}
+					<div className="mt-[120px]">{children}</div>
 				</div>
 				<Footer />
 			</body>

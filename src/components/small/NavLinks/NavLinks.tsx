@@ -21,7 +21,7 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 	const pathname = usePathname();
 	const [isOpen, setIsOpen] = useState(false);
 	const navContainer = useRef<HTMLDivElement>(null);
-	const user = false;
+	const user = true;
 	const handleClickOutside = (e: React.MouseEvent<Document>) => {
 		if (
 			navContainer.current &&
@@ -50,21 +50,10 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 		};
 	}, [isOpen]);
 	return (
-		<div className="z-[999]">
+		<div>
 			<div
 				className={`hidden sm:flex items-center gap-6 lg:gap-12 font-medium font-heading select-none text-sm lg:text-base`}
 			>
-				{links.map((link) => (
-					<Link
-						key={link.name}
-						className={`${
-							pathname === link.path ? "text-primary" : "hover:text-text/80"
-						}`}
-						href={link.path}
-					>
-						{link.name}
-					</Link>
-				))}
 				{user ? (
 					<NavUser />
 				) : (
@@ -96,9 +85,9 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 				ref={navContainer}
 				className={`flex sm:hidden ${
 					user ? "flex-col-reverse justify-end" : "flex-col justify-center"
-				}  items-center  pt-[10%] gap-5 absolute h-screen w-[50%] top-0 right-0 bg-slate-900 text-white transition-all ease-in-out duration-500  ${
+				}  items-center pt-[10%] gap-5 absolute h-screen min-w-[220px] w-[50%] top-0 right-0 bg-slate-900 text-white transition-all ease-in-out duration-500  ${
 					isOpen
-						? "translate-x-[10%] opacity-100"
+						? "translate-x-[15%] opacity-100"
 						: "translate-x-[100%] opacity-0"
 				} `}
 			>
@@ -107,15 +96,6 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 					className="cursor-pointer text-white absolute top-5 right-5"
 					size={25}
 				/>
-				{links.map((link) => (
-					<Link
-						key={link.name}
-						className={`${pathname === link.path ? "text-primary" : ""}`}
-						href={link.path}
-					>
-						{link.name}
-					</Link>
-				))}
 				{user ? (
 					<NavUser mobile />
 				) : (
