@@ -6,9 +6,11 @@ import { usePathname } from "next/navigation";
 import { IoMenu } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
+import { Session } from "next-auth";
 
 interface NavLinksProps {
 	mobile?: boolean;
+	session: Session | null;
 }
 
 const links: NavLink[] = [
@@ -17,8 +19,9 @@ const links: NavLink[] = [
 	{ name: "Contact", path: "/contact" },
 ];
 
-const NavLinks = ({ mobile }: NavLinksProps) => {
+const NavLinks = ({ mobile, session }: NavLinksProps) => {
 	const pathname = usePathname();
+
 	const [isOpen, setIsOpen] = useState(false);
 	const navContainer = useRef<HTMLDivElement>(null);
 	const user = false;

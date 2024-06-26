@@ -19,7 +19,7 @@ model User {
     city String?
     state String?
     country String?
-    userType UserType
+    userType UserType @default(USER)
     lastLogin DateTime?
     isActive Boolean @default(true)
     listings Property[]
