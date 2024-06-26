@@ -12,7 +12,7 @@ import { MdOutlineBed } from "react-icons/md";
 import { PiBathtub } from "react-icons/pi";
 import { LuSchool } from "react-icons/lu";
 import Heading from "../Heading/Heading";
-import { FacilityKey } from "@/lib/types";
+import { FacilityKey } from "../../../../utils/types";
 import { IconType } from "react-icons";
 
 const facilities: Record<FacilityKey, { title: string; icon: IconType }> = {

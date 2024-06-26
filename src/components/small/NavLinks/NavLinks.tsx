@@ -1,6 +1,6 @@
 "use client";
 import NavUser from "@/components/medium/NavUser/NavUser";
-import { NavLink } from "@/lib/types";
+import { NavLink } from "../../../../utils/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoMenu } from "react-icons/io5";
@@ -21,7 +21,7 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 	const pathname = usePathname();
 	const [isOpen, setIsOpen] = useState(false);
 	const navContainer = useRef<HTMLDivElement>(null);
-	const user = true;
+	const user = false;
 	const handleClickOutside = (e: React.MouseEvent<Document>) => {
 		if (
 			navContainer.current &&
@@ -58,6 +58,21 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 					<NavUser />
 				) : (
 					<>
+						<div className="flex sm:flex-row flex-col items-center gap-6 lg:gap-12">
+							{links.map((link) => (
+								<Link
+									key={link.name}
+									className={`${
+										pathname === link.path
+											? "text-primary font-semibold transition-all"
+											: "sm:hover:text-text/80"
+									} transition-all `}
+									href={link.path}
+								>
+									{link.name}
+								</Link>
+							))}
+						</div>
 						<Link
 							className={`${
 								pathname === "/login" ? "text-primary" : "hover:text-text/80"
@@ -100,6 +115,21 @@ const NavLinks = ({ mobile }: NavLinksProps) => {
 					<NavUser mobile />
 				) : (
 					<>
+						<div className="flex sm:flex-row flex-col items-center gap-6 lg:gap-12">
+							{links.map((link) => (
+								<Link
+									key={link.name}
+									className={`${
+										pathname === link.path
+											? "text-primary font-semibold transition-all"
+											: "sm:hover:text-text/80"
+									} transition-all `}
+									href={link.path}
+								>
+									{link.name}
+								</Link>
+							))}
+						</div>
 						<Link
 							className={`${pathname === "/login" ? "text-primary" : ""}`}
 							href={"/auth/login"}

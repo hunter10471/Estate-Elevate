@@ -1,4 +1,4 @@
-import { CompanyStat } from "@/lib/types";
+import { CompanyStat } from "../../../../utils/types";
 import { TbBuildingCommunity } from "react-icons/tb";
 import { MdOutlineSentimentVerySatisfied } from "react-icons/md";
 import { GrMapLocation } from "react-icons/gr";

@@ -1,27 +1,32 @@
 "use client";
 
+import { Field } from "formik";
 import { useState } from "react";
 import { LuEye } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
 
 interface InputProps {
 	type: "email" | "password" | "text";
+	name: string;
 	placeholder?: string;
 	label?: string;
 	defaultValue?: string;
 	isDiv?: boolean;
+	error?: string;
 }
 
 const Input = ({
 	type,
+	name,
 	placeholder,
 	label,
 	defaultValue,
 	isDiv,
+	error,
 }: InputProps) => {
 	const [open, setOpen] = useState(false);
 	return (
-		<div className="flex flex-col gap-1">
+		<div className="flex flex-col gap-1 w-full">
 			<label
 				className={` text-xs md:text-sm ${
 					isDiv ? " text-gray-500 font-normal" : "font-medium"
@@ -50,12 +55,22 @@ const Input = ({
 				{isDiv ? (
 					<div className="font-medium">{defaultValue}</div>
 				) : (
-					<input
-						className="text-sm md:text-base w-full px-4 py-2 focus:outline-none hover:border-primaryLight focus:border-primaryLight rounded-lg border-2 border-gray-300"
-						placeholder={placeholder}
-						defaultValue={defaultValue}
-						type={type === "password" ? (open ? "text" : "password") : type}
-					/>
+					<div className="flex flex-col gap-1">
+						<Field
+							className={`${
+								error ? "border-rose-400" : "border-gray-300"
+							} text-sm md:text-base w-full px-4 py-2 focus:outline-none hover:border-primaryLight focus:border-primaryLight rounded-lg border-2 `}
+							placeholder={placeholder}
+							defaultValue={defaultValue}
+							type={type === "password" ? (open ? "text" : "password") : type}
+							name={name}
+						/>
+						{error && (
+							<span className="text-xs text-rose-500 w-[95%] text-justify">
+								{error}
+							</span>
+						)}
+					</div>
 				)}
 			</div>
 		</div>

@@ -8,6 +8,7 @@ interface ButtonProps {
 	mobileFull?: boolean;
 	full?: boolean;
 	icon?: IconType;
+	type?: "submit";
 }
 
 const Button = ({
@@ -18,9 +19,11 @@ const Button = ({
 	full,
 	icon: Icon,
 	action,
+	type,
 }: ButtonProps) => {
 	return (
 		<button
+			type={type}
 			className={`flex items-center justify-center gap-1 px-6 py-2 text-xs sm:text-sm border-2  rounded-lg transition-all font-heading font-normal ${
 				mobileFull ? "w-full sm:w-auto" : ""
 			} ${!primary && !outline ? "hover:text-text/80 font-semibold" : ""} ${

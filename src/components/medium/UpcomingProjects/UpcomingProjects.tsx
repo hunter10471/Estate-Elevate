@@ -1,7 +1,7 @@
 "use client";
 import Heading from "@/components/small/Heading/Heading";
 import Logo from "@/components/small/Logo/Logo";
-import { UpcomingProject } from "@/lib/types";
+import { UpcomingProject } from "../../../../utils/types";
 import Image from "next/image";
 import { useState } from "react";
 

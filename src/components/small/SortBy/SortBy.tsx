@@ -1,5 +1,5 @@
 "use client";
-import { SortByOption } from "@/lib/types";
+import { SortByOption } from "../../../../utils/types";
 import React, { useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { PropertyType } from "@/lib/types";
+import { PropertyType } from "../../../../utils/types";
 import { BsHouse, BsBuildings } from "react-icons/bs";
 import { MdOutlineVilla } from "react-icons/md";
 import { PiBuildingApartment } from "react-icons/pi";

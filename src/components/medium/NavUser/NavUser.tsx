@@ -5,7 +5,7 @@ import { MdOutlineNotifications } from "react-icons/md";
 import { BiMessageAltDetail } from "react-icons/bi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Link from "next/link";
-import { NavLink } from "@/lib/types";
+import { NavLink } from "../../../../utils/types";
 import { usePathname } from "next/navigation";
 
 interface NavUserProps {
@@ -88,7 +88,7 @@ const NavUser = ({ mobile }: NavUserProps) => {
 						key={link.name}
 						className={`${
 							pathname === link.path
-								? "text-primary font-semibold"
+								? "text-primary font-semibold transition-all"
 								: "hover:font-semibold sm:hover:text-text/80"
 						} transition-all `}
 						href={link.path}
