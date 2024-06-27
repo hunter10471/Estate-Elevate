@@ -5,11 +5,13 @@ import { MdOutlineNotifications } from "react-icons/md";
 import { BiMessageAltDetail } from "react-icons/bi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Link from "next/link";
-import { NavLink } from "../../../../utils/types";
+import { NavLink, SafeUser } from "../../../../utils/types";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 interface NavUserProps {
 	mobile?: boolean;
+	user: SafeUser | null;
 }
 
 const links: NavLink[] = [
@@ -18,7 +20,7 @@ const links: NavLink[] = [
 	{ name: "Contact", path: "/contact" },
 ];
 
-const NavUser = ({ mobile }: NavUserProps) => {
+const NavUser = ({ mobile, user }: NavUserProps) => {
 	const pathname = usePathname();
 	const [open, setOpen] = useState(false);
 	return (
@@ -34,20 +36,20 @@ const NavUser = ({ mobile }: NavUserProps) => {
 				>
 					<Image
 						className="object-cover rounded-full"
-						src={"/no-avatar.jpg"}
+						src={user?.avatar || "/no-avatar.jpg"}
 						alt="no-avatar"
 						width={40}
 						height={40}
 					/>
 					{mobile ? (
 						<div className="flex flex-col ">
-							<span className="font-semibold text-sm">John Doe</span>
-							<span className="text-xs">johndoe@gmail.com</span>
+							<span className="font-semibold text-sm">{user?.username}</span>
+							<span className="text-xs">{user?.email}</span>
 						</div>
 					) : (
 						<div className="hidden lg:flex flex-col ">
-							<span className="font-semibold text-sm">John Doe</span>
-							<span className="text-xs text-text/80">johndoe@gmail.com</span>
+							<span className="font-semibold text-sm">{user?.username}</span>
+							<span className="text-xs text-text/80">{user?.email}</span>
 						</div>
 					)}
 					{!mobile && (
@@ -73,12 +75,12 @@ const NavUser = ({ mobile }: NavUserProps) => {
 						>
 							Admin
 						</Link>
-						<Link
-							className="hover:font-semibold  transition-all"
-							href={"/logout"}
+						<button
+							className="text-left hover:font-semibold  transition-all"
+							onClick={() => signOut()}
 						>
 							Logout
-						</Link>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -109,12 +111,12 @@ const NavUser = ({ mobile }: NavUserProps) => {
 			>
 				Admin
 			</Link>
-			<Link
+			<button
 				className="sm:hidden hover:font-semibold  transition-all"
-				href={"/logout"}
+				onClick={() => signOut()}
 			>
 				Logout
-			</Link>
+			</button>
 		</div>
 	);
 };

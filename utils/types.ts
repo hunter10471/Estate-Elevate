@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import { IconType } from "react-icons";
 
 export interface PropertyType {
@@ -41,3 +42,5 @@ export type FacilityKey =
 	| "bedroom"
 	| "bathroom"
 	| "school";
+
+export type SafeUser = Omit<User, "password" | "createdAt" | "updatedAt">;

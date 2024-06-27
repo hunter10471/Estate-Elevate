@@ -1,16 +1,15 @@
 "use client";
 import NavUser from "@/components/medium/NavUser/NavUser";
-import { NavLink } from "../../../../utils/types";
+import { NavLink, SafeUser } from "../../../../utils/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoMenu } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
-import { Session } from "next-auth";
 
 interface NavLinksProps {
 	mobile?: boolean;
-	session: Session | null;
+	user: SafeUser | null;
 }
 
 const links: NavLink[] = [
@@ -19,12 +18,10 @@ const links: NavLink[] = [
 	{ name: "Contact", path: "/contact" },
 ];
 
-const NavLinks = ({ mobile, session }: NavLinksProps) => {
+const NavLinks = ({ mobile, user }: NavLinksProps) => {
 	const pathname = usePathname();
-
 	const [isOpen, setIsOpen] = useState(false);
 	const navContainer = useRef<HTMLDivElement>(null);
-	const user = false;
 	const handleClickOutside = (e: React.MouseEvent<Document>) => {
 		if (
 			navContainer.current &&
@@ -58,7 +55,7 @@ const NavLinks = ({ mobile, session }: NavLinksProps) => {
 				className={`hidden sm:flex items-center gap-6 lg:gap-12 font-medium font-heading select-none text-sm lg:text-base`}
 			>
 				{user ? (
-					<NavUser />
+					<NavUser user={user} />
 				) : (
 					<>
 						<div className="flex sm:flex-row flex-col items-center gap-6 lg:gap-12">
@@ -115,7 +112,7 @@ const NavLinks = ({ mobile, session }: NavLinksProps) => {
 					size={25}
 				/>
 				{user ? (
-					<NavUser mobile />
+					<NavUser user={user} mobile />
 				) : (
 					<>
 						<div className="flex sm:flex-row flex-col items-center gap-6 lg:gap-12">
