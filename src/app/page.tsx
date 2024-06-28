@@ -41,13 +41,13 @@ export default function Home() {
 					<Heading text="Unlock the Best Real Estate Deals Today!" />
 					<p className="mt-6 text-justify font-heading font-medium text-xs md:text-sm">
 						At Estate Elevate, we pride ourselves on offering unparalleled real
-						estate deals that cater to every need and budget. Whether you're
-						searching for a cozy rental, a luxurious home for sale, or the
-						perfect commercial property, our curated listings ensure you find
-						exactly what you're looking for. <br /> <br /> Our expert team
-						negotiates the best prices and terms, so you don’t have to. Trust us
-						to guide you through the entire process with transparency and
-						professionalism.
+						estate deals that cater to every need and budget. Whether
+						you&apos;re searching for a cozy rental, a luxurious home for sale,
+						or the perfect commercial property, our curated listings ensure you
+						find exactly what you&apos;re looking for. <br /> <br /> Our expert
+						team negotiates the best prices and terms, so you don&apos;t have
+						to. Trust us to guide you through the entire process with
+						transparency and professionalism.
 					</p>
 					<div className="flex mt-6 gap-5">
 						<Button outline text="Learn more" />

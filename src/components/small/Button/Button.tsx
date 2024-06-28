@@ -9,6 +9,7 @@ interface ButtonProps {
 	full?: boolean;
 	icon?: IconType;
 	type?: "submit";
+	id?: string;
 }
 
 const Button = ({
@@ -20,9 +21,12 @@ const Button = ({
 	icon: Icon,
 	action,
 	type,
+	id,
 }: ButtonProps) => {
 	return (
 		<button
+			onClick={action}
+			id={id}
 			type={type}
 			className={`flex items-center justify-center gap-1 px-6 py-2 text-xs sm:text-sm border-2  rounded-lg transition-all font-heading font-normal ${
 				mobileFull ? "w-full sm:w-auto" : ""

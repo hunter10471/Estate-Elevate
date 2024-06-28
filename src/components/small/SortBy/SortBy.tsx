@@ -28,6 +28,7 @@ const SortBy = () => {
 				<span className="text-primary px-2">{options[value].name}</span>
 				{options.map((option, index) => (
 					<span
+						key={index}
 						onClick={() => onClick(index)}
 						className="p-2 hover:text-primary cursor-pointer"
 					>

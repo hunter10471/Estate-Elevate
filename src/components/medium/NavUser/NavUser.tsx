@@ -8,6 +8,7 @@ import Link from "next/link";
 import { NavLink, SafeUser } from "../../../../utils/types";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { UserType } from "@prisma/client";
 
 interface NavUserProps {
 	mobile?: boolean;
@@ -32,15 +33,16 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 				</div>
 				<div
 					onClick={() => setOpen((prev) => !prev)}
-					className="flex items-center gap-3 p-2 text-left relative rounded-full sm:border-2 border-transparent hover:border-gray-300 hover:shadow-md transition-all sm:cursor-pointer"
+					className="flex items-center  gap-3 p-2 text-left relative rounded-full sm:border-2 border-transparent hover:border-gray-300 hover:shadow-md transition-all sm:cursor-pointer"
 				>
-					<Image
-						className="object-cover rounded-full"
-						src={user?.avatar || "/no-avatar.jpg"}
-						alt="no-avatar"
-						width={40}
-						height={40}
-					/>
+					<div className="h-[42px] w-[42px] relative">
+						<Image
+							className="object-cover rounded-full"
+							src={user?.avatar || "/no-avatar.jpg"}
+							alt="avatar"
+							fill
+						/>
+					</div>
 					{mobile ? (
 						<div className="flex flex-col ">
 							<span className="font-semibold text-sm">{user?.username}</span>
@@ -61,7 +63,11 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 					<div
 						className={`${
 							open ? "hidden sm:flex" : "hidden"
-						} select-none overflow-hidden bg-white transition-all duration-300 ease-in-out p-3 rounded-lg flex-col absolute -bottom-[120px] right-0 left-0 mx-auto gap-2 w-[90%] border-2 border-gray-200 shadow-xl text-sm`}
+						} select-none overflow-hidden bg-white transition-all duration-300 ease-in-out p-3 rounded-lg flex-col absolute ${
+							user?.userType === UserType.ADMIN
+								? "-bottom-[120px]"
+								: "-bottom-[90px]"
+						} right-0 left-0 mx-auto gap-2 w-[90%] border-2 border-gray-200 shadow-xl text-sm`}
 					>
 						<Link
 							className="pb-1 border-b-2 border-b-gray-200 hover:font-semibold transition-all"
@@ -69,12 +75,14 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 						>
 							Settings
 						</Link>
-						<Link
-							className="pb-1 border-b-2 border-b-gray-200 hover:font-semibold  transition-all"
-							href={"/admin"}
-						>
-							Admin
-						</Link>
+						{user?.userType === UserType.ADMIN && (
+							<Link
+								className="pb-1 border-b-2 border-b-gray-200 hover:font-semibold  transition-all"
+								href={"/admin"}
+							>
+								Admin
+							</Link>
+						)}
 						<button
 							className="text-left hover:font-semibold  transition-all"
 							onClick={() => signOut()}
@@ -105,12 +113,14 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 			>
 				Settings
 			</Link>
-			<Link
-				className="sm:hidden  hover:font-semibold  transition-all"
-				href={"/admin"}
-			>
-				Admin
-			</Link>
+			{user?.userType === UserType.ADMIN && (
+				<Link
+					className="sm:hidden  hover:font-semibold  transition-all"
+					href={"/admin"}
+				>
+					Admin
+				</Link>
+			)}
 			<button
 				className="sm:hidden hover:font-semibold  transition-all"
 				onClick={() => signOut()}

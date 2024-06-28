@@ -103,7 +103,7 @@ const LoginForm = () => {
 							/>
 
 							<span className="text-xs text-gray-400 font-medium flex items-center gap-2">
-								Don't have an account?
+								Don&apos;t have an account?
 								<Link
 									className="underline hover:text-primary"
 									href={"/auth/signup"}

@@ -94,7 +94,10 @@ const Facilities = () => {
 				{data.map((facilityKey) => {
 					const facility = facilities[facilityKey];
 					return (
-						<span className="text-xs md:text-sm flex items-center gap-1  w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5">
+						<span
+							key={facility.title}
+							className="text-xs md:text-sm flex items-center gap-1  w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5"
+						>
 							<facility.icon size={23} /> {facility.title}
 						</span>
 					);

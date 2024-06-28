@@ -62,6 +62,7 @@ const UpcomingProjects = () => {
 				<div className="flex gap-5 flex-wrap md:justify-normal justify-center">
 					{projects.map((item, index) => (
 						<div
+							key={index}
 							onClick={() => setImageIndex(index)}
 							className={`relative w-[80px] h-[80px] md:w-[120px] md:h-[120px] cursor-pointer border-4 rounded-xl ${
 								index === imageIndex ? "border-text/50" : "border-transparent"

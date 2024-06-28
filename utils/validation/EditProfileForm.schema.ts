@@ -26,6 +26,7 @@ export const editProfileFormSchema = object({
 		.optional()
 		.nullable(),
 	city: string().min(1, { message: "City is required" }).optional().nullable(),
+	avatar: string().url().optional().nullable(),
 	bio: string()
 		.max(160, { message: "Bio must be less than 160 characters" })
 		.optional()

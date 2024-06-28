@@ -32,6 +32,7 @@ const handler = NextAuth({
 					return {
 						id: existingUser.id,
 						email: existingUser.email,
+						userType: existingUser.userType,
 					};
 				} catch (error: any) {
 					if (error instanceof ZodError) {
@@ -48,6 +49,14 @@ const handler = NextAuth({
 			},
 		}),
 	],
+	callbacks: {
+		async jwt({ user, token }) {
+			token.email = user.email;
+			token.id = user.id;
+			token.userType = user.userType;
+			return token;
+		},
+	},
 });
 
 export { handler as GET, handler as POST };

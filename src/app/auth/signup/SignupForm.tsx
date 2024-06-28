@@ -74,7 +74,7 @@ const SignupForm = () => {
 									{" "}
 									A warm welcome awaits!{" "}
 								</b>{" "}
-								<br /> Signup and let's get started
+								<br /> Signup and let&apos;s get started
 							</h1>
 
 							<Input

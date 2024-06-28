@@ -3,15 +3,20 @@ import Button from "@/components/small/Button/Button";
 import Heading from "@/components/small/Heading/Heading";
 import Input from "@/components/small/Input/Input";
 import useStore from "@/store/store";
-import { Formik } from "formik";
+import { Form, Formik } from "formik";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import {
 	EditProfileFormInputs,
 	editProfileFormSchema,
 } from "../../../../utils/validation/EditProfileForm.schema";
 import { SafeUser } from "../../../../utils/types";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import UploadWidget from "@/components/small/UploadWidget/UploadWidget";
+import { updateCurrentUser } from "@/actions/userActions";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 interface PersonalInfoProps {
 	user: SafeUser | null;
@@ -19,7 +24,46 @@ interface PersonalInfoProps {
 
 const PersonalInfo = ({ user }: PersonalInfoProps) => {
 	const sidebarState = useStore((state) => state);
-	const handleSubmit = (values: EditProfileFormInputs) => {};
+	const [avatar, setAvatar] = useState(user?.avatar);
+	const router = useRouter();
+	const handleSubmit = async (values: EditProfileFormInputs) => {
+		try {
+			if (avatar) {
+				values.avatar = avatar;
+			}
+			const response = await updateCurrentUser(values);
+			if (response) {
+				toast.success("Profile updated successfully.", {
+					position: "bottom-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+					transition: Slide,
+					onClose: () => {
+						router.refresh();
+					},
+				});
+			}
+		} catch (error: any) {
+			console.log(error);
+			toast.error("An error occured while updating your profile", {
+				position: "bottom-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "colored",
+				transition: Slide,
+			});
+		}
+	};
+
 	return (
 		<Formik<EditProfileFormInputs>
 			validationSchema={toFormikValidationSchema(editProfileFormSchema)}
@@ -33,20 +77,30 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 			{(formikState) => {
 				const errors = formikState.errors;
 				return (
-					<div className="p-10 max-w-[800px]">
+					<Form className="p-10 max-w-[800px]">
+						<ToastContainer />
 						{sidebarState.sidebarTab === "editProfile" ? (
 							<div>
 								<div className="flex lg:flex-row flex-col items-center gap-4">
 									<div className="rounded-full h-[75px] w-[75px] lg:h-[120px] lg:w-[120px] relative">
 										<Image
-											src={user?.avatar || "/no-avatar.jpg"}
+											src={avatar || "/no-avatar.jpg"}
 											alt="avatar"
 											fill
 											className=" object-cover rounded-full"
 										/>
 									</div>
 									<div className="flex flex-col lg:items-start gap-1">
-										<Button text="Upload new photo" />
+										<UploadWidget
+											uwConfig={{
+												cloudName: "dz79wze9e",
+												uploadPreset: "Estate Elevate",
+												multiple: false,
+												maxImageFileSize: 200000,
+												folder: "avatars",
+											}}
+											setState={setAvatar}
+										/>
 										<span className="text-gray-400 text-xs lg:text-sm px-6 lg:text-left text-center">
 											Atleast 600x600 px recommended. <br /> JPG or PNG is
 											allowed.
@@ -123,7 +177,7 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 								</div>
 								<div className="flex justify-end gap-5">
 									<Button text="Cancel" outline />
-									<Button text="Update" primary />
+									<Button type="submit" text="Update" primary />
 								</div>
 							</div>
 						) : (
@@ -158,7 +212,7 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 								</div>
 							</div>
 						)}
-					</div>
+					</Form>
 				);
 			}}
 		</Formik>
