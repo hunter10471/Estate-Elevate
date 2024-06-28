@@ -7,9 +7,8 @@ import { EditProfileFormInputs } from "../../utils/validation/EditProfileForm.sc
 import bcrypt from "bcrypt";
 
 export const getCurrentUser = async (): Promise<SafeUser | null> => {
+	const session = await getServerSession();
 	try {
-		const session = await getServerSession();
-
 		if (session && session.user && session.user.email) {
 			const user = await prisma.user.findUnique({
 				where: { email: session.user?.email },
@@ -29,8 +28,8 @@ export const getCurrentUser = async (): Promise<SafeUser | null> => {
 export const updateCurrentUser = async (
 	values: EditProfileFormInputs
 ): Promise<SafeUser | Error> => {
+	const session = await getServerSession();
 	try {
-		const session = await getServerSession();
 		if (session && session.user && session.user.email) {
 			const existingUser = await prisma.user.findUnique({
 				where: { email: session.user.email },
