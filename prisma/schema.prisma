@@ -34,19 +34,18 @@ model Property {
     price Float
     type PropertyType
     status ListingStatus
-    address String
+    address String?
     city String
     state String
     country String
-    zipCode String
-    latitude Float?
-    longitude Float?
+    latlng Int[]
     bedrooms Int
     bathrooms Int
     area Float
     yearBuilt Int?
     images Json
     facilities Json
+    negotiable Boolean
     listedBy User @relation(fields: [listedById],references: [id])
     listedById String
     createdAt   DateTime  @default(now())

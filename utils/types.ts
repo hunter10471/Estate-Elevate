@@ -1,8 +1,9 @@
-import { User } from "@prisma/client";
+import { PropertyType, User } from "@prisma/client";
 import { IconType } from "react-icons";
 
-export interface PropertyType {
+export interface PropertyTypeQuery {
 	icon: IconType;
+	type: PropertyType;
 	name: string;
 	query: string;
 }

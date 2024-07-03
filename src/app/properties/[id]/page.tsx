@@ -4,7 +4,6 @@ import Heading from "@/components/small/Heading/Heading";
 import LikeButton from "@/components/small/LikeButton/LikeButton";
 import PropertyDescription from "@/components/small/PropertyDescription/PropertyDescription";
 import { IoShareSocialOutline } from "react-icons/io5";
-import dynamic from "next/dynamic";
 import { FaLocationDot } from "react-icons/fa6";
 import Image from "next/image";
 import Button from "@/components/small/Button/Button";
@@ -12,10 +11,7 @@ import { MdOutlineChat } from "react-icons/md";
 import { FiPhone } from "react-icons/fi";
 import { LuCalendarDays } from "react-icons/lu";
 import ExploreProperties from "@/components/large/ExploreProperties/ExploreProperties";
-
-const Map = dynamic(() => import("../../../components/medium/Map/Map"), {
-	ssr: false,
-});
+import Map from "@/components/medium/Map/Map";
 
 const page = () => {
 	return (

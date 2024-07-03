@@ -4,6 +4,7 @@ import { Field } from "formik";
 import { useState } from "react";
 import { LuEye } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
+import { BsCurrencyDollar } from "react-icons/bs";
 
 interface InputProps {
 	type: "email" | "password" | "text";
@@ -13,6 +14,7 @@ interface InputProps {
 	defaultValue?: string;
 	isDiv?: boolean;
 	error?: string;
+	dollar?: boolean;
 }
 
 const Input = ({
@@ -23,6 +25,7 @@ const Input = ({
 	defaultValue,
 	isDiv,
 	error,
+	dollar,
 }: InputProps) => {
 	const [open, setOpen] = useState(false);
 	return (
@@ -55,11 +58,21 @@ const Input = ({
 				{isDiv ? (
 					<div className="font-medium">{defaultValue}</div>
 				) : (
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col gap-1 relative">
+						{dollar && (
+							<BsCurrencyDollar
+								className="text-text absolute left-2 top-[10px]"
+								size={20}
+							/>
+						)}
 						<Field
+							as={name === "description" ? "textarea" : undefined}
+							rows={8}
 							className={`${
 								error ? "border-rose-400" : "border-gray-300"
-							} text-sm md:text-base w-full px-4 py-2 focus:outline-none hover:border-primaryLight focus:border-primaryLight rounded-lg border-2 `}
+							} text-sm md:text-base w-full  px-4 py-2 ${
+								dollar ? "pl-8" : ""
+							} focus:outline-none hover:border-primaryLight focus:border-primaryLight rounded-lg border-2 `}
 							placeholder={placeholder}
 							defaultValue={defaultValue}
 							type={type === "password" ? (open ? "text" : "password") : type}

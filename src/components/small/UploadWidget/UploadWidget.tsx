@@ -18,7 +18,7 @@ const UploadWidget = ({
 	setState?: SetStateAction<any>;
 }) => {
 	const [loaded, setLoaded] = useState(false);
-
+	const [widgetInitialized, setWidgetInitialized] = useState(false);
 	useEffect(() => {
 		// Check if the script is already loaded
 		if (!loaded) {
@@ -39,17 +39,17 @@ const UploadWidget = ({
 	}, [loaded]);
 
 	const initializeCloudinaryWidget = () => {
-		if (loaded) {
+		if (loaded && !widgetInitialized) {
 			const myWidget = window.cloudinary.createUploadWidget(
 				uwConfig,
 				(error: any, result: any) => {
 					if (!error && result && result.event === "success") {
+						console.log(result.info);
 						console.log("Done! Here is the image info: ", result.info);
 						setState(result.info.secure_url);
 					}
 				}
 			);
-
 			document.getElementById("upload_widget")!.addEventListener(
 				"click",
 				function () {
@@ -57,12 +57,14 @@ const UploadWidget = ({
 				},
 				false
 			);
+			setWidgetInitialized(true);
 		}
 	};
 
 	return (
 		<CloudinaryScriptContext.Provider value={{ loaded }}>
 			<Button
+				type="button"
 				id="upload_widget"
 				action={initializeCloudinaryWidget}
 				text="Upload new photo"

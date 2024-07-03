@@ -7,18 +7,20 @@ import { AiOutlineFullscreen } from "react-icons/ai";
 import { AiOutlineFullscreenExit } from "react-icons/ai";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
+import "./Map.css";
+import MapChild from "./MapChild";
 
 interface MapProps {
 	setFullWidth?: SetStateAction<any>;
 	fullWidth: boolean;
+	position?: LatLngExpression;
 }
 
-const Map = ({ setFullWidth, fullWidth }: MapProps) => {
-	const position = [51.505, -0.09] as LatLngExpression;
+const Map = ({ setFullWidth, fullWidth, position }: MapProps) => {
 	return (
 		<MapContainer
-			className={`flex-1 transition-all ease-in-out h-full rounded-lg relative`}
-			center={position}
+			className={`flex-1 transition-all ease-in-out h-full rounded-lg relative z-[99]`}
+			center={position || [51.505, -0.09]}
 			zoom={10}
 			scrollWheelZoom={false}
 		>
@@ -26,6 +28,7 @@ const Map = ({ setFullWidth, fullWidth }: MapProps) => {
 				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			/>
+			{position && <MapChild center={position} />}
 			{setFullWidth && (
 				<button
 					onClick={() => setFullWidth((prev: any) => !prev)}
@@ -38,10 +41,10 @@ const Map = ({ setFullWidth, fullWidth }: MapProps) => {
 					)}{" "}
 				</button>
 			)}
-			<Marker position={position}>
-				<Popup>
-					A pretty CSS3 popup. <br /> Easily customizable.
-				</Popup>
+			<Marker position={position || [51.505, -0.09]}>
+				{/* <Popup>
+					
+				</Popup> */}
 			</Marker>
 		</MapContainer>
 	);

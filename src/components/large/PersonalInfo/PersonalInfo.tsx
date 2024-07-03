@@ -17,6 +17,9 @@ import { updateCurrentUser } from "@/actions/userActions";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
+import CountrySelect, {
+	CountrySelectValue,
+} from "@/components/small/CountrySelect/CountrySelect";
 
 interface PersonalInfoProps {
 	user: SafeUser | null;
@@ -62,6 +65,9 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 				transition: Slide,
 			});
 		}
+	};
+	const onChange = (value: CountrySelectValue) => {
+		console.log(value);
 	};
 
 	return (
@@ -139,14 +145,15 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 								<div className="my-10">
 									<Heading text="Location" mediumSize weight="semibold" />
 									<div className="flex justify-between gap-6 my-5 lg:flex-row flex-col">
-										<Input
+										{/* <Input
 											label="Country"
 											placeholder="Enter your country"
 											type="text"
 											defaultValue={user?.country || ""}
 											name="country"
 											error={errors["country"]}
-										/>
+										/> */}
+										<CountrySelect formik={formikState} />
 										<Input
 											label="State"
 											placeholder="Enter your state"

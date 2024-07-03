@@ -1,25 +1,39 @@
 "use client";
 import React from "react";
-import { PropertyType } from "../../../../utils/types";
+import { PropertyTypeQuery } from "../../../../utils/types";
 import { BsHouse, BsBuildings } from "react-icons/bs";
 import { MdOutlineVilla } from "react-icons/md";
 import { PiBuildingApartment } from "react-icons/pi";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { PropertyType } from "@prisma/client";
+import useUpdateQuery from "@/hooks/useUpdateQuery";
 
-const propertyTypes: PropertyType[] = [
-	{ name: "House", icon: BsHouse, query: "house" },
-	{ name: "Apartment", icon: BsBuildings, query: "apartment" },
-	{ name: "Villa", icon: MdOutlineVilla, query: "villa" },
-	{ name: "Guest House", icon: PiBuildingApartment, query: "guest-house" },
+export const propertyTypes: PropertyTypeQuery[] = [
+	{ name: "House", type: PropertyType.HOUSE, icon: BsHouse, query: "house" },
+	{
+		name: "Apartment",
+		type: PropertyType.APARTMENT,
+		icon: BsBuildings,
+		query: "apartment",
+	},
+	{
+		name: "Villa",
+		type: PropertyType.VILLA,
+		icon: MdOutlineVilla,
+		query: "villa",
+	},
+	{
+		name: "Guest House",
+		type: PropertyType.GUEST_HOUSE,
+		icon: PiBuildingApartment,
+		query: "guest-house",
+	},
 ];
 
 const PropertyTypes = () => {
-	const currentQuery = useSearchParams().get("propertyType");
-	const router = useRouter();
-	const updateQuery = (query: string) => {
-		router.push(`/properties?propertyType=${query}`);
-	};
+	const { getQueryParam, updateQuery } = useUpdateQuery();
+	const currentQuery = getQueryParam("propertyType");
 
 	return (
 		<div className="flex flex-[2] items-center justify-center gap-5 flex-wrap lg:flex-nowrap">
@@ -27,7 +41,7 @@ const PropertyTypes = () => {
 				<div
 					className={`flex items-center justify-center gap-2 cursor-pointer pb-1 select-none`}
 					key={property.name}
-					onClick={() => updateQuery(property.query)}
+					onClick={() => updateQuery("propertyType", property.query)}
 				>
 					{
 						<property.icon

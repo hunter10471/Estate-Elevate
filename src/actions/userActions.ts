@@ -63,6 +63,6 @@ export const updateCurrentUser = async (
 		}
 	} catch (error: any) {
 		console.log(error);
-		return new Error(error);
+		return error;
 	}
 };

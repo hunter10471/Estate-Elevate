@@ -8,8 +8,9 @@ interface ButtonProps {
 	mobileFull?: boolean;
 	full?: boolean;
 	icon?: IconType;
-	type?: "submit";
+	type?: "submit" | "button";
 	id?: string;
+	disabled?: boolean;
 }
 
 const Button = ({
@@ -22,12 +23,14 @@ const Button = ({
 	action,
 	type,
 	id,
+	disabled,
 }: ButtonProps) => {
 	return (
 		<button
 			onClick={action}
 			id={id}
 			type={type}
+			disabled={disabled}
 			className={`flex items-center justify-center gap-1 px-6 py-2 text-xs sm:text-sm border-2  rounded-lg transition-all font-heading font-normal ${
 				mobileFull ? "w-full sm:w-auto" : ""
 			} ${!primary && !outline ? "hover:text-text/80 font-semibold" : ""} ${
@@ -36,7 +39,9 @@ const Button = ({
 				outline
 					? "text-primary border-primaryLight hover:text-primaryDark hover:border-primary"
 					: "border-transparent"
-			} ${full ? "w-full" : ""} `}
+			} ${
+				full ? "w-full" : ""
+			} disabled:bg-primaryDark disabled:cursor-not-allowed `}
 		>
 			{Icon && <Icon size={20} />} {text}
 		</button>

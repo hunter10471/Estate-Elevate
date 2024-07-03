@@ -4,7 +4,7 @@ import Input from "@/components/small/Input/Input";
 import { Form, Formik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import {
 	LoginFormInputs,
 	loginFormSchema,
@@ -17,8 +17,10 @@ import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
 	const router = useRouter();
+	const [loading, setLoading] = useState(false);
 	const handleSubmit = async (values: LoginFormInputs) => {
 		try {
+			setLoading(true);
 			const response = await signIn("credentials", {
 				email: values.email,
 				password: values.password,
@@ -55,6 +57,7 @@ const LoginForm = () => {
 				theme: "colored",
 				transition: Slide,
 			});
+			setLoading(false);
 		}
 	};
 	return (
@@ -111,7 +114,7 @@ const LoginForm = () => {
 									Create one now.
 								</Link>
 							</span>
-							<Button type="submit" text="Sign in" primary />
+							<Button disabled={loading} type="submit" text="Sign in" primary />
 							<span className="text-center -mt-1 -mb-2">or</span>
 							<button className="flex justify-center items-center gap-4 border-gray-300 rounded-lg py-2 px-4 text-sm font-medium hover:bg-gray-300 transition-all">
 								<Image

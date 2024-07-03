@@ -7,6 +7,7 @@ import useStore from "@/store/store";
 const PropertyResult = () => {
 	const [fullWidth, setFullWidth] = useState(false);
 	const isMap = useStore((state) => state.isMap);
+
 	return (
 		<div className={`flex ${!isMap ? "" : "lg:gap-10"} mb-5 transition-all`}>
 			<div

@@ -58,15 +58,15 @@ const NavLinks = ({ mobile, user }: NavLinksProps) => {
 					<NavUser user={user} />
 				) : (
 					<>
-						<div className="flex sm:flex-row flex-col items-center gap-6 lg:gap-12">
+						<div className="flex sm:flex-row flex-col items-center gap-6 lg:gap-12 ">
 							{links.map((link) => (
 								<Link
 									key={link.name}
 									className={`${
 										pathname === link.path
-											? "text-primary font-semibold transition-all"
+											? "text-primary  "
 											: "sm:hover:text-text/80"
-									} transition-all `}
+									} transition-all font-medium`}
 									href={link.path}
 								>
 									{link.name}
@@ -121,9 +121,9 @@ const NavLinks = ({ mobile, user }: NavLinksProps) => {
 									key={link.name}
 									className={`${
 										pathname === link.path
-											? "text-primary font-semibold transition-all"
+											? "text-primary  transition-all"
 											: "sm:hover:text-text/80"
-									} transition-all `}
+									} transition-all font-medium`}
 									href={link.path}
 								>
 									{link.name}

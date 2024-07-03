@@ -1,3 +1,5 @@
+import { getCurrentUser } from "@/actions/userActions";
+import ListPropertyModal from "@/components/large/ListPropertyModal/ListPropertyModal";
 import Filterbar from "@/components/medium/Filterbar/Filterbar";
 import PropertyResult from "@/components/medium/PropertyResult/PropertyResult";
 import Button from "@/components/small/Button/Button";
@@ -5,7 +7,8 @@ import Heading from "@/components/small/Heading/Heading";
 import SortBy from "@/components/small/SortBy/SortBy";
 import React from "react";
 
-const page = () => {
+const page = async () => {
+	const user = await getCurrentUser();
 	return (
 		<div className="select-none">
 			<Filterbar />
@@ -17,7 +20,11 @@ const page = () => {
 					</span>
 				</div>
 				<div className="flex flex-col items-end gap-2">
-					<Button text="List Property" primary />
+					{user && (
+						<ListPropertyModal userId={user.id}>
+							<Button text="List Property" primary />
+						</ListPropertyModal>
+					)}
 					<SortBy />
 				</div>
 			</div>

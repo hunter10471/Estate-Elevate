@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Button from "@/components/small/Button/Button";
 import Input from "@/components/small/Input/Input";
 import { Form, Formik } from "formik";
@@ -14,8 +14,10 @@ import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const SignupForm = () => {
+	const [loading, setLoading] = useState(false);
 	const handleSubmit = async (values: SignupFormInputs) => {
 		try {
+			setLoading(true);
 			const response = await fetch(`/api/auth/signup`, {
 				method: "POST",
 				body: JSON.stringify(values),
@@ -48,6 +50,7 @@ const SignupForm = () => {
 				theme: "colored",
 				transition: Slide,
 			});
+			setLoading(false);
 		}
 	};
 	return (
@@ -114,7 +117,7 @@ const SignupForm = () => {
 									Login.
 								</Link>
 							</span>
-							<Button type="submit" text="Sign up" primary />
+							<Button disabled={loading} type="submit" text="Sign up" primary />
 							<span className="text-sm text-center -mt-2 -mb-3">or</span>
 							<button className="flex justify-center items-center gap-4 border-gray-300 rounded-lg py-2 px-4 text-sm font-medium hover:bg-gray-300 transition-all">
 								<Image

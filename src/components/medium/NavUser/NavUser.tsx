@@ -97,10 +97,8 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 					<Link
 						key={link.name}
 						className={`${
-							pathname === link.path
-								? "text-primary font-semibold transition-all"
-								: "hover:font-semibold sm:hover:text-text/80"
-						} transition-all `}
+							pathname === link.path ? "text-primary" : " sm:hover:text-text/80"
+						} transition-all font-medium  `}
 						href={link.path}
 					>
 						{link.name}

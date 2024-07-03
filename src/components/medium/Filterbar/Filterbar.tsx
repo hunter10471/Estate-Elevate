@@ -1,15 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import PropertyTypes from "../PropertyTypes/PropertyTypes";
 import { IoSearch } from "react-icons/io5";
-import { IoFilterSharp } from "react-icons/io5";
 import { FaRegMap } from "react-icons/fa6";
 import { FiGrid } from "react-icons/fi";
 import useStore from "@/store/store";
 import Filter from "@/components/small/Filter/Filter";
+import useUpdateQuery from "@/hooks/useUpdateQuery";
 
 const Filterbar = () => {
-	const [isBuy, setIsBuy] = useState(true);
+	const { getQueryParam, updateQuery } = useUpdateQuery();
+	const currentQuery = getQueryParam("status");
 	const isMap = useStore((state) => state.isMap);
 	const toggleIsMap = useStore((state) => state.toggleMap);
 	const toggleGrid = useStore((state) => state.toggleGrid);
@@ -18,9 +19,9 @@ const Filterbar = () => {
 			<div className="flex justify-between items-center lg:flex-row flex-col gap-4 text-sm font-semibold flex-1">
 				<div className="flex items-center gap-5 ">
 					<button
-						onClick={() => setIsBuy(false)}
+						onClick={() => updateQuery("status", "rent")}
 						className={`${
-							!isBuy
+							currentQuery === "rent"
 								? "text-text border-b-primary"
 								: "text-gray-400 border-transparent"
 						} border-b-2 pb-1 transition-all ease-in`}
@@ -28,9 +29,9 @@ const Filterbar = () => {
 						Rent
 					</button>
 					<button
-						onClick={() => setIsBuy(true)}
+						onClick={() => updateQuery("status", "buy")}
 						className={`${
-							isBuy
+							currentQuery === "buy"
 								? "text-text border-b-primary"
 								: "text-gray-400 border-transparent"
 						} border-b-2 pb-1 transition-all ease-in`}

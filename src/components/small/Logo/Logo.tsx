@@ -16,11 +16,13 @@ const Logo = ({ dark, small }: LogoProps) => {
 			<span className="-m-1">
 				<RiBuilding2Line
 					className={`${dark ? "text-white" : "text-primary"} `}
-					size={small ? 25 : 40}
+					size={small ? 20 : 30}
 				/>
 			</span>
 			<div
-				className={`flex flex-col items-center ${small ? "text-xs mt-1" : ""}`}
+				className={`flex flex-col items-center ${
+					small ? "text-xs mt-1" : "text-sm"
+				}`}
 			>
 				<span
 					className={`${

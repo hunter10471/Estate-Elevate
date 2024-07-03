@@ -26,6 +26,9 @@ export default withAuth(
 				return true;
 			},
 		},
+		pages: {
+			signOut: "/auth/login",
+		},
 	}
 );
 
