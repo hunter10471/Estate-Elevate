@@ -1,4 +1,5 @@
-import { getCurrentUser } from "@/actions/userActions";
+import { getAllProperties } from "@/app/actions/propertyActions";
+import { getCurrentUser } from "@/app/actions/userActions";
 import ListPropertyModal from "@/components/large/ListPropertyModal/ListPropertyModal";
 import Filterbar from "@/components/medium/Filterbar/Filterbar";
 import PropertyResult from "@/components/medium/PropertyResult/PropertyResult";
@@ -9,6 +10,7 @@ import React from "react";
 
 const page = async () => {
 	const user = await getCurrentUser();
+	const properties = await getAllProperties();
 	return (
 		<div className="select-none">
 			<Filterbar />
@@ -28,7 +30,7 @@ const page = async () => {
 					<SortBy />
 				</div>
 			</div>
-			<PropertyResult />
+			<PropertyResult properties={properties} />
 		</div>
 	);
 };

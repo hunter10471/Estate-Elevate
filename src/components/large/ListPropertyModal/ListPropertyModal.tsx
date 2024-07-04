@@ -34,6 +34,7 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
+import { revalidatePath } from "next/cache";
 
 interface ListPropertyModal {
 	children: React.ReactNode;
@@ -187,7 +188,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 				theme: "colored",
 				transition: Slide,
 				onClose() {
-					router.refresh();
+					revalidatePath("/properties");
 				},
 			});
 		} catch (error: any) {
@@ -213,6 +214,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 	}: {
 		formikState: FormikProps<ListPropertyFormSchemaInputs>;
 	}): React.ReactNode => {
+		console.log(formikState.values);
 		const { country, city, state } = formikState.values;
 		const [debouncedCity, setDebouncedCity] = useState(city);
 		const [debouncedState, setDebouncedState] = useState(state);

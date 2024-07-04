@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/actions/userActions";
+import { getCurrentUser } from "@/app/actions/userActions";
 import PersonalInfo from "@/components/large/PersonalInfo/PersonalInfo";
 import ProfileSidebar from "@/components/medium/ProfileSidebar/ProfileSidebar";
 import Heading from "@/components/small/Heading/Heading";

@@ -12,89 +12,79 @@ import { MdOutlineBed } from "react-icons/md";
 import { PiBathtub } from "react-icons/pi";
 import { LuSchool } from "react-icons/lu";
 import Heading from "../Heading/Heading";
-import { FacilityKey } from "../../../../utils/types";
-import { IconType } from "react-icons";
 import { FormikProps } from "formik";
 import { ListPropertyFormSchemaInputs } from "../../../../utils/validation/ListPropertyForm.schema";
+import Facility from "./Facility";
 
-const facilities: Record<FacilityKey, { title: string; icon: IconType }> = {
+const facilities: any = {
 	gym: {
 		title: "Gym",
-		icon: PiBarbell,
+		icon: <PiBarbell size={25} />,
 	},
 	pool: {
 		title: "Pool",
-		icon: MdOutlinePool,
+		icon: <MdOutlinePool size={25} />,
 	},
 	garden: {
 		title: "Garden",
-		icon: LuTrees,
+		icon: <LuTrees size={25} />,
 	},
 	park: {
 		title: "Park",
-		icon: PiPark,
+		icon: <PiPark size={25} />,
 	},
 	garage: {
 		title: "Parking",
-		icon: GiHomeGarage,
+		icon: <GiHomeGarage size={25} />,
 	},
 	community: {
 		title: "Club",
-		icon: RiCommunityLine,
+		icon: <RiCommunityLine size={25} />,
 	},
 	surveillance: {
 		title: "Security",
-		icon: PiSecurityCamera,
+		icon: <PiSecurityCamera size={25} />,
 	},
 	transport: {
 		title: "Transport",
-		icon: IoBusOutline,
+		icon: <IoBusOutline size={25} />,
 	},
 	area: {
 		title: "sqft",
-		icon: LiaVectorSquareSolid,
+		icon: <LiaVectorSquareSolid size={23} />,
 	},
 	bedroom: {
 		title: "Bedrooms",
-		icon: MdOutlineBed,
+		icon: <MdOutlineBed size={23} />,
 	},
 	bathroom: {
 		title: "Bathrooms",
-		icon: PiBathtub,
+		icon: <PiBathtub size={23} />,
 	},
 	school: {
 		title: "School",
-		icon: LuSchool,
+		icon: <LuSchool size={25} />,
 	},
 };
 
 interface FacilitiesProps {
 	listing?: boolean;
 	formik?: FormikProps<ListPropertyFormSchemaInputs>;
+	bathrooms?: number;
+	bedrooms?: number;
+	area?: number;
+	data?: string[];
 }
 
-const Facilities = ({ listing, formik }: FacilitiesProps) => {
-	const handleClick = (facility: string) => {
-		if (formik) {
-			const facilitiesArr = formik.values.facilities;
-			if (facilitiesArr && facilitiesArr.length > 0) {
-				const inArray = formik.values.facilities.includes(facility);
-				if (inArray) {
-					const filteredArr = facilitiesArr.filter((item) => item !== facility);
-					formik.setFieldValue("facilities", filteredArr);
-				} else {
-					formik.setFieldValue("facilities", [
-						...formik.values.facilities,
-						facility,
-					]);
-				}
-			} else {
-				formik.setFieldValue("facilities", [facility]);
-			}
-		} else return;
-	};
-
-	const data: FacilityKey[] = [
+const Facilities = ({
+	listing,
+	formik,
+	bathrooms,
+	bedrooms,
+	area,
+	data,
+}: FacilitiesProps) => {
+	const facilityKeys = [
 		"gym",
 		"school",
 		"transport",
@@ -105,47 +95,44 @@ const Facilities = ({ listing, formik }: FacilitiesProps) => {
 		"garden",
 		"pool",
 	];
+	let keyArr = data ? data : facilityKeys;
 	return (
 		<div className="my-8">
 			{!listing && <Heading mediumSize text="Facilities" weight="medium" />}
 			<div
 				className={`mt-5 flex ${
-					listing ? "gap-8" : "gap-4"
-				} flex-wrap justify-between items-center font-medium`}
+					listing ? "gap-8 justify-between" : "gap-4"
+				} flex-wrap items-center font-medium`}
 			>
 				{!listing && (
 					<>
-						<span className="text-xs md:text-sm flex items-center gap-1 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 ">
-							<facilities.bedroom.icon size={23} /> 4 {facilities.bedroom.title}
+						<span className="text-xs md:text-sm flex items-center  gap-2 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 p-2">
+							{facilities.bedroom.icon} {bedrooms} {facilities.bedroom.title}
 						</span>
-						<span className="text-xs md:text-sm flex items-center gap-1 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5">
-							<facilities.bathroom.icon size={23} /> 2{" "}
-							{facilities.bathroom.title}
+						<span className="text-xs md:text-sm flex items-centerjustify-center gap-2 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 p-2">
+							{facilities.bathroom.icon} {bathrooms} {facilities.bathroom.title}
 						</span>
-						<span className="text-xs md:text-sm flex items-center gap-1 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5">
-							<facilities.area.icon size={23} /> 1500 {facilities.area.title}
+						<span className="text-xs md:text-sm flex items-center  gap-2 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 p-2">
+							{facilities.area.icon} {area} {facilities.area.title}
 						</span>
 					</>
 				)}
-				{data.map((facilityKey) => {
-					const facility: { title: string; icon: IconType } =
+				{keyArr.map((facilityKey) => {
+					const facility: { title: string; icon: React.ReactNode } =
 						facilities[facilityKey];
 					let selected = false;
 					if (formik) {
 						selected = formik.values.facilities.includes(facilityKey);
 					}
 					return (
-						<span
-							onClick={() => handleClick(facilityKey)}
+						<Facility
+							facility={facility}
+							facilityKey={facilityKey}
 							key={facility.title}
-							className={` p-2 flex gap-2 border-2 items-center border-transparent justify-center transition-all ${
-								listing ? "cursor-pointer hover:border-gray-300" : ""
-							} ${
-								listing && selected ? "bg-gray-300" : ""
-							} rounded-full  text-xs md:text-sm flex items-center gap-2  w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5`}
-						>
-							<facility.icon size={25} /> {facility.title}
-						</span>
+							listing={listing}
+							selected={selected}
+							formik={formik}
+						/>
 					);
 				})}
 				{formik?.errors.facilities && (

@@ -4,6 +4,7 @@ interface HeadingProps {
 	weight?: string;
 	mediumSize?: boolean;
 	smallSize?: boolean;
+	center?: boolean;
 }
 
 const Heading = ({
@@ -12,6 +13,7 @@ const Heading = ({
 	mediumSize,
 	smallSize,
 	subtitle,
+	center,
 }: HeadingProps) => {
 	return (
 		<div>
@@ -22,7 +24,7 @@ const Heading = ({
 						: smallSize
 						? "text-[14px] sm:text-[16px] md:text-[18px]"
 						: "text-[20px] sm:text-[24px] md:text-[28px]"
-				}  leading-tight  `}
+				} ${center ? "text-center" : "text-left"}  leading-tight  `}
 			>
 				{text}
 			</h1>

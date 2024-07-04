@@ -43,8 +43,8 @@ model Property {
     bathrooms Int
     area Float
     yearBuilt Int?
-    images Json
-    facilities Json
+    images String[]
+    facilities String[]
     negotiable Boolean
     listedBy User @relation(fields: [listedById],references: [id])
     listedById String

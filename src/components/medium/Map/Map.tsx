@@ -21,7 +21,7 @@ const Map = ({ setFullWidth, fullWidth, position }: MapProps) => {
 		<MapContainer
 			className={`flex-1 transition-all ease-in-out h-full rounded-lg relative z-[99]`}
 			center={position || [51.505, -0.09]}
-			zoom={10}
+			zoom={5}
 			scrollWheelZoom={false}
 		>
 			<TileLayer

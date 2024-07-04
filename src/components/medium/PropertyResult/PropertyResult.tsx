@@ -1,13 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Card from "../Card/Card";
 import Map from "../Map/Map";
 import useStore from "@/store/store";
+import CardSkeleton from "../Card/Card.Skeleton";
+import { PropertyWithListedBy } from "../../../../utils/types";
 
-const PropertyResult = () => {
+interface PropertyResultProps {
+	properties?: PropertyWithListedBy[];
+}
+
+const PropertyResult = ({ properties }: PropertyResultProps) => {
 	const [fullWidth, setFullWidth] = useState(false);
 	const isMap = useStore((state) => state.isMap);
-
 	return (
 		<div className={`flex ${!isMap ? "" : "lg:gap-10"} mb-5 transition-all`}>
 			<div
@@ -19,13 +24,27 @@ const PropertyResult = () => {
 						: "md:overflow-scroll md:overflow-x-hidden md:h-[650px]"
 				} `}
 			>
-				<Card />
-				<Card />
-				<Card />
-				<Card />
-				<Card />
-				<Card />
-				<Card />
+				{properties &&
+					properties.map((item) => (
+						<Suspense fallback={<CardSkeleton />}>
+							<Card
+								area={item.area}
+								bathrooms={item.bathrooms}
+								bedrooms={item.bedrooms}
+								images={item.images}
+								title={item.title}
+								price={item.price}
+								type={item.status}
+								key={item.id}
+								listedByName={item.listedBy.username}
+								listedByAvatar={item.listedBy.avatar}
+								id={item.id}
+								country={item.country}
+								state={item.state}
+								city={item.city}
+							/>
+						</Suspense>
+					))}
 			</div>
 
 			<div

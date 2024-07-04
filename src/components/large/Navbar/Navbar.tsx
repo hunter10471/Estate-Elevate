@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/actions/userActions";
+import { getCurrentUser } from "@/app/actions/userActions";
 import Logo from "@/components/small/Logo/Logo";
 import NavLinks from "@/components/small/NavLinks/NavLinks";
 

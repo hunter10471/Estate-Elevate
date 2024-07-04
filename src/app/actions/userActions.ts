@@ -2,8 +2,8 @@
 
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
-import { SafeUser } from "../../utils/types";
-import { EditProfileFormInputs } from "../../utils/validation/EditProfileForm.schema";
+import { SafeUser } from "../../../utils/types";
+import { EditProfileFormInputs } from "../../../utils/validation/EditProfileForm.schema";
 import bcrypt from "bcrypt";
 
 export const getCurrentUser = async (): Promise<SafeUser | null> => {

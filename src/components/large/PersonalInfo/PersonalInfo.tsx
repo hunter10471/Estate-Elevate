@@ -13,7 +13,7 @@ import {
 import { SafeUser } from "../../../../utils/types";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import UploadWidget from "@/components/small/UploadWidget/UploadWidget";
-import { updateCurrentUser } from "@/actions/userActions";
+import { updateCurrentUser } from "@/app/actions/userActions";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";

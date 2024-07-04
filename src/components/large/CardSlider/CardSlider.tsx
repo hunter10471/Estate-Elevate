@@ -55,12 +55,12 @@ const CardSlider = () => {
 						style={{ transform: `translateX(-${current * 310}px)` }}
 						className={`flex gap-10 transition-all ease-in-out`}
 					>
+						{/* <Card />
 						<Card />
 						<Card />
 						<Card />
 						<Card />
-						<Card />
-						<Card />
+						<Card /> */}
 					</div>
 				</div>
 			</div>

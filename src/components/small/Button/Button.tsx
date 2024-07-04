@@ -11,6 +11,7 @@ interface ButtonProps {
 	type?: "submit" | "button";
 	id?: string;
 	disabled?: boolean;
+	danger?: boolean;
 }
 
 const Button = ({
@@ -24,6 +25,7 @@ const Button = ({
 	type,
 	id,
 	disabled,
+	danger,
 }: ButtonProps) => {
 	return (
 		<button
@@ -33,15 +35,16 @@ const Button = ({
 			disabled={disabled}
 			className={`flex items-center justify-center gap-1 px-6 py-2 text-xs sm:text-sm border-2  rounded-lg transition-all font-heading font-normal ${
 				mobileFull ? "w-full sm:w-auto" : ""
-			} ${!primary && !outline ? "hover:text-text/80 font-semibold" : ""} ${
-				primary ? "bg-primary hover:bg-primaryDark text-white" : ""
 			} ${
+				!primary && !outline && !danger
+					? "hover:text-text/80 font-semibold"
+					: ""
+			} ${primary ? "bg-primary hover:bg-primaryDark text-white" : ""} ${
 				outline
 					? "text-primary border-primaryLight hover:text-primaryDark hover:border-primary"
 					: "border-transparent"
-			} ${
-				full ? "w-full" : ""
-			} disabled:bg-primaryDark disabled:cursor-not-allowed `}
+			} ${danger ? "text-white bg-rose-500 hover:bg-rose-700" : ""}
+			 ${full ? "w-full" : ""} disabled:bg-primaryDark disabled:cursor-not-allowed `}
 		>
 			{Icon && <Icon size={20} />} {text}
 		</button>

@@ -1,4 +1,4 @@
-import { PropertyType, User } from "@prisma/client";
+import { Property, PropertyType, User } from "@prisma/client";
 import { IconType } from "react-icons";
 
 export interface PropertyTypeQuery {
@@ -45,3 +45,7 @@ export type FacilityKey =
 	| "school";
 
 export type SafeUser = Omit<User, "password" | "createdAt" | "updatedAt">;
+
+export type PropertyWithListedBy = Property & {
+	listedBy: { username: string; avatar: string | null };
+};

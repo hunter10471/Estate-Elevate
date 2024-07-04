@@ -10,48 +10,60 @@ import { MdVerified } from "react-icons/md";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { FaCircle } from "react-icons/fa";
 import Link from "next/link";
+import { ListingStatus } from "@prisma/client";
 
 interface CardProps {
 	price: number;
-	name: string;
-	address: string;
+	title: string;
 	area: number;
-	bedroom: number;
-	bathroom: number;
-	img: string;
-	type: string;
+	bedrooms: number;
+	bathrooms: number;
+	images: string[];
+	type: ListingStatus;
+	listedByName: string;
+	listedByAvatar: string | null;
+	id: string;
+	country: string;
+	state: string;
+	city: string;
 }
 
 const Card = ({
 	price,
-	name,
-	address,
+	title,
 	area,
-	bedroom,
-	bathroom,
-	img,
+	bedrooms,
+	bathrooms,
+	images,
 	type,
-}: any) => {
+	listedByName,
+	listedByAvatar,
+	id,
+	country,
+	state,
+	city,
+}: CardProps) => {
 	return (
 		<Link
-			href={"/properties/id"}
-			className="cursor-pointer transition-all hover:scale-95"
+			href={`/properties/${id}`}
+			className="cursor-pointer transition-all hover:scale-95 w-[150px] md:w-[250px]"
 		>
-			<div className="w-[150px] md:w-[250px] h-[150px] md:h-[200px] relative">
+			<div className="w-full h-[150px] md:h-[200px] relative">
 				<div className="bg-white bg-opacity-40 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
-					<MdOutlineCameraAlt size={17} /> 20
+					<MdOutlineCameraAlt size={17} /> {images && images.length}
 				</div>
 				<div className="bg-white hidden md:flex items-center gap-2 absolute z-10 bottom-2 w-[90%] mx-[5%] px-2 py-1 rounded-xl">
-					<Image
-						className="rounded-full"
-						src={"/no-avatar.jpg"}
-						alt="avatar"
-						width={32}
-						height={32}
-					/>
+					<div className="relative w-10 h-10">
+						<Image
+							className="rounded-full object-cover"
+							src={listedByAvatar || "/no-avatar.jpg"}
+							alt="avatar"
+							fill
+						/>
+					</div>
 					<div className="text-[10px] md:text-xs">
 						<span className="flex gap-1 font-bold mb-[2px]">
-							John Doe <MdVerified size={15} className="text-sky-500" />
+							{listedByName} <MdVerified size={15} className="text-sky-500" />
 						</span>
 						<span className="text-gray-400 flex items-center font-medium">
 							<CiPhone className="text-gray-500" size={15} /> (305) 781-5855
@@ -60,21 +72,24 @@ const Card = ({
 				</div>
 				<Image
 					className="rounded-xl object-cover"
-					src={"/seaside-villa.jpg"}
+					src={(images && images[0]) || ""}
 					alt="property"
 					fill
 				/>
 			</div>
 			<div className="p-2 font-medium w-full">
 				<div className="flex justify-between w-full">
-					<span className="text-emerald-400 gap-1 flex items-center text-xs">
-						<FaCircle size={8} />
-						For sale
-					</span>
-					{/* <span className="text-orange-400 gap-1 flex items-center text-xs">
-						<FaCircle size={8} />
-						For rent
-					</span> */}
+					{type === ListingStatus.SALE ? (
+						<span className="text-emerald-400 gap-1 flex items-center text-xs">
+							<FaCircle size={8} />
+							For sale
+						</span>
+					) : (
+						<span className="text-orange-400 gap-1 flex items-center text-xs">
+							<FaCircle size={8} />
+							For rent
+						</span>
+					)}
 					<div className="flex items-center gap-2">
 						<IoHeartOutline
 							className="cursor-pointer p-1 rounded-full hover:bg-gray-300"
@@ -87,22 +102,24 @@ const Card = ({
 					</div>
 				</div>
 				<div className="flex flex-col gap-2">
-					<span className=" md:text-lg font-bold">$95,000</span>
-					<span className="text-sm md:text-base">Seaside Villa</span>
+					<span className=" md:text-lg font-bold">
+						${price.toLocaleString("en-US")}
+					</span>
+					<span className="text-sm md:text-base font-medium">{title}</span>
 				</div>
-				<span className="flex text-xs items-center gap-1 my-3">
-					<GrLocation size={12} /> 15-H, Askari-V, KHI
+				<span className="flex text-xs items-center gap-1 my-3 font-normal">
+					<GrLocation size={12} /> {city}, {state}, {country}
 				</span>
 				<div className="hidden md:flex justify-between items-center gap-2">
 					<span className="flex items-center gap-1 text-[10px] md:text-xs">
-						<LiaVectorSquareSolid className="text-primary" size={18} /> 1400
+						<LiaVectorSquareSolid className="text-primary" size={18} /> {area}
 						sqft
 					</span>
 					<span className="flex items-center gap-1 text-[10px] md:text-xs">
-						<MdOutlineBed className="text-primary" size={18} /> 3 Bd
+						<MdOutlineBed className="text-primary" size={18} /> {bedrooms} Bd
 					</span>
 					<span className="flex items-center gap-1 text-[10px] md:text-xs">
-						<PiBathtub className="text-primary" size={18} /> 2 Bth
+						<PiBathtub className="text-primary" size={18} /> {bathrooms} Bth
 					</span>
 				</div>
 			</div>
