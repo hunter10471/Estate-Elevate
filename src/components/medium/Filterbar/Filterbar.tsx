@@ -14,14 +14,19 @@ const Filterbar = () => {
 	const isMap = useStore((state) => state.isMap);
 	const toggleIsMap = useStore((state) => state.toggleMap);
 	const toggleGrid = useStore((state) => state.toggleGrid);
+	const toggleLoading = useStore((state) => state.toggleLoadingTrue);
+	const onUpdateQuery = (key: string, value: string) => {
+		toggleLoading();
+		updateQuery(key, value);
+	};
 	return (
 		<div className="flex flex-col gap-10">
 			<div className="flex justify-between items-center lg:flex-row flex-col gap-4 text-sm font-semibold flex-1">
 				<div className="flex items-center gap-5 ">
 					<button
-						onClick={() => updateQuery("status", "rent")}
+						onClick={() => onUpdateQuery("status", "RENT")}
 						className={`${
-							currentQuery === "rent"
+							currentQuery === "RENT"
 								? "text-text border-b-primary"
 								: "text-gray-400 border-transparent"
 						} border-b-2 pb-1 transition-all ease-in`}
@@ -29,9 +34,9 @@ const Filterbar = () => {
 						Rent
 					</button>
 					<button
-						onClick={() => updateQuery("status", "buy")}
+						onClick={() => onUpdateQuery("status", "SALE")}
 						className={`${
-							currentQuery === "buy"
+							currentQuery === "SALE"
 								? "text-text border-b-primary"
 								: "text-gray-400 border-transparent"
 						} border-b-2 pb-1 transition-all ease-in`}

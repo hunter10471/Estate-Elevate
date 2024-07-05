@@ -55,10 +55,10 @@ const SearchBar = ({}: SearchBarProps) => {
 							name="propertyType"
 							id="propertyType"
 						>
-							<option value="house">House</option>
-							<option value="villa">Villa</option>
-							<option value="apartment">Apartment</option>
-							<option value="guestHouse">Guest House</option>
+							<option value="HOUSE">House</option>
+							<option value="VILLA">Villa</option>
+							<option value="APARTMENT">Apartment</option>
+							<option value="GUEST_HOUSE">Guest House</option>
 						</select>
 					</div>
 				</div>

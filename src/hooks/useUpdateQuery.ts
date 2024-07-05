@@ -9,7 +9,7 @@ const useUpdateQuery = () => {
 		(key: string, value: string) => {
 			const params = new URLSearchParams(searchParams.toString());
 			params.set(key, value);
-			router.push(`${pathname}?${params.toString()}`);
+			router.replace(`${pathname}?${params.toString()}`);
 		},
 		[pathname, searchParams, router]
 	);

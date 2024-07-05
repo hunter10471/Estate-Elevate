@@ -1,12 +1,16 @@
 "use client";
 import Card from "@/components/medium/Card/Card";
-import Button from "@/components/small/Button/Button";
 import React, { useState } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { PropertyWithListedBy } from "../../../../utils/types";
 
-const CardSlider = () => {
+interface CardSliderProps {
+	properties: PropertyWithListedBy[];
+}
+
+const CardSlider = ({ properties }: CardSliderProps) => {
 	const [current, setCurrent] = useState(0);
-	const size = 6;
+	const size = properties.length - 1;
 	const next = () => {
 		if (current + 1 > size - 1) {
 			setCurrent(0);
@@ -55,12 +59,15 @@ const CardSlider = () => {
 						style={{ transform: `translateX(-${current * 310}px)` }}
 						className={`flex gap-10 transition-all ease-in-out`}
 					>
-						{/* <Card />
-						<Card />
-						<Card />
-						<Card />
-						<Card />
-						<Card /> */}
+						{properties.map((property) => (
+							<Card
+								key={property.id}
+								{...property}
+								listingStatus={property.status}
+								listedByName={property.listedBy.username}
+								listedByAvatar={property.listedBy.avatar}
+							/>
+						))}
 					</div>
 				</div>
 			</div>

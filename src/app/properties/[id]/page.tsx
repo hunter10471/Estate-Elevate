@@ -17,6 +17,8 @@ import DeletePropertyButton from "@/components/small/Button/DeletePropertyButton
 import { getCurrentUser } from "@/app/actions/userActions";
 import DeletePropertyModal from "@/components/medium/DeletePropertyModal/DeletePropertyModal";
 import { LatLngExpression } from "leaflet";
+import { ListingStatus } from "@prisma/client";
+import { FaCircle } from "react-icons/fa";
 
 interface PageProps {
 	params: { id: string };
@@ -31,9 +33,10 @@ const page = async ({ params: { id } }: PageProps) => {
 			<ImageSlider images={property.images} />
 			<div className="flex gap-5 justify-between my-5 lg:flex-row flex-col">
 				<div className="w-full md:w-[70%]">
-					<div className="flex items-center justify-between w-full">
+					<div className="flex items-start justify-between w-full mb-2 gap-2">
 						<Heading weight="medium" text={property.title} />
-						<div className="flex gap-3">
+
+						<div className="flex gap-2">
 							<LikeButton isLiked />
 							<button className="p-1 rounded-full border-2 border-gray-300 transition-all ease-out hover:scale-110 active:scale-95">
 								<IoShareSocialOutline size={20} />
@@ -45,6 +48,17 @@ const page = async ({ params: { id } }: PageProps) => {
 							)}
 						</div>
 					</div>
+					{property.status === ListingStatus.SALE ? (
+						<span className="text-emerald-400 gap-1 flex items-center font-semibold">
+							<FaCircle size={8} />
+							For sale
+						</span>
+					) : (
+						<span className="text-orange-400 gap-1 flex items-center font-semibold">
+							<FaCircle size={8} />
+							For rent
+						</span>
+					)}
 					<PropertyDescription description={property.description} />
 					<Facilities
 						area={property.area}
@@ -54,10 +68,14 @@ const page = async ({ params: { id } }: PageProps) => {
 					/>
 					<div className="h-[400px] w-full flex flex-col gap-5">
 						<Heading mediumSize text="Location" weight="medium" />
-						<Map position={property.latlng as LatLngExpression} fullWidth />
+						<Map
+							zoom={5}
+							position={property.latlng as LatLngExpression}
+							fullWidth
+						/>
 						<span className="text-xs flex gap-2 items-center font-medium -mt-4">
 							<FaLocationDot className="text-primary" size={10} />
-							Askari 5, Malir Cantt, Karachi
+							{property.city}, {property.state}, {property.country}
 						</span>
 					</div>
 				</div>

@@ -45,7 +45,6 @@ const UploadWidget = ({
 				(error: any, result: any) => {
 					if (!error && result && result.event === "success") {
 						console.log(result.info);
-						console.log("Done! Here is the image info: ", result.info);
 						setState(result.info.secure_url);
 					}
 				}

@@ -19,7 +19,7 @@ interface CardProps {
 	bedrooms: number;
 	bathrooms: number;
 	images: string[];
-	type: ListingStatus;
+	listingStatus: ListingStatus;
 	listedByName: string;
 	listedByAvatar: string | null;
 	id: string;
@@ -35,7 +35,7 @@ const Card = ({
 	bedrooms,
 	bathrooms,
 	images,
-	type,
+	listingStatus,
 	listedByName,
 	listedByAvatar,
 	id,
@@ -46,7 +46,7 @@ const Card = ({
 	return (
 		<Link
 			href={`/properties/${id}`}
-			className="cursor-pointer transition-all hover:scale-95 w-[150px] md:w-[250px]"
+			className="cursor-pointer transition-all hover:scale-95 w-[150px] md:w-[250px] flex-shrink-0"
 		>
 			<div className="w-full h-[150px] md:h-[200px] relative">
 				<div className="bg-white bg-opacity-40 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
@@ -79,7 +79,7 @@ const Card = ({
 			</div>
 			<div className="p-2 font-medium w-full">
 				<div className="flex justify-between w-full">
-					{type === ListingStatus.SALE ? (
+					{listingStatus === ListingStatus.SALE ? (
 						<span className="text-emerald-400 gap-1 flex items-center text-xs">
 							<FaCircle size={8} />
 							For sale
@@ -105,7 +105,9 @@ const Card = ({
 					<span className=" md:text-lg font-bold">
 						${price.toLocaleString("en-US")}
 					</span>
-					<span className="text-sm md:text-base font-medium">{title}</span>
+					<span className="text-sm md:text-base font-medium line-clamp-2">
+						{title}
+					</span>
 				</div>
 				<span className="flex text-xs items-center gap-1 my-3 font-normal">
 					<GrLocation size={12} /> {city}, {state}, {country}

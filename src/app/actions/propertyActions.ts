@@ -4,9 +4,14 @@ import { PropertyWithListedBy } from "../../../utils/types";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { ListingStatus, PropertyType } from "@prisma/client";
 
-export const getAllProperties = async (): Promise<PropertyWithListedBy[]> => {
+export const getProperties = async (
+	status?: ListingStatus | null,
+	type?: PropertyType | null
+): Promise<PropertyWithListedBy[]> => {
 	try {
+		status = status;
 		const properties = await prisma.property.findMany({
 			orderBy: { createdAt: "desc" },
 			include: {
@@ -16,6 +21,10 @@ export const getAllProperties = async (): Promise<PropertyWithListedBy[]> => {
 						avatar: true,
 					},
 				},
+			},
+			where: {
+				status: status ? status : undefined,
+				type: type ? type : undefined,
 			},
 		});
 		return properties;

@@ -5,7 +5,6 @@ export interface PropertyTypeQuery {
 	icon: IconType;
 	type: PropertyType;
 	name: string;
-	query: string;
 }
 
 export interface NavLink {
@@ -28,6 +27,12 @@ export interface UpcomingProject {
 export interface SortByOption {
 	name: string;
 	value: string;
+}
+
+export interface CreateListingResponse {
+	message?: string;
+	property?: Property;
+	error?: any;
 }
 
 export type FacilityKey =

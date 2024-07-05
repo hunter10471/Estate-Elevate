@@ -20,6 +20,7 @@ import {
 	MdOutlineBed,
 	MdOutlineShower,
 	MdOutlineCalendarToday,
+	MdClose,
 } from "react-icons/md";
 import { IoIosExpand } from "react-icons/io";
 import { BiDollar } from "react-icons/bi";
@@ -35,6 +36,8 @@ import { Slide, ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { revalidatePath } from "next/cache";
+import { CreateListingResponse } from "../../../../utils/types";
+import Image from "next/image";
 
 interface ListPropertyModal {
 	children: React.ReactNode;
@@ -56,6 +59,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 	const [show, setShow] = useState(false);
 	const [step, setStep] = useState(STEPS.TYPE);
 	const [loading, setLoading] = useState(false);
+	const [thumbnail, setThumbnail] = useState(0);
 	const router = useRouter();
 	const initialValues = {
 		title: "",
@@ -165,21 +169,32 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 		}
 	};
 
+	const selectThumbnail = (images: string[]) => {
+		if (thumbnail !== 0) {
+			const image = images[thumbnail];
+			images.splice(thumbnail, 1);
+			images.unshift(image);
+		}
+		return images;
+	};
+
 	const onSubmit = async (values: ListPropertyFormSchemaInputs) => {
 		try {
 			setLoading(true);
+			values.images = selectThumbnail(values.images);
 			values.listedById = userId;
 			const response = await fetch(`/api/property`, {
 				method: "POST",
 				body: JSON.stringify(values),
 			});
-			const responseBody = await response.json();
+			const responseBody: CreateListingResponse = await response.json();
+			console.log(responseBody);
 			if (responseBody.error) {
 				throw responseBody.error;
 			}
 			toast.success("Listing has been created successfully.", {
 				position: "bottom-right",
-				autoClose: 5000,
+				autoClose: 3000,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -188,14 +203,15 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 				theme: "colored",
 				transition: Slide,
 				onClose() {
-					revalidatePath("/properties");
+					router.refresh();
+					router.push(`/properties/${responseBody.property?.id}`);
 				},
 			});
 		} catch (error: any) {
 			console.log(error);
 			toast.error(error, {
 				position: "bottom-right",
-				autoClose: 5000,
+				autoClose: 3000,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -225,7 +241,6 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 				const imagesArr = formikState.values.images;
 				if (imagesArr.length > 0) {
 					formikState.setFieldValue("images", [...imagesArr, image]);
-					console.log(imagesArr);
 				} else {
 					formikState.setFieldValue("images", [image]);
 				}
@@ -329,7 +344,11 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 							</div>
 						</div>
 						<div className="h-[200px]">
-							<Map position={coordinates as LatLngExpression} fullWidth />
+							<Map
+								zoom={8}
+								position={coordinates as LatLngExpression}
+								fullWidth
+							/>
 						</div>
 					</div>
 				);
@@ -371,19 +390,61 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 			case STEPS.MORE_INFO:
 				return <Facilities formik={formikState} listing />;
 			case STEPS.IMAGES:
+				const images = formikState.values.images;
+				const removeImage = (removeIndex: number) => {
+					const filteredImages = images.filter(
+						(image, index) => index !== removeIndex
+					);
+					formikState.setFieldValue("images", filteredImages);
+				};
 				return (
-					<div className="flex items-center justify-center border-2 border-dashed border-gray-300 mt-8 h-[300px] flex-col text-gray-500">
-						<RiImageAddLine size={40} />
-						<UploadWidget
-							uwConfig={{
-								cloudName: "dz79wze9e",
-								uploadPreset: "Estate Elevate",
-								multiple: true,
-								maxImageFileSize: 800000,
-								folder: "properties",
-							}}
-							setState={setImage}
-						/>
+					<div>
+						<div className="flex items-center justify-center border-2 border-dashed border-gray-300 mt-8 h-[200px] flex-col text-gray-500 mb-4">
+							<RiImageAddLine size={40} />
+							<UploadWidget
+								uwConfig={{
+									cloudName: "dz79wze9e",
+									uploadPreset: "Estate Elevate",
+									multiple: true,
+									maxImageFileSize: 2000000,
+									folder: "properties",
+								}}
+								setState={setImage}
+							/>
+						</div>
+						{images && images.length > 0 && (
+							<span className="text-xs font-semibold text-primaryDark">
+								Select an image from images below to be your listing&apos;s
+								thumbnail image:
+							</span>
+						)}
+						<div className="flex gap-2 mt-5">
+							{images.map((image, index) => (
+								<div
+									key={image}
+									className={`border-2 rounded-xl ${
+										index === thumbnail
+											? "border-primary"
+											: "border-transparent"
+									} relative h-[80px] w-[80px] hover:border-primaryLight `}
+								>
+									<Image
+										onClick={() => setThumbnail(index)}
+										src={image}
+										alt="Property"
+										fill
+										className="rounded-lg object-cover cursor-pointer"
+									/>
+									<button
+										onClick={() => removeImage(index)}
+										type="button"
+										className="p-1 rounded-full bg-white hover:scale-105 active:scale-95 transition-all absolute -right-2 -top-2 border-2"
+									>
+										<MdClose size={15} />
+									</button>
+								</div>
+							))}
+						</div>
 					</div>
 				);
 			case STEPS.DESCRIPTION:

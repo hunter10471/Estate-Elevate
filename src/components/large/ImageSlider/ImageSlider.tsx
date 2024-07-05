@@ -9,7 +9,7 @@ interface ImageSliderProps {
 }
 
 const ImageSlider = ({ images }: ImageSliderProps) => {
-	const arrSliceLength = images.length > 3 ? 3 : images.length - 1;
+	const arrSliceLength = images.length > 3 ? 3 : images.length;
 	const [index, setIndex] = useState(0);
 	const [show, setShow] = useState(false);
 	const onNext = () => {
@@ -67,6 +67,7 @@ const ImageSlider = ({ images }: ImageSliderProps) => {
 			<div className="w-full sm:w-[35%] flex flex-wrap justify-between items-center">
 				{images.slice(0, arrSliceLength).map((image, index) => (
 					<div
+						key={image}
 						onClick={() => setIndex(index)}
 						className="w-[23%] sm:w-[48%] lg:h-[170px] sm:h-[120px] h-[80px] relative cursor-pointer"
 					>
