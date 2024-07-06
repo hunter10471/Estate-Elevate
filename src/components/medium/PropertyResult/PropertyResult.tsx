@@ -85,8 +85,8 @@ const PropertyResult = ({ allProperties }: PropertyResultProps) => {
 								price={item.price}
 								listingStatus={item.status}
 								key={item.id}
-								listedByName={item.listedBy.username}
-								listedByAvatar={item.listedBy.avatar}
+								listedByName={item.listedBy.name}
+								listedByAvatar={item.listedBy.image}
 								id={item.id}
 								country={item.country}
 								state={item.state}

@@ -52,5 +52,5 @@ export type FacilityKey =
 export type SafeUser = Omit<User, "password" | "createdAt" | "updatedAt">;
 
 export type PropertyWithListedBy = Property & {
-	listedBy: { username: string; avatar: string | null };
+	listedBy: { name: string; image: string | null };
 };

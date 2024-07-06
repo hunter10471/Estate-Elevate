@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 		const { confirmPassword, ...others } = parsedBody;
 		const newUser = await prisma.user.create({
 			data: others,
-			select: { id: true, username: true, email: true, createdAt: true },
+			select: { id: true, name: true, email: true, createdAt: true },
 		});
 		return NextResponse.json(
 			{ message: "Sign up successful, please login.", user: newUser },

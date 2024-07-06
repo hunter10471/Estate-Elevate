@@ -5,11 +5,12 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { PropertyWithListedBy } from "../../../../utils/types";
 
 interface CardSliderProps {
-	properties: PropertyWithListedBy[];
+	data: PropertyWithListedBy[];
 }
 
-const CardSlider = ({ properties }: CardSliderProps) => {
+const CardSlider = ({ data }: CardSliderProps) => {
 	const [current, setCurrent] = useState(0);
+	const [properties, setProperties] = useState(data || []);
 	const size = properties.length - 1;
 	const next = () => {
 		if (current + 1 > size - 1) {
@@ -64,8 +65,8 @@ const CardSlider = ({ properties }: CardSliderProps) => {
 								key={property.id}
 								{...property}
 								listingStatus={property.status}
-								listedByName={property.listedBy.username}
-								listedByAvatar={property.listedBy.avatar}
+								listedByName={property.listedBy.name}
+								listedByAvatar={property.listedBy.image}
 							/>
 						))}
 					</div>

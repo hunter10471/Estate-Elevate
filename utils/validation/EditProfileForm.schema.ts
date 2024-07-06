@@ -2,7 +2,7 @@ import { TypeOf, object, string } from "zod";
 import { passwordValidation } from "./PasswordValidation";
 
 export const editProfileFormSchema = object({
-	username: string()
+	name: string()
 		.min(5, { message: "Full name must be at least 5 characters long" })
 		.max(20, { message: "Full name cannot be longer than 20 characters" })
 		.optional(),
@@ -26,7 +26,7 @@ export const editProfileFormSchema = object({
 		.optional()
 		.nullable(),
 	city: string().min(1, { message: "City is required" }).optional().nullable(),
-	avatar: string().url().optional().nullable(),
+	image: string().url().optional().nullable(),
 	bio: string()
 		.max(160, { message: "Bio must be less than 160 characters" })
 		.optional()

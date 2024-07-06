@@ -116,7 +116,11 @@ const LoginForm = () => {
 							</span>
 							<Button disabled={loading} type="submit" text="Sign in" primary />
 							<span className="text-center -mt-1 -mb-2">or</span>
-							<button className="flex justify-center items-center gap-4 border-gray-300 rounded-lg py-2 px-4 text-sm font-medium hover:bg-gray-300 transition-all">
+							<button
+								onClick={() => signIn("google")}
+								type="button"
+								className="flex justify-center items-center gap-4 border-gray-300 rounded-lg py-2 px-4 text-sm font-medium hover:bg-gray-300 transition-all"
+							>
 								<Image
 									src={"/google.png"}
 									width={24}

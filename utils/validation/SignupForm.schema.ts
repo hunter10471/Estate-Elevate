@@ -2,7 +2,7 @@ import { TypeOf, object, string } from "zod";
 import { passwordValidation } from "./PasswordValidation";
 
 export const signupFormSchema = object({
-	username: string({ required_error: "Please enter your full name" })
+	name: string({ required_error: "Please enter your full name" })
 		.min(5, { message: "Full name must be at least 5 characters long" })
 		.max(20, { message: "Full name cannot be longer than 20 characters" }),
 	email: string({ required_error: "Please enter an email" }).email({

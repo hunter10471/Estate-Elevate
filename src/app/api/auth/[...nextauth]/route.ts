@@ -1,13 +1,24 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { loginFormSchema } from "../../../../../utils/validation/LoginForm.schema";
 import prisma from "@/lib/prisma";
 import { ZodError } from "zod";
 import bcrypt from "bcrypt";
 
+declare module "next-auth" {
+	interface Profile {
+		picture?: string;
+	}
+}
+
 const handler = NextAuth({
 	session: { strategy: "jwt" },
 	providers: [
+		GoogleProvider({
+			clientId: process.env.GOOGLE_CLIENT_ID as string,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+		}),
 		CredentialsProvider({
 			credentials: {
 				email: { label: "email", type: "email" },
@@ -22,18 +33,20 @@ const handler = NextAuth({
 					if (!existingUser) {
 						throw new Error("Invalid credentials");
 					}
-					const passwordCorrect = await bcrypt.compare(
-						parsedCredentials.password,
-						existingUser.password
-					);
-					if (!passwordCorrect) {
-						throw new Error("Invalid credentials");
-					}
-					return {
-						id: existingUser.id,
-						email: existingUser.email,
-						userType: existingUser.userType,
-					};
+					if (existingUser.password) {
+						const passwordCorrect = await bcrypt.compare(
+							parsedCredentials.password,
+							existingUser.password
+						);
+						if (!passwordCorrect) {
+							throw new Error("Invalid credentials");
+						}
+						return {
+							id: existingUser.id,
+							email: existingUser.email,
+							userType: existingUser.userType,
+						};
+					} else return null;
 				} catch (error: any) {
 					if (error instanceof ZodError) {
 						console.error(
@@ -55,6 +68,26 @@ const handler = NextAuth({
 			token.id = user.id;
 			token.userType = user.userType;
 			return token;
+		},
+		async signIn({ account, profile }) {
+			console.log(profile);
+			if (!profile?.email) {
+				throw new Error("No profile");
+			}
+			if (profile && profile.name)
+				await prisma.user.upsert({
+					where: { email: profile?.email },
+					create: {
+						email: profile.email,
+						name: profile.name,
+						image: profile.picture,
+					},
+					update: {
+						name: profile.name,
+						image: profile.picture,
+					},
+				});
+			return true;
 		},
 	},
 });

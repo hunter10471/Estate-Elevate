@@ -12,6 +12,7 @@ import {
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { signIn } from "next-auth/react";
 
 const SignupForm = () => {
 	const [loading, setLoading] = useState(false);
@@ -56,7 +57,7 @@ const SignupForm = () => {
 	return (
 		<Formik<SignupFormInputs>
 			initialValues={{
-				username: "",
+				name: "",
 				email: "",
 				password: "",
 				confirmPassword: "",
@@ -84,8 +85,8 @@ const SignupForm = () => {
 								placeholder="Enter your full name"
 								label="Full Name"
 								type="text"
-								name="username"
-								error={errors["username"]}
+								name="name"
+								error={errors["name"]}
 							/>
 							<Input
 								placeholder="someone@email.com"
@@ -119,7 +120,11 @@ const SignupForm = () => {
 							</span>
 							<Button disabled={loading} type="submit" text="Sign up" primary />
 							<span className="text-sm text-center -mt-2 -mb-3">or</span>
-							<button className="flex justify-center items-center gap-4 border-gray-300 rounded-lg py-2 px-4 text-sm font-medium hover:bg-gray-300 transition-all">
+							<button
+								type="button"
+								onClick={() => signIn("google")}
+								className="flex justify-center items-center gap-4 border-gray-300 rounded-lg py-2 px-4 text-sm font-medium hover:bg-gray-300 transition-all"
+							>
 								<Image
 									src={"/google.png"}
 									width={24}

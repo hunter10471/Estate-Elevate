@@ -91,14 +91,14 @@ const page = async ({ params: { id } }: PageProps) => {
 						<div className="my-3 flex items-center gap-3">
 							<div className="relative w-16 h-16">
 								<Image
-									src={property.listedBy.avatar || "/no-avatar.jpg"}
+									src={property.listedBy.image || "/no-avatar.jpg"}
 									alt="avatar"
 									fill
 									className="object-cover rounded-full "
 								/>
 							</div>
 							<div className="flex flex-col">
-								<h1 className="font-semibold">{property.listedBy.username}</h1>
+								<h1 className="font-semibold">{property.listedBy.name}</h1>
 								<span className="text-gray-500 text-xs">Property Owner</span>
 							</div>
 						</div>

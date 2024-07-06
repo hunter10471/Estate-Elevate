@@ -38,19 +38,19 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 					<div className="h-[42px] w-[42px] relative">
 						<Image
 							className="object-cover rounded-full"
-							src={user?.avatar || "/no-avatar.jpg"}
+							src={user?.image || "/no-avatar.jpg"}
 							alt="avatar"
 							fill
 						/>
 					</div>
 					{mobile ? (
 						<div className="flex flex-col ">
-							<span className="font-semibold text-sm">{user?.username}</span>
+							<span className="font-semibold text-sm">{user?.name}</span>
 							<span className="text-xs">{user?.email}</span>
 						</div>
 					) : (
 						<div className="hidden lg:flex flex-col ">
-							<span className="font-semibold text-sm">{user?.username}</span>
+							<span className="font-semibold text-sm">{user?.name}</span>
 							<span className="text-xs text-text/80">{user?.email}</span>
 						</div>
 					)}

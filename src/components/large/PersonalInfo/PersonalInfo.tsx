@@ -27,12 +27,12 @@ interface PersonalInfoProps {
 
 const PersonalInfo = ({ user }: PersonalInfoProps) => {
 	const sidebarState = useStore((state) => state);
-	const [avatar, setAvatar] = useState(user?.avatar);
+	const [avatar, setAvatar] = useState(user?.image);
 	const router = useRouter();
 	const handleSubmit = async (values: EditProfileFormInputs) => {
 		try {
 			if (avatar) {
-				values.avatar = avatar;
+				values.image = avatar;
 			}
 			const response = await updateCurrentUser(values);
 			if (response) {
@@ -117,12 +117,12 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 									<Heading text="Personal Info" mediumSize weight="semibold" />
 									<div className="flex justify-between gap-6 my-5 lg:flex-row flex-col">
 										<Input
-											label="Username"
-											placeholder="username"
+											label="Full Name"
+											placeholder="Enter your full name"
 											type="text"
-											defaultValue={user?.username}
-											name="username"
-											error={errors["username"]}
+											defaultValue={user?.name}
+											name="name"
+											error={errors["name"]}
 										/>
 										<Input
 											label="Email"
@@ -145,15 +145,7 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 								<div className="my-10">
 									<Heading text="Location" mediumSize weight="semibold" />
 									<div className="flex justify-between gap-6 my-5 lg:flex-row flex-col">
-										{/* <Input
-											label="Country"
-											placeholder="Enter your country"
-											type="text"
-											defaultValue={user?.country || ""}
-											name="country"
-											error={errors["country"]}
-										/> */}
-										<CountrySelect formik={formikState} />
+										<CountrySelect label formik={formikState} />
 										<Input
 											label="State"
 											placeholder="Enter your state"
