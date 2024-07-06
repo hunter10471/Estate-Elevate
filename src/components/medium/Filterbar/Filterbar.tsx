@@ -1,32 +1,47 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropertyTypes from "../PropertyTypes/PropertyTypes";
 import { IoSearch } from "react-icons/io5";
 import { FaRegMap } from "react-icons/fa6";
 import { FiGrid } from "react-icons/fi";
 import useStore from "@/store/store";
-import Filter from "@/components/small/Filter/Filter";
-import useUpdateQuery from "@/hooks/useUpdateQuery";
+import { useQueryState } from "nuqs";
 
 const Filterbar = () => {
-	const { getQueryParam, updateQuery } = useUpdateQuery();
-	const currentQuery = getQueryParam("status");
+	const [status, setStatus] = useQueryState("status");
+	const [query, setQuery] = useQueryState("query");
+	const [value, setValue] = useState<string | undefined>();
 	const isMap = useStore((state) => state.isMap);
 	const toggleIsMap = useStore((state) => state.toggleMap);
 	const toggleGrid = useStore((state) => state.toggleGrid);
 	const toggleLoading = useStore((state) => state.toggleLoadingTrue);
-	const onUpdateQuery = (key: string, value: string) => {
+
+	const onUpdateQuery = (update: string) => {
+		if (update === status) {
+			setStatus(null);
+		} else {
+			setStatus(update);
+		}
 		toggleLoading();
-		updateQuery(key, value);
 	};
+
+	useEffect(() => {
+		if (value !== undefined) {
+			const timer = setTimeout(() => {
+				setQuery(value);
+			}, 2000);
+			return () => clearTimeout(timer);
+		}
+	}, [value]);
+
 	return (
 		<div className="flex flex-col gap-10">
 			<div className="flex justify-between items-center lg:flex-row flex-col gap-4 text-sm font-semibold flex-1">
 				<div className="flex items-center gap-5 ">
 					<button
-						onClick={() => onUpdateQuery("status", "RENT")}
+						onClick={() => onUpdateQuery("RENT")}
 						className={`${
-							currentQuery === "RENT"
+							status === "RENT"
 								? "text-text border-b-primary"
 								: "text-gray-400 border-transparent"
 						} border-b-2 pb-1 transition-all ease-in`}
@@ -34,9 +49,9 @@ const Filterbar = () => {
 						Rent
 					</button>
 					<button
-						onClick={() => onUpdateQuery("status", "SALE")}
+						onClick={() => onUpdateQuery("SALE")}
 						className={`${
-							currentQuery === "SALE"
+							status === "SALE"
 								? "text-text border-b-primary"
 								: "text-gray-400 border-transparent"
 						} border-b-2 pb-1 transition-all ease-in`}
@@ -46,11 +61,11 @@ const Filterbar = () => {
 					<div className="relative ml-5">
 						<IoSearch className="absolute top-[10px]" size={18} />
 						<input
+							onChange={(e) => setValue(e.target.value)}
 							className="py-2 pl-7 focus:outline-none border-b-2 border-gray-300 min-w-[220px]"
-							type="text"
-							defaultValue="Malir cantt, Karachi"
+							type="search"
+							placeholder="Search for a location"
 						/>
-						<Filter />
 					</div>
 				</div>
 

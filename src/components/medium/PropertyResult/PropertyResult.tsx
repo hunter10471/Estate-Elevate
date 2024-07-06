@@ -5,11 +5,12 @@ import Map from "../Map/Map";
 import useStore from "@/store/store";
 import CardSkeleton from "../Card/Card.Skeleton";
 import { PropertyWithListedBy } from "../../../../utils/types";
-import { useSearchParams } from "next/navigation";
 import { getProperties } from "@/app/actions/propertyActions";
 import { ListingStatus, PropertyType } from "@prisma/client";
 import { PulseLoader } from "react-spinners";
 import Heading from "@/components/small/Heading/Heading";
+import { useQueryState } from "nuqs";
+import { useSearchParams } from "next/navigation";
 
 interface PropertyResultProps {
 	allProperties?: PropertyWithListedBy[];
@@ -18,28 +19,35 @@ interface PropertyResultProps {
 const PropertyResult = ({ allProperties }: PropertyResultProps) => {
 	const [fullWidth, setFullWidth] = useState(false);
 	const [properties, setProperties] = useState(allProperties);
-	const isMap = useStore((state) => state.isMap);
 	const searchParams = useSearchParams();
-	const propertyType = searchParams.get("propertyType") as PropertyType;
-	const status = searchParams.get("status") as ListingStatus;
+	const propertyType = searchParams.get("propertyType");
+	const status = searchParams.get("status");
+	const query = searchParams.get("query");
+	const isMap = useStore((state) => state.isMap);
 	const toggleLoadingFalse = useStore((state) => state.toggleLoadingFalse);
 	const toggleLoadingTrue = useStore((state) => state.toggleLoadingTrue);
+	const setResults = useStore((state) => state.setNumberOfResults);
 	const loading = useStore((state) => state.loading);
+	const queryProperties = async () => {
+		try {
+			toggleLoadingTrue();
+			const data = await getProperties(
+				status as ListingStatus,
+				propertyType as PropertyType,
+				query
+			);
+			setProperties(data);
+			setResults(data.length);
+		} catch (error) {
+			console.log(error);
+		}
+		toggleLoadingFalse();
+	};
+
 	useEffect(() => {
-		const queryProperties = async () => {
-			try {
-				toggleLoadingTrue();
-				if (status || propertyType) {
-					const data = await getProperties(status, propertyType);
-					setProperties(data);
-				}
-			} catch (error) {
-				console.log(error);
-			}
-			toggleLoadingFalse();
-		};
 		queryProperties();
-	}, [propertyType, status]);
+	}, [query, propertyType, status]);
+
 	return (
 		<div className={`flex ${!isMap ? "" : "lg:gap-10"} mb-10 transition-all`}>
 			<div

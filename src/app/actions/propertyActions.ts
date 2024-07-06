@@ -4,14 +4,33 @@ import { PropertyWithListedBy } from "../../../utils/types";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { ListingStatus, PropertyType } from "@prisma/client";
+import { ListingStatus, Prisma, PropertyType } from "@prisma/client";
 
 export const getProperties = async (
 	status?: ListingStatus | null,
-	type?: PropertyType | null
+	type?: PropertyType | null,
+	query?: string | null
 ): Promise<PropertyWithListedBy[]> => {
 	try {
-		status = status;
+		const where: Prisma.PropertyWhereInput = {};
+
+		if (status) {
+			where.status = status;
+		}
+
+		if (type) {
+			where.type = type;
+		}
+
+		if (query) {
+			where.OR = [
+				{ title: { contains: query, mode: "insensitive" } },
+				{ city: { contains: query, mode: "insensitive" } },
+				{ state: { contains: query, mode: "insensitive" } },
+				{ country: { contains: query, mode: "insensitive" } },
+			];
+		}
+
 		const properties = await prisma.property.findMany({
 			orderBy: { createdAt: "desc" },
 			include: {
@@ -22,15 +41,13 @@ export const getProperties = async (
 					},
 				},
 			},
-			where: {
-				status: status ? status : undefined,
-				type: type ? type : undefined,
-			},
+			where,
 		});
+
 		return properties;
 	} catch (error: any) {
-		console.log(error);
-		return error;
+		console.error("Error fetching properties:", error);
+		return [];
 	}
 };
 

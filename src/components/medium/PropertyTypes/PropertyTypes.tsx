@@ -5,8 +5,8 @@ import { BsHouse, BsBuildings } from "react-icons/bs";
 import { MdOutlineVilla } from "react-icons/md";
 import { PiBuildingApartment } from "react-icons/pi";
 import { PropertyType } from "@prisma/client";
-import useUpdateQuery from "@/hooks/useUpdateQuery";
 import useStore from "@/store/store";
+import { useQueryState } from "nuqs";
 
 export const propertyTypes: PropertyTypeQuery[] = [
 	{ name: "House", type: PropertyType.HOUSE, icon: BsHouse },
@@ -28,12 +28,15 @@ export const propertyTypes: PropertyTypeQuery[] = [
 ];
 
 const PropertyTypes = () => {
-	const { getQueryParam, updateQuery } = useUpdateQuery();
-	const currentQuery = getQueryParam("propertyType");
+	const [propertyType, setPropertyType] = useQueryState("propertyType");
 	const toggleLoading = useStore((state) => state.toggleLoadingTrue);
-	const onUpdateQuery = (key: string, value: string) => {
+	const onUpdateQuery = (value: string) => {
+		if (value === propertyType) {
+			setPropertyType(null);
+		} else {
+			setPropertyType(value);
+		}
 		toggleLoading();
-		updateQuery(key, value);
 	};
 	return (
 		<div className="flex flex-[2] items-center justify-center gap-5 flex-wrap lg:flex-nowrap">
@@ -41,12 +44,12 @@ const PropertyTypes = () => {
 				<div
 					className={`flex items-center justify-center gap-2 cursor-pointer pb-1 select-none`}
 					key={property.name}
-					onClick={() => onUpdateQuery("propertyType", property.type)}
+					onClick={() => onUpdateQuery(property.type)}
 				>
 					{
 						<property.icon
 							className={` ${
-								currentQuery === property.type
+								propertyType === property.type
 									? "text-primary"
 									: "text-gray-400"
 							}`}
@@ -55,7 +58,7 @@ const PropertyTypes = () => {
 					}{" "}
 					<span
 						className={`text-sm mt-1 transition-all ease-in font-semibold whitespace-nowrap ${
-							currentQuery === property.type ? "text-text" : "text-gray-400"
+							propertyType === property.type ? "text-text" : "text-gray-400"
 						} `}
 					>
 						{property.name}
