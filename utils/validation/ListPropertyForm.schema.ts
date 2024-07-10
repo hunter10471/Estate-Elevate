@@ -45,7 +45,9 @@ export const listPropertyFormSchema = object({
 	images: array(any()).min(1, "Images are required"),
 	facilities: array(any()).min(1, "Facilities are required"),
 	negotiable: boolean().default(false),
-	listedById: string({required_error:"ID of user listing the property is required"}).uuid("ListedBy ID must be a valid UUID"),
+	listedById: string({
+		required_error: "ID of user listing the property is required",
+	}).cuid("ListedBy ID must be a valid CUID"),
 });
 
 const typeSchema = object({

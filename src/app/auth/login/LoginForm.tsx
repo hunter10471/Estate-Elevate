@@ -31,7 +31,7 @@ const LoginForm = () => {
 			}
 			toast.success("Successfully logged in! Redirecting now", {
 				position: "bottom-right",
-				autoClose: 5000,
+				autoClose: 2000,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -41,14 +41,13 @@ const LoginForm = () => {
 				transition: Slide,
 				onClose() {
 					router.push("/");
-					router.refresh();
 				},
 			});
 		} catch (error: any) {
 			console.log(error);
 			toast.error(error?.split(":")[1], {
 				position: "bottom-right",
-				autoClose: 5000,
+				autoClose: 2000,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -57,8 +56,8 @@ const LoginForm = () => {
 				theme: "colored",
 				transition: Slide,
 			});
-			setLoading(false);
 		}
+		setLoading(false);
 	};
 	return (
 		<Formik<LoginFormInputs>
@@ -114,7 +113,7 @@ const LoginForm = () => {
 									Create one now.
 								</Link>
 							</span>
-							<Button disabled={loading} type="submit" text="Sign in" primary />
+							<Button loading={loading} type="submit" text="Sign in" primary />
 							<span className="text-center -mt-1 -mb-2">or</span>
 							<button
 								onClick={() => signIn("google")}

@@ -35,6 +35,28 @@ export interface CreateListingResponse {
 	error?: any;
 }
 
+export interface Chat {
+	id: string;
+	chatPartner: SafeUser;
+	lastMessage?: Message;
+	seenBy: string[];
+}
+
+export interface Message {
+	id: string;
+	senderId: string;
+	receiverId: string;
+	text: string;
+	timestamp: number;
+	seenBy: string[];
+}
+
+export interface ChatRequest {
+	id: string;
+	senderId: string;
+	receiverId: string;
+}
+
 export type FacilityKey =
 	| "gym"
 	| "pool"
@@ -52,5 +74,5 @@ export type FacilityKey =
 export type SafeUser = Omit<User, "password" | "createdAt" | "updatedAt">;
 
 export type PropertyWithListedBy = Property & {
-	listedBy: { name: string; image: string | null };
+	listedBy: { name: string; image: string | null; id: string };
 };

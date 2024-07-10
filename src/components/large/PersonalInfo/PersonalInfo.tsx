@@ -28,8 +28,10 @@ interface PersonalInfoProps {
 const PersonalInfo = ({ user }: PersonalInfoProps) => {
 	const sidebarState = useStore((state) => state);
 	const [avatar, setAvatar] = useState(user?.image);
+	const [loading, setLoading] = useState(false);
 	const router = useRouter();
 	const handleSubmit = async (values: EditProfileFormInputs) => {
+		setLoading(true);
 		try {
 			if (avatar) {
 				values.image = avatar;
@@ -64,10 +66,9 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 				theme: "colored",
 				transition: Slide,
 			});
+		} finally {
+			setLoading(false);
 		}
-	};
-	const onChange = (value: CountrySelectValue) => {
-		console.log(value);
 	};
 
 	return (
@@ -175,8 +176,13 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 									/>
 								</div>
 								<div className="flex justify-end gap-5">
-									<Button text="Cancel" outline />
-									<Button type="submit" text="Update" primary />
+									<Button type="reset" text="Cancel" outline />
+									<Button
+										loading={loading}
+										type="submit"
+										text="Update"
+										primary
+									/>
 								</div>
 							</div>
 						) : (
@@ -206,8 +212,13 @@ const PersonalInfo = ({ user }: PersonalInfoProps) => {
 									/>
 								</div>
 								<div className="flex mt-10 gap-5">
-									<Button text="Cancel" outline />
-									<Button type="submit" text="Update" primary />
+									<Button type="reset" text="Cancel" outline />
+									<Button
+										loading={loading}
+										type="submit"
+										text="Update"
+										primary
+									/>
 								</div>
 							</div>
 						)}

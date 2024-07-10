@@ -38,6 +38,7 @@ export const getProperties = async (
 					select: {
 						name: true,
 						image: true,
+						id: true,
 					},
 				},
 			},

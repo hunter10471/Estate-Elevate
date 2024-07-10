@@ -7,8 +7,6 @@ import { IoShareSocialOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import Image from "next/image";
 import Button from "@/components/small/Button/Button";
-import { MdOutlineChat } from "react-icons/md";
-import { FiPhone } from "react-icons/fi";
 import { LuCalendarDays } from "react-icons/lu";
 import ExploreProperties from "@/components/large/ExploreProperties/ExploreProperties";
 import Map from "@/components/medium/Map/Map";
@@ -19,6 +17,7 @@ import DeletePropertyModal from "@/components/medium/DeletePropertyModal/DeleteP
 import { LatLngExpression } from "leaflet";
 import { ListingStatus } from "@prisma/client";
 import { FaCircle } from "react-icons/fa";
+import AddChatButton from "@/components/small/Button/AddChatButton";
 
 interface PageProps {
 	params: { id: string };
@@ -102,10 +101,9 @@ const page = async ({ params: { id } }: PageProps) => {
 								<span className="text-gray-500 text-xs">Property Owner</span>
 							</div>
 						</div>
-						<div className="flex gap-2 my-2">
-							<Button icon={MdOutlineChat} full primary text="Chat" />
-							<Button icon={FiPhone} full outline text="Call" />
-						</div>
+						{user && property.listedBy.id !== user.id && (
+							<AddChatButton chatPartnerId={property.listedBy.id} />
+						)}
 					</div>
 					<div className="flex flex-col pt-3">
 						<h1 className="font-medium text-[18px]">Inspection Times</h1>

@@ -34,7 +34,12 @@ export const updateCurrentUser = async (
 			const existingUser = await prisma.user.findUnique({
 				where: { email: session.user.email },
 			});
-			if (values.oldPassword && values.password && existingUser) {
+			if (
+				values.oldPassword &&
+				values.password &&
+				existingUser &&
+				existingUser.password
+			) {
 				const comparePassword = await bcrypt.compare(
 					values.oldPassword,
 					existingUser.password
@@ -64,5 +69,20 @@ export const updateCurrentUser = async (
 	} catch (error: any) {
 		console.log(error);
 		return error;
+	}
+};
+
+export const getUserById = async (id: string) => {
+	try {
+		const user = await prisma.user.findUnique({ where: { id } });
+		if (!user) return null;
+		if (user.password) {
+			const { password, ...others } = user;
+			return others;
+		}
+		return user;
+	} catch (error) {
+		console.log(error);
+		return null;
 	}
 };

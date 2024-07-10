@@ -50,8 +50,6 @@ const CountrySelect = <
 				value={currentCountry}
 				onChange={(value: CountrySelectValue) => {
 					formik.setFieldValue("country", value.label);
-					formik.setFieldValue("latitude", value.latlng[0]);
-					formik.setFieldValue("longitude", value.latlng[1]);
 				}}
 				className="z-[9999]"
 				formatOptionLabel={(option: any) => {

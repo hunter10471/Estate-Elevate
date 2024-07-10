@@ -5,9 +5,11 @@ import UpcomingProjects from "@/components/medium/UpcomingProjects/UpcomingProje
 import Button from "@/components/small/Button/Button";
 import CompanyStats from "@/components/small/CompanyStats/CompanyStats";
 import Heading from "@/components/small/Heading/Heading";
+import { db } from "@/lib/redis.db";
 import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
+	await db.append("Hello", "world");
 	return (
 		<main className="pt-5">
 			<div className="w-full min-h-[300px] lg:min-h-[450px] relative">

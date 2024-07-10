@@ -70,7 +70,9 @@ const handler = NextAuth({
 			return token;
 		},
 		async signIn({ account, profile }) {
-			console.log(profile);
+			if (account?.type === "credentials") {
+				return true;
+			}
 			if (!profile?.email) {
 				throw new Error("No profile");
 			}
@@ -87,6 +89,7 @@ const handler = NextAuth({
 						image: profile.picture,
 					},
 				});
+
 			return true;
 		},
 	},

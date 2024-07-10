@@ -13,9 +13,11 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const SignupForm = () => {
 	const [loading, setLoading] = useState(false);
+	const router = useRouter();
 	const handleSubmit = async (values: SignupFormInputs) => {
 		try {
 			setLoading(true);
@@ -27,9 +29,9 @@ const SignupForm = () => {
 			if (responseBody.error) {
 				throw responseBody.error;
 			}
-			toast.success("Account created successfully! Login now.", {
+			toast.success("Account created successfully! Redirecting to login now.", {
 				position: "bottom-left",
-				autoClose: 5000,
+				autoClose: 2000,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -37,12 +39,15 @@ const SignupForm = () => {
 				progress: undefined,
 				theme: "colored",
 				transition: Slide,
+				onClose() {
+					router.push("/auth/login");
+				},
 			});
 		} catch (error: any) {
 			console.log(error);
 			toast.error(error, {
 				position: "bottom-left",
-				autoClose: 5000,
+				autoClose: 2000,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -51,8 +56,8 @@ const SignupForm = () => {
 				theme: "colored",
 				transition: Slide,
 			});
-			setLoading(false);
 		}
+		setLoading(false);
 	};
 	return (
 		<Formik<SignupFormInputs>
@@ -118,7 +123,7 @@ const SignupForm = () => {
 									Login.
 								</Link>
 							</span>
-							<Button disabled={loading} type="submit" text="Sign up" primary />
+							<Button loading={loading} type="submit" text="Sign up" primary />
 							<span className="text-sm text-center -mt-2 -mb-3">or</span>
 							<button
 								type="button"

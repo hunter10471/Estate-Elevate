@@ -28,7 +28,10 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 		<div className="flex sm:flex-row-reverse flex-col items-center gap-8">
 			<div className="flex gap-4 z-[99999]">
 				<div className="items-center gap-6 lg:flex hidden">
-					<BiMessageAltDetail className="cursor-pointer" size={25} />
+					<Link href={"/chat"}>
+						{" "}
+						<BiMessageAltDetail className="cursor-pointer" size={25} />{" "}
+					</Link>
 					<MdOutlineNotifications className="cursor-pointer" size={25} />
 				</div>
 				<div
@@ -85,7 +88,7 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 						)}
 						<button
 							className="text-left hover:font-semibold  transition-all"
-							onClick={() => signOut()}
+							onClick={() => signOut({ callbackUrl: "/auth/login" })}
 						>
 							Logout
 						</button>
@@ -121,7 +124,7 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 			)}
 			<button
 				className="sm:hidden hover:font-semibold  transition-all"
-				onClick={() => signOut()}
+				onClick={() => signOut({ callbackUrl: "/auth/login" })}
 			>
 				Logout
 			</button>
