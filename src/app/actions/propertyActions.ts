@@ -1,10 +1,9 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { PropertyWithListedBy } from "../../../utils/types";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { ListingStatus, Prisma, PropertyType } from "@prisma/client";
+import { getSessionUser } from "../../../utils/helpers";
 
 export const getProperties = async (
 	status?: ListingStatus | null,
@@ -12,8 +11,9 @@ export const getProperties = async (
 	query?: string | null,
 	minPrice?: string | null,
 	maxPrice?: string | null,
-	sort?: string | null
-): Promise<PropertyWithListedBy[]> => {
+	sort?: string | null,
+	limit?: number
+) => {
 	try {
 		const where: Prisma.PropertyWhereInput = {};
 
@@ -61,20 +61,15 @@ export const getProperties = async (
 
 		const properties = await prisma.property.findMany({
 			include: {
-				listedBy: {
-					select: {
-						name: true,
-						image: true,
-						id: true,
-						phone: true,
-						email: true,
-					},
+				listedBy: true,
+				likedBy: {
+					include: { property: true, user: true },
 				},
 			},
 			where,
 			orderBy,
+			take: limit,
 		});
-
 		return properties;
 	} catch (error: any) {
 		console.error("Error fetching properties:", error);
@@ -82,29 +77,29 @@ export const getProperties = async (
 	}
 };
 
-export const getPropertyById = async (
-	id: string
-): Promise<PropertyWithListedBy | null> => {
+export const getPropertyById = async (id: string) => {
 	try {
 		const property = await prisma.property.findUnique({
-			where: { id: id },
-			include: { listedBy: true },
+			where: { id },
+			include: {
+				likedBy: {
+					include: { property: true, user: true },
+				},
+				listedBy: true,
+			},
 		});
-		if (property) {
-			return property;
-		}
-		return null;
+
+		return property;
 	} catch (error: any) {
 		console.log(error);
-		return error;
 	}
 };
 
 export const deleteProperty = async (id: string) => {
 	try {
-		const session = await getServerSession();
-		if (session) {
-			const userId = session.user.id;
+		const user = await getSessionUser();
+		if (user) {
+			const userId = user.id;
 			await prisma.property.delete({
 				where: { id, listedById: userId },
 			});
@@ -115,4 +110,88 @@ export const deleteProperty = async (id: string) => {
 	}
 	revalidatePath("/properties");
 	redirect("/properties");
+};
+
+export const getUsersProperties = async () => {
+	try {
+		const user = await getSessionUser();
+		if (user) {
+			const properties = await prisma.property.findMany({
+				where: { listedBy: { id: user.id } },
+				include: {
+					likedBy: {
+						include: { property: true, user: true },
+					},
+					listedBy: true,
+				},
+				orderBy: { createdAt: "desc" },
+			});
+			return properties;
+		}
+		return [];
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
+};
+
+export const getLikedProperties = async () => {
+	try {
+		const user = await getSessionUser();
+		if (user) {
+			const properties = await prisma.likedProperty.findMany({
+				where: { userId: user.id },
+				include: {
+					property: {
+						include: { listedBy: true },
+					},
+					user: {
+						select: {
+							id: true,
+							email: true,
+							name: true,
+							image: true,
+							phone: true,
+						},
+					},
+				},
+				orderBy: { createdAt: "desc" },
+			});
+			return properties;
+		}
+		return [];
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
+};
+
+export const addLike = async (userId: string, propertyId: string) => {
+	try {
+		revalidatePath("/properties/mine/liked");
+		return await prisma.likedProperty.create({
+			data: {
+				userId,
+				propertyId,
+			},
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const removeLike = async (userId: string, propertyId: string) => {
+	try {
+		revalidatePath("/properties/mine/liked");
+		return await prisma.likedProperty.delete({
+			where: {
+				userId_propertyId: {
+					userId,
+					propertyId,
+				},
+			},
+		});
+	} catch (error) {
+		console.log(error);
+	}
 };

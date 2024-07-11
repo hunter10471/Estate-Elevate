@@ -70,7 +70,7 @@ const ChatInput = ({ chatPartner, chatId }: ChatInputProps) => {
 							loaderColor="#000"
 							disabled={input === ""}
 							text="Send"
-							icon={BsSend}
+							icon={<BsSend size={20} />}
 							loading={loading}
 						/>
 					</div>

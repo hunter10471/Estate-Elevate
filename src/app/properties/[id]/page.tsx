@@ -12,12 +12,12 @@ import ExploreProperties from "@/components/large/ExploreProperties/ExplorePrope
 import Map from "@/components/medium/Map/Map";
 import { getPropertyById } from "@/app/actions/propertyActions";
 import DeletePropertyButton from "@/components/small/Button/DeletePropertyButton";
-import { getCurrentUser } from "@/app/actions/userActions";
 import DeletePropertyModal from "@/components/medium/DeletePropertyModal/DeletePropertyModal";
 import { LatLngExpression } from "leaflet";
 import { ListingStatus } from "@prisma/client";
 import { FaCircle } from "react-icons/fa";
 import AddChatButton from "@/components/small/Button/AddChatButton";
+import { getSessionUser } from "../../../../utils/helpers";
 
 interface PageProps {
 	params: { id: string };
@@ -25,8 +25,11 @@ interface PageProps {
 
 const page = async ({ params: { id } }: PageProps) => {
 	const property = await getPropertyById(id);
-	const user = await getCurrentUser();
+	const user = await getSessionUser();
 	if (!property) return <></>;
+	const isLiked = user
+		? property.likedBy.filter((item) => item.user.id === user.id).length > 0
+		: false;
 	return (
 		<div>
 			<ImageSlider images={property.images} />
@@ -36,8 +39,12 @@ const page = async ({ params: { id } }: PageProps) => {
 						<Heading weight="medium" text={property.title} />
 
 						<div className="flex gap-2">
-							<LikeButton isLiked />
-							<button className="p-1 rounded-full border-2 border-gray-300 transition-all ease-out hover:scale-110 active:scale-95">
+							<LikeButton
+								isLiked={isLiked}
+								userId={user ? user.id : undefined}
+								propertyId={id}
+							/>
+							<button className="p-1 rounded-full transition-all ease-out hover:scale-110 active:scale-95">
 								<IoShareSocialOutline size={20} />
 							</button>
 							{property.listedById === user?.id && (
@@ -102,7 +109,10 @@ const page = async ({ params: { id } }: PageProps) => {
 							</div>
 						</div>
 						{user && property.listedBy.id !== user.id && (
-							<AddChatButton chatPartnerId={property.listedBy.id} />
+							<AddChatButton
+								phone={property.listedBy.phone}
+								chatPartnerId={property.listedBy.id}
+							/>
 						)}
 					</div>
 					<div className="flex flex-col pt-3">
@@ -117,7 +127,7 @@ const page = async ({ params: { id } }: PageProps) => {
 						</div>
 						<Button
 							full
-							icon={LuCalendarDays}
+							icon={<LuCalendarDays size={20} />}
 							primary
 							text="Make Appointment"
 						/>

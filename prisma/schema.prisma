@@ -16,6 +16,7 @@ model User {
   image String?
   accounts Account[]
   sessions Session[]
+  likedProperties LikedProperty[]
   password String?
   phone String?
   bio String?
@@ -86,9 +87,19 @@ model Property {
   facilities String[]
   negotiable Boolean
   listedBy User @relation(fields: [listedById],references: [id])
+  likedBy LikedProperty[] 
   listedById String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model LikedProperty {
+  userId     String
+  propertyId String
+  createdAt  DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  @@id([userId, propertyId])
 }
 
 

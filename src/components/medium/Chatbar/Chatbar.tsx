@@ -36,7 +36,7 @@ const Chatbar = ({ sessionUser }: ChatbarProps) => {
 		};
 	}, []);
 	return (
-		<div className="flex flex-col items-center flex-shrink-0 w-[300px] p-2 h-[calc(100vh-120px)] overflow-scroll overflow-x-hidden m-2">
+		<div className="flex flex-col items-center flex-shrink-0 w-[320px] p-2 h-[calc(100vh-120px)] overflow-scroll overflow-x-hidden m-2">
 			<div className="flex justify-center gap-2 text-sm mb-5">
 				<button
 					className={`px-4 py-2 rounded-xl transition-all ${

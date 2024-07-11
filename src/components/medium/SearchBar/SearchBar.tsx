@@ -13,11 +13,9 @@ const SearchBar = ({}: SearchBarProps) => {
 	const router = useRouter();
 	const [isBuy, setIsBuy] = useState(false);
 	const [location, setLocation] = useState("");
-	const [propertyType, setPropertyType] = useState<PropertyType>(
-		PropertyType.HOUSE
-	);
-	const [minPrice, setMinPrice] = useState(12000);
-	const [maxPrice, setMaxPrice] = useState(18000);
+	const [propertyType, setPropertyType] = useState<PropertyType>();
+	const [minPrice, setMinPrice] = useState<number>();
+	const [maxPrice, setMaxPrice] = useState<number>();
 	const handleSearch = () => {
 		const url = new URL("/properties", window.location.origin);
 		url.searchParams.append(
@@ -25,9 +23,15 @@ const SearchBar = ({}: SearchBarProps) => {
 			isBuy ? ListingStatus.SALE : ListingStatus.RENT
 		);
 		url.searchParams.append("query", location);
-		url.searchParams.append("propertyType", propertyType);
-		url.searchParams.append("minPrice", minPrice.toString());
-		url.searchParams.append("maxPrice", maxPrice.toString());
+		{
+			propertyType && url.searchParams.append("propertyType", propertyType);
+		}
+		{
+			minPrice && url.searchParams.append("minPrice", minPrice.toString());
+		}
+		{
+			maxPrice && url.searchParams.append("maxPrice", maxPrice.toString());
+		}
 		router.push(url.toString());
 	};
 	return (
@@ -50,7 +54,7 @@ const SearchBar = ({}: SearchBarProps) => {
 					Buy
 				</button>
 			</div>
-			<div className=" bg-white border-b-2 border-x-2 border-gray-200 p-5 rounded-lg rounded-tl-none font-heading font-semibold flex flex-wrap items-center sm:flex-row flex-col justify-center gap-4">
+			<div className=" bg-white border-b-2 border-x-2 border-gray-200 p-5 rounded-lg rounded-tl-none font-medium flex flex-wrap items-center sm:flex-row flex-col justify-center gap-4">
 				<div className=" w-full sm:w-[210px]">
 					<label className="text-sm font-medium text-text/80">Location</label>
 					<div className="flex items-center gap-1">
@@ -82,6 +86,7 @@ const SearchBar = ({}: SearchBarProps) => {
 								console.log(e.target.value, propertyType);
 							}}
 						>
+							<option>Select an option</option>
 							<option value={PropertyType.HOUSE}>House</option>
 							<option value={PropertyType.VILLA}>Villa</option>
 							<option value={PropertyType.APARTMENT}>Apartment</option>
@@ -96,6 +101,7 @@ const SearchBar = ({}: SearchBarProps) => {
 						<div className="w-fit">
 							$
 							<input
+								placeholder="Min price"
 								type="text"
 								className="focus:outline-none w-[80px] border-b-2 border-gray-300  text-center"
 								value={minPrice}
@@ -106,6 +112,7 @@ const SearchBar = ({}: SearchBarProps) => {
 						<div className="w-fit pl-1">
 							$
 							<input
+								placeholder="Max price"
 								type="text"
 								className="focus:outline-none w-[80px] border-b-2 border-gray-300  text-center"
 								onChange={(e) => setMaxPrice(Number(e.target.value))}

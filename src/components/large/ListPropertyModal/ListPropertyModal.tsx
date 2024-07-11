@@ -229,7 +229,6 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 	}: {
 		formikState: FormikProps<ListPropertyFormSchemaInputs>;
 	}): React.ReactNode => {
-		console.log(formikState.values);
 		const { country, city, state } = formikState.values;
 		const [debouncedCity, setDebouncedCity] = useState(city);
 		const [debouncedState, setDebouncedState] = useState(state);

@@ -9,11 +9,12 @@ import "react-toastify/dist/ReactToastify.css";
 
 interface AddChatButtonProps {
 	chatPartnerId: string;
+	phone: string | null;
 }
 
-const AddChatButton = ({ chatPartnerId }: AddChatButtonProps) => {
+const AddChatButton = ({ chatPartnerId, phone }: AddChatButtonProps) => {
 	const [loading, setLoading] = useState(false);
-	const router = useRouter();
+	const [showPhone, setShowPhone] = useState(false);
 	const onAddChat = async () => {
 		setLoading(true);
 		try {
@@ -50,17 +51,31 @@ const AddChatButton = ({ chatPartnerId }: AddChatButtonProps) => {
 		}
 	};
 	return (
-		<div className="flex gap-2 my-2">
+		<div className="flex flex-col gap-2 my-2">
 			<ToastContainer />
-			<Button
-				loading={loading}
-				action={onAddChat}
-				icon={MdOutlineChat}
-				full
-				primary
-				text="Chat"
-			/>
-			<Button icon={FiPhone} full outline text="Call" />
+			<div className="flex gap-2 my-2">
+				<Button
+					loading={loading}
+					action={onAddChat}
+					icon={<MdOutlineChat size={20} />}
+					full
+					primary
+					text="Chat"
+				/>
+				<Button
+					action={() => setShowPhone((prev) => !prev)}
+					icon={<FiPhone size={20} />}
+					full
+					outline
+					text="Call"
+				/>
+			</div>
+			{showPhone && (
+				<span className="flex items-center justify-center gap-2 text-center p-2 bg-primary/20 text-primaryDark font-medium rounded-xl">
+					<FiPhone size={20} />
+					{phone ? phone : "Unavailable"}
+				</span>
+			)}
 		</div>
 	);
 };

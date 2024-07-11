@@ -6,8 +6,10 @@ import Button from "@/components/small/Button/Button";
 import CompanyStats from "@/components/small/CompanyStats/CompanyStats";
 import Heading from "@/components/small/Heading/Heading";
 import Image from "next/image";
+import { getProperties } from "./actions/propertyActions";
 
 export default async function Home() {
+	const properties = await getProperties(null, null, null, null, null, null, 5);
 	return (
 		<main className="pt-5">
 			<div className="w-full min-h-[300px] lg:min-h-[450px] relative">
@@ -61,7 +63,7 @@ export default async function Home() {
 				<div className="max-w-[400px] my-5 sm:my-10">
 					<Heading text="Recently added trending properties" />
 				</div>
-				<CardSlider />
+				<CardSlider data={properties} />
 			</div>
 			<ReviewSlider />
 		</main>

@@ -25,7 +25,7 @@ const page = async () => {
 					<SortBy />
 				</div>
 			</div>
-			<PropertyResult allProperties={properties} />
+			<PropertyResult sessionUser={user} allProperties={properties} />
 		</div>
 	);
 };

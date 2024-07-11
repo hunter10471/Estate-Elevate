@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { IconType } from "react-icons";
 import { ClipLoader } from "react-spinners";
 
 interface ButtonProps {
@@ -10,7 +9,7 @@ interface ButtonProps {
 	text: string;
 	mobileFull?: boolean;
 	full?: boolean;
-	icon?: IconType;
+	icon?: React.ReactNode;
 	type?: "submit" | "button" | "reset";
 	id?: string;
 	disabled?: boolean;
@@ -91,7 +90,7 @@ const Button = ({
 			} ${danger ? "text-white bg-rose-500 hover:bg-rose-700" : ""}
 			 ${full ? "w-full" : ""}  disabled:cursor-not-allowed `}
 		>
-			{!loading && Icon && <Icon size={20} />}{" "}
+			{!loading && Icon}{" "}
 			{loading && (
 				<ClipLoader
 					loading={true}

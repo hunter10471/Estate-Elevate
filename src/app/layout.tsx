@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/large/Navbar/Navbar";
 import Footer from "@/components/large/Footer/Footer";
+import { getChatRequests, getChats } from "./actions/chatActions";
+import { ChatProvider } from "@/context/ChatContext";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -13,6 +15,7 @@ const RootLayout = async ({
 }: Readonly<{
 	children: React.ReactNode;
 }>) => {
+	const chats = await Promise.all([getChats(), getChatRequests()]);
 	return (
 		<html lang="en">
 			<head>
@@ -24,11 +27,13 @@ const RootLayout = async ({
 				/>
 			</head>
 			<body>
-				<div className="container relative font-heading text-text overflow-hidden">
-					<Navbar />
-					<div className="mt-[120px]">{children}</div>
-				</div>
-				<Footer />
+				<ChatProvider initialChatRequests={chats[1]} initialChats={chats[0]}>
+					<div className="container relative font-heading text-text overflow-hidden">
+						<Navbar />
+						<div className="mt-[120px]">{children}</div>
+					</div>
+					<Footer />
+				</ChatProvider>
 			</body>
 		</html>
 	);

@@ -1,4 +1,4 @@
-import { Property, PropertyType, User } from "@prisma/client";
+import { LikedProperty, Property, PropertyType, User } from "@prisma/client";
 import { IconType } from "react-icons";
 
 export interface PropertyTypeQuery {
@@ -96,4 +96,8 @@ export type PropertyWithListedBy = Property & {
 		image: string | null;
 		phone: string | null;
 	};
+};
+
+export type PropertyWithListedByAndLikedBy = PropertyWithListedBy & {
+	likedBy: (LikedProperty & { user: User; property: Property })[];
 };

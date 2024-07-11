@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { IoHeartOutline } from "react-icons/io5";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { GrLocation } from "react-icons/gr";
 import { LiaVectorSquareSolid } from "react-icons/lia";
@@ -11,6 +10,9 @@ import { MdOutlineCameraAlt } from "react-icons/md";
 import { FaCircle } from "react-icons/fa";
 import Link from "next/link";
 import { ListingStatus } from "@prisma/client";
+import LikeButton from "@/components/small/Button/LikeButton";
+import { getSessionUser } from "../../../../utils/helpers";
+import { SafeUser } from "../../../../utils/types";
 
 interface CardProps {
 	price: number;
@@ -28,6 +30,8 @@ interface CardProps {
 	country: string;
 	state: string;
 	city: string;
+	isLiked: boolean;
+	sessionUser: SafeUser | null;
 }
 
 const Card = ({
@@ -46,6 +50,8 @@ const Card = ({
 	country,
 	state,
 	city,
+	isLiked,
+	sessionUser,
 }: CardProps) => {
 	return (
 		<div className="w-[150px] md:w-[250px] flex-shrink-0 max-h-[400px]">
@@ -100,14 +106,15 @@ const Card = ({
 							For rent
 						</span>
 					)}
-					<div className="flex items-center gap-2">
-						<IoHeartOutline
-							className="cursor-pointer p-1 rounded-full hover:bg-gray-300"
-							size={28}
+					<div className="flex items-center gap-1">
+						<LikeButton
+							userId={sessionUser ? sessionUser.id : undefined}
+							isLiked={isLiked}
+							propertyId={id}
 						/>
 						<IoShareSocialOutline
-							className="cursor-pointer p-1 rounded-full hover:bg-gray-300"
-							size={28}
+							className="p-1 transition-all rounded-full ease-out hover:scale-110 active:scale-95 cursor-pointer"
+							size={30}
 						/>
 					</div>
 				</div>

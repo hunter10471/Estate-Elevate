@@ -6,7 +6,7 @@ import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
+import { format, formatDistance } from "date-fns";
 import { useChat } from "@/context/ChatContext";
 import { useEffect } from "react";
 import { pusherClient } from "@/lib/pusher";
@@ -55,7 +55,9 @@ const ChatRow = ({ chat, isRequest, sessionUser }: ChatRowProps) => {
 	};
 	const formatTimestamp = (timestamp?: number) => {
 		if (!timestamp) return `Invalid timestamp ${timestamp}`;
-		return format(timestamp, "HH:mm");
+		return formatDistance(timestamp, new Date(), { addSuffix: true }).split(
+			"about"
+		)[1];
 	};
 	useEffect(() => {
 		pusherClient.subscribe(toPusherKey(`chat:${chat.id}`));
@@ -87,7 +89,7 @@ const ChatRow = ({ chat, isRequest, sessionUser }: ChatRowProps) => {
 					className="text-green-400 absolute -bottom-1 -right-0"
 				/>
 			</div>
-			<div className="flex flex-col w-full">
+			<div className="flex flex-col">
 				<span className="font-semibold line-clamp-1">
 					{chat.chatPartner.name}
 				</span>
@@ -101,7 +103,7 @@ const ChatRow = ({ chat, isRequest, sessionUser }: ChatRowProps) => {
 					{chat.lastMessage?.text || `Started a chat with you!`}
 				</span>
 			</div>
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col gap-2 text-right flex-shrink-0 flex-grow">
 				<span className="text-gray-500 text-sm">
 					{formatTimestamp(chat.lastMessage?.timestamp || Date.now())}
 				</span>

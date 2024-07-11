@@ -67,6 +67,8 @@ const CardSlider = ({ data }: CardSliderProps) => {
 								listingStatus={property.status}
 								listedByName={property.listedBy.name}
 								listedByAvatar={property.listedBy.image}
+								listedByEmail={property.listedBy.email}
+								listedByPhone={property.listedBy.phone}
 							/>
 						))}
 					</div>

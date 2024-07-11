@@ -4,19 +4,26 @@ import Card from "../Card/Card";
 import Map from "../Map/Map";
 import useStore from "@/store/store";
 import CardSkeleton from "../Card/Card.Skeleton";
-import { PropertyWithListedBy } from "../../../../utils/types";
 import { getProperties } from "@/app/actions/propertyActions";
-import { ListingStatus, PropertyType } from "@prisma/client";
+import { ListingStatus, Property, PropertyType } from "@prisma/client";
 import { PulseLoader } from "react-spinners";
 import Heading from "@/components/small/Heading/Heading";
 import { useSearchParams } from "next/navigation";
 import NoPropertyFound from "@/components/small/NoPropertyFound/NoPropertyFound";
+import {
+	PropertyWithListedByAndLikedBy,
+	SafeUser,
+} from "../../../../utils/types";
 
 interface PropertyResultProps {
-	allProperties?: PropertyWithListedBy[];
+	allProperties?: PropertyWithListedByAndLikedBy[];
+	sessionUser: SafeUser | null;
 }
 
-const PropertyResult = ({ allProperties }: PropertyResultProps) => {
+const PropertyResult = ({
+	allProperties,
+	sessionUser,
+}: PropertyResultProps) => {
 	const [fullWidth, setFullWidth] = useState(false);
 	const [properties, setProperties] = useState(allProperties);
 	const searchParams = useSearchParams();
@@ -79,28 +86,36 @@ const PropertyResult = ({ allProperties }: PropertyResultProps) => {
 					</div>
 				)}
 				{!loading && properties && properties.length > 0
-					? properties.map((item) => (
-							<Suspense key={item.id} fallback={<CardSkeleton />}>
-								<Card
-									area={item.area}
-									bathrooms={item.bathrooms}
-									bedrooms={item.bedrooms}
-									images={item.images}
-									title={item.title}
-									price={item.price}
-									listingStatus={item.status}
-									key={item.id}
-									listedByName={item.listedBy.name}
-									listedByAvatar={item.listedBy.image}
-									listedByPhone={item.listedBy.phone}
-									listedByEmail={item.listedBy.email}
-									id={item.id}
-									country={item.country}
-									state={item.state}
-									city={item.city}
-								/>
-							</Suspense>
-					  ))
+					? properties.map((item: PropertyWithListedByAndLikedBy) => {
+							const isLiked = sessionUser
+								? item.likedBy.filter((item) => item.user.id === sessionUser.id)
+										.length > 0
+								: false;
+							return (
+								<Suspense key={item.id} fallback={<CardSkeleton />}>
+									<Card
+										sessionUser={sessionUser}
+										isLiked={isLiked}
+										area={item.area}
+										bathrooms={item.bathrooms}
+										bedrooms={item.bedrooms}
+										images={item.images}
+										title={item.title}
+										price={item.price}
+										listingStatus={item.status}
+										key={item.id}
+										listedByName={item.listedBy.name}
+										listedByAvatar={item.listedBy.image}
+										listedByPhone={item.listedBy.phone}
+										listedByEmail={item.listedBy.email}
+										id={item.id}
+										country={item.country}
+										state={item.state}
+										city={item.city}
+									/>
+								</Suspense>
+							);
+					  })
 					: !loading && <NoPropertyFound />}
 			</div>
 
