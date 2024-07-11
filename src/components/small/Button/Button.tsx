@@ -1,3 +1,5 @@
+"use client";
+import { useRouter } from "next/navigation";
 import { IconType } from "react-icons";
 import { ClipLoader } from "react-spinners";
 
@@ -15,6 +17,8 @@ interface ButtonProps {
 	danger?: boolean;
 	loading?: boolean;
 	loaderColor?: string;
+	redirect?: "/contact" | "/chat" | "/profile";
+	scrollToId?: string;
 }
 
 const Button = ({
@@ -31,10 +35,42 @@ const Button = ({
 	danger,
 	loading,
 	loaderColor,
+	redirect,
+	scrollToId,
 }: ButtonProps) => {
+	const router = useRouter();
+	const navigate = () => {
+		if (redirect) router.push(redirect);
+	};
+	const scrollTo = (id: string) => {
+		const element = document.getElementById(id);
+		if (element) {
+			const offset = 150;
+			const elementPosition =
+				element.getBoundingClientRect().top + window.scrollY;
+			const offsetPosition = elementPosition - offset;
+
+			window.scrollTo({
+				top: offsetPosition,
+				behavior: "smooth",
+			});
+		}
+	};
+	const onClick = () => {
+		if (scrollToId) {
+			return scrollTo(scrollToId);
+		} else if (redirect) {
+			return navigate();
+		} else if (action) {
+			return action();
+		} else {
+			return undefined;
+		}
+	};
+
 	return (
 		<button
-			onClick={action}
+			onClick={onClick}
 			id={id}
 			type={type}
 			disabled={disabled || loading}

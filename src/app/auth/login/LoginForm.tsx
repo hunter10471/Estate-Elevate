@@ -41,6 +41,7 @@ const LoginForm = () => {
 				transition: Slide,
 				onClose() {
 					router.push("/");
+					router.refresh();
 				},
 			});
 		} catch (error: any) {

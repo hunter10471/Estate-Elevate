@@ -4,11 +4,32 @@ import { BsHouse } from "react-icons/bs";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import Button from "@/components/small/Button/Button";
 import { useState } from "react";
+import { ListingStatus, PropertyType } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 interface SearchBarProps {}
 
 const SearchBar = ({}: SearchBarProps) => {
+	const router = useRouter();
 	const [isBuy, setIsBuy] = useState(false);
+	const [location, setLocation] = useState("");
+	const [propertyType, setPropertyType] = useState<PropertyType>(
+		PropertyType.HOUSE
+	);
+	const [minPrice, setMinPrice] = useState(12000);
+	const [maxPrice, setMaxPrice] = useState(18000);
+	const handleSearch = () => {
+		const url = new URL("/properties", window.location.origin);
+		url.searchParams.append(
+			"type",
+			isBuy ? ListingStatus.SALE : ListingStatus.RENT
+		);
+		url.searchParams.append("query", location);
+		url.searchParams.append("propertyType", propertyType);
+		url.searchParams.append("minPrice", minPrice.toString());
+		url.searchParams.append("maxPrice", maxPrice.toString());
+		router.push(url.toString());
+	};
 	return (
 		<div className="absolute sm:bottom-[-60px] bottom-[-70%] left-0 right-0 ml-auto mr-auto sm:text-base  text-sm w-[90%] sm:w-fit shadow-xl">
 			<div className="flex font-heading font-medium ">
@@ -40,7 +61,8 @@ const SearchBar = ({}: SearchBarProps) => {
 							type="text"
 							placeholder="Enter location"
 							className="focus:outline-none w-[90%] border-b-2 border-gray-300"
-							defaultValue={"Malir Cantt, Karachi"}
+							value={location}
+							onChange={(e) => setLocation(e.target.value)}
 						/>
 					</div>
 				</div>
@@ -54,11 +76,16 @@ const SearchBar = ({}: SearchBarProps) => {
 							className="focus:outline-none outline-none appearance-none cursor-pointer  w-[90%] border-b-2 border-gray-300 "
 							name="propertyType"
 							id="propertyType"
+							value={propertyType}
+							onChange={(e) => {
+								setPropertyType(e.target.value as PropertyType);
+								console.log(e.target.value, propertyType);
+							}}
 						>
-							<option value="HOUSE">House</option>
-							<option value="VILLA">Villa</option>
-							<option value="APARTMENT">Apartment</option>
-							<option value="GUEST_HOUSE">Guest House</option>
+							<option value={PropertyType.HOUSE}>House</option>
+							<option value={PropertyType.VILLA}>Villa</option>
+							<option value={PropertyType.APARTMENT}>Apartment</option>
+							<option value={PropertyType.GUEST_HOUSE}>Guest House</option>
 						</select>
 					</div>
 				</div>
@@ -70,8 +97,9 @@ const SearchBar = ({}: SearchBarProps) => {
 							$
 							<input
 								type="text"
-								className="focus:outline-none w-[50px] border-b-2 border-gray-300  text-center"
-								defaultValue={12000}
+								className="focus:outline-none w-[80px] border-b-2 border-gray-300  text-center"
+								value={minPrice}
+								onChange={(e) => setMinPrice(Number(e.target.value))}
 							/>
 						</div>
 						<span>-</span>
@@ -79,13 +107,19 @@ const SearchBar = ({}: SearchBarProps) => {
 							$
 							<input
 								type="text"
-								className="focus:outline-none w-[50px] border-b-2 border-gray-300  text-center"
-								defaultValue={18000}
+								className="focus:outline-none w-[80px] border-b-2 border-gray-300  text-center"
+								onChange={(e) => setMaxPrice(Number(e.target.value))}
+								value={maxPrice}
 							/>
 						</div>
 					</div>
 				</div>
-				<Button mobileFull text="Search Property" primary />
+				<Button
+					action={handleSearch}
+					mobileFull
+					text="Search Property"
+					primary
+				/>
 			</div>
 		</div>
 	);

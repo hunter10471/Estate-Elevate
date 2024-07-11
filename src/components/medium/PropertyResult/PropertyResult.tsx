@@ -10,6 +10,7 @@ import { ListingStatus, PropertyType } from "@prisma/client";
 import { PulseLoader } from "react-spinners";
 import Heading from "@/components/small/Heading/Heading";
 import { useSearchParams } from "next/navigation";
+import NoPropertyFound from "@/components/small/NoPropertyFound/NoPropertyFound";
 
 interface PropertyResultProps {
 	allProperties?: PropertyWithListedBy[];
@@ -22,6 +23,9 @@ const PropertyResult = ({ allProperties }: PropertyResultProps) => {
 	const propertyType = searchParams.get("propertyType");
 	const status = searchParams.get("status");
 	const query = searchParams.get("query");
+	const minPrice = searchParams.get("minPrice");
+	const maxPrice = searchParams.get("maxPrice");
+	const sortBy = searchParams.get("sortBy");
 	const isMap = useStore((state) => state.isMap);
 	const toggleLoadingFalse = useStore((state) => state.toggleLoadingFalse);
 	const toggleLoadingTrue = useStore((state) => state.toggleLoadingTrue);
@@ -33,7 +37,10 @@ const PropertyResult = ({ allProperties }: PropertyResultProps) => {
 			const data = await getProperties(
 				status as ListingStatus,
 				propertyType as PropertyType,
-				query
+				query,
+				minPrice,
+				maxPrice,
+				sortBy
 			);
 			setProperties(data);
 			setResults(data.length);
@@ -45,7 +52,7 @@ const PropertyResult = ({ allProperties }: PropertyResultProps) => {
 
 	useEffect(() => {
 		queryProperties();
-	}, [query, propertyType, status]);
+	}, [query, propertyType, status, minPrice, maxPrice, sortBy]);
 
 	return (
 		<div className={`flex ${!isMap ? "" : "lg:gap-10"} mb-10 transition-all`}>
@@ -71,30 +78,30 @@ const PropertyResult = ({ allProperties }: PropertyResultProps) => {
 						/>
 					</div>
 				)}
-				{!loading &&
-					properties &&
-					properties.map((item) => (
-						<Suspense key={item.id} fallback={<CardSkeleton />}>
-							<Card
-								area={item.area}
-								bathrooms={item.bathrooms}
-								bedrooms={item.bedrooms}
-								images={item.images}
-								title={item.title}
-								price={item.price}
-								listingStatus={item.status}
-								key={item.id}
-								listedByName={item.listedBy.name}
-								listedByAvatar={item.listedBy.image}
-								listedByPhone={item.listedBy.phone}
-								listedByEmail={item.listedBy.email}
-								id={item.id}
-								country={item.country}
-								state={item.state}
-								city={item.city}
-							/>
-						</Suspense>
-					))}
+				{!loading && properties && properties.length > 0
+					? properties.map((item) => (
+							<Suspense key={item.id} fallback={<CardSkeleton />}>
+								<Card
+									area={item.area}
+									bathrooms={item.bathrooms}
+									bedrooms={item.bedrooms}
+									images={item.images}
+									title={item.title}
+									price={item.price}
+									listingStatus={item.status}
+									key={item.id}
+									listedByName={item.listedBy.name}
+									listedByAvatar={item.listedBy.image}
+									listedByPhone={item.listedBy.phone}
+									listedByEmail={item.listedBy.email}
+									id={item.id}
+									country={item.country}
+									state={item.state}
+									city={item.city}
+								/>
+							</Suspense>
+					  ))
+					: !loading && <NoPropertyFound />}
 			</div>
 
 			<div

@@ -1,4 +1,5 @@
 "use client";
+import { useQueryState } from "nuqs";
 import { SortByOption } from "../../../../utils/types";
 import React, { useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
@@ -13,9 +14,12 @@ const options: SortByOption[] = [
 const SortBy = () => {
 	const [value, setValue] = useState(2);
 	const [open, setOpen] = useState(false);
+	const [sortBy, setSortBy] = useQueryState("sortBy");
 	const onClick = (index: number) => {
 		setValue(index);
 		setOpen(false);
+		const sortValue = options[index].value;
+		setSortBy(sortValue);
 	};
 	return (
 		<div className="flex gap-1 font-semibold mt-2 relative lg:text-sm text-xs">

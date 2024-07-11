@@ -5,11 +5,9 @@ import UpcomingProjects from "@/components/medium/UpcomingProjects/UpcomingProje
 import Button from "@/components/small/Button/Button";
 import CompanyStats from "@/components/small/CompanyStats/CompanyStats";
 import Heading from "@/components/small/Heading/Heading";
-import { db } from "@/lib/redis.db";
 import Image from "next/image";
 
 export default async function Home() {
-	await db.append("Hello", "world");
 	return (
 		<main className="pt-5">
 			<div className="w-full min-h-[300px] lg:min-h-[450px] relative">
@@ -30,8 +28,8 @@ export default async function Home() {
 				</div>
 				<SearchBar />
 			</div>
-			<div className="flex justify-center flex-col md:flex-row gap-5 sm:gap-8 mb-[100px] mt-[300px] sm:mt-[200px]">
-				<div className="md:flex-1 flex-none relative w-full md:max-w-[400px] h-[400px]">
+			<div className="flex justify-center items-center flex-col md:flex-row gap-5 sm:gap-8 mb-[100px] mt-[300px] sm:mt-[200px]">
+				<div className="md:flex-1 flex-none relative w-full md:max-w-[400px] h-[350px]">
 					<Image
 						className="rounded-lg object-cover"
 						src={"/home-1.jpg"}
@@ -52,8 +50,8 @@ export default async function Home() {
 						transparency and professionalism.
 					</p>
 					<div className="flex mt-6 gap-5">
-						<Button outline text="Learn more" />
-						<Button primary text="Contact us" />
+						<Button scrollToId="company-stats" outline text="Learn more" />
+						<Button redirect="/contact" primary text="Contact us" />
 					</div>
 				</div>
 			</div>

@@ -5,10 +5,11 @@ import { withAuth } from "next-auth/middleware";
 export default withAuth(
 	function middleware(req) {
 		const isOnEditProfile = req.nextUrl.pathname.startsWith("/profile");
+		const isOnChat = req.nextUrl.pathname.startsWith("/chat");
 		const isOnLogin = req.nextUrl.pathname.startsWith("/auth/login");
 		const isOnRegister = req.nextUrl.pathname.startsWith("/auth/signup");
 		const token = req.nextauth.token;
-		if (isOnEditProfile && !token) {
+		if ((isOnEditProfile || isOnChat) && !token) {
 			return NextResponse.redirect(new URL("/auth/login", req.url));
 		}
 		if ((isOnLogin || isOnRegister) && token) {
@@ -33,5 +34,5 @@ export default withAuth(
 );
 
 export const config = {
-	matcher: ["/admin", "/profile", "/auth/login", "/auth/signup"],
+	matcher: ["/admin", "/profile", "/auth/login", "/auth/signup", "/chat"],
 };

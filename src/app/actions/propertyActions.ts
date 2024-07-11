@@ -9,10 +9,32 @@ import { ListingStatus, Prisma, PropertyType } from "@prisma/client";
 export const getProperties = async (
 	status?: ListingStatus | null,
 	type?: PropertyType | null,
-	query?: string | null
+	query?: string | null,
+	minPrice?: string | null,
+	maxPrice?: string | null,
+	sort?: string | null
 ): Promise<PropertyWithListedBy[]> => {
 	try {
 		const where: Prisma.PropertyWhereInput = {};
+
+		let orderBy = {};
+		switch (sort) {
+			case "price-l-h":
+				orderBy = { price: "asc" };
+				break;
+			case "price-h-l":
+				orderBy = { price: "desc" };
+				break;
+			case "new-listings":
+				orderBy = { createdAt: "desc" };
+				break;
+			case "old-listings":
+				orderBy = { createdAt: "asc" };
+				break;
+			default:
+				orderBy = { createdAt: "desc" };
+				break;
+		}
 
 		if (status) {
 			where.status = status;
@@ -28,11 +50,16 @@ export const getProperties = async (
 				{ city: { contains: query, mode: "insensitive" } },
 				{ state: { contains: query, mode: "insensitive" } },
 				{ country: { contains: query, mode: "insensitive" } },
+				{
+					price: {
+						...(minPrice && { gt: Number(minPrice) }),
+						...(maxPrice && { lt: Number(maxPrice) }),
+					},
+				},
 			];
 		}
 
 		const properties = await prisma.property.findMany({
-			orderBy: { createdAt: "desc" },
 			include: {
 				listedBy: {
 					select: {
@@ -45,6 +72,7 @@ export const getProperties = async (
 				},
 			},
 			where,
+			orderBy,
 		});
 
 		return properties;
