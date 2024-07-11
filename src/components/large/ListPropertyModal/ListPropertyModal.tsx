@@ -188,13 +188,12 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 				body: JSON.stringify(values),
 			});
 			const responseBody: CreateListingResponse = await response.json();
-			console.log(responseBody);
 			if (responseBody.error) {
 				throw responseBody.error;
 			}
 			toast.success("Listing has been created successfully.", {
 				position: "bottom-right",
-				autoClose: 3000,
+				autoClose: 2000,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
@@ -584,7 +583,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 										/>
 									) : (
 										<Button
-											disabled={loading}
+											loading={loading}
 											primary
 											type="submit"
 											text="Create listing"

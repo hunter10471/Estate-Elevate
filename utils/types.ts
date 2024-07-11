@@ -57,6 +57,21 @@ export interface ChatRequest {
 	receiverId: string;
 }
 
+export interface ChatContextType {
+	chats: (Chat | null)[];
+	chatRequests: (Chat | null)[];
+	addChat: (chat: Chat) => void;
+	removeChatRequest: (chat: Chat) => void;
+	addChatRequest: (chat: Chat) => void;
+	updateChatLastMessage: (
+		chatId: string,
+		message: Message,
+		sessionUser: SafeUser,
+		chatPartner: SafeUser
+	) => void;
+	updateChatSeenStatus: (chatId: string, userId: string) => void;
+}
+
 export type FacilityKey =
 	| "gym"
 	| "pool"
@@ -74,5 +89,11 @@ export type FacilityKey =
 export type SafeUser = Omit<User, "password" | "createdAt" | "updatedAt">;
 
 export type PropertyWithListedBy = Property & {
-	listedBy: { name: string; image: string | null; id: string };
+	listedBy: {
+		name: string;
+		id: string;
+		email: string;
+		image: string | null;
+		phone: string | null;
+	};
 };

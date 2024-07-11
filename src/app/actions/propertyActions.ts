@@ -39,6 +39,8 @@ export const getProperties = async (
 						name: true,
 						image: true,
 						id: true,
+						phone: true,
+						email: true,
 					},
 				},
 			},

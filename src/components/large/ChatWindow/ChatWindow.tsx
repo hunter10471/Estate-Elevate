@@ -30,7 +30,7 @@ const ChatWindow = ({
 								src={chatPartner.image || "/no-avatar.jpg"}
 								fill
 								alt="avatar"
-								className="rounded-full"
+								className="rounded-full object-cover"
 							/>
 						</div>
 						<h2 className="font-semibold text-lg">{chatPartner.name}</h2>

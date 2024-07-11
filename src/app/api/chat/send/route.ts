@@ -34,21 +34,24 @@ export async function POST(req: Request) {
 		}
 		const timestamp = Date.now();
 		let seenBy = [user.id];
-		if (existingMessage) seenBy.push(chatPartner.id);
-		const messageData: Message = {
-			id: nanoid(),
-			text,
-			timestamp,
-			senderId: user.id,
-			receiverId: chatPartner.id,
-			seenBy,
-		};
+		let messageData: Message;
 		if (existingMessage) {
-			const res = await db.zrem(
-				`chat:${chatId}:messages`,
-				JSON.stringify(existingMessage)
-			);
-			console.log(res);
+			seenBy.push(chatPartner.id);
+			const updatedExistingMessage = existingMessage;
+			updatedExistingMessage.seenBy = seenBy;
+			messageData = updatedExistingMessage;
+		} else {
+			messageData = {
+				id: nanoid(),
+				text,
+				timestamp,
+				senderId: user.id,
+				receiverId: chatPartner.id,
+				seenBy,
+			};
+		}
+		if (existingMessage) {
+			await db.zremrangebyrank(`chat:${chatId}:messages`, -1, -1);
 		} else {
 			pusherServer.trigger(toPusherKey(`chat:${chatId}`), "incoming-message", {
 				message: messageData,

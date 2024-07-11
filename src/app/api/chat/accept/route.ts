@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 			id: sortId(user.id, chatPartner.id),
 			messages: [],
 			chatPartner,
-			seen: false,
+			seenBy: [],
 		});
 		await db.sadd(`chat:${user.id}:chats`, chatPartner.id);
 		await db.sadd(`chat:${chatPartner.id}:chats`, user.id);

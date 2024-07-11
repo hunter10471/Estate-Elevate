@@ -4,30 +4,25 @@ import { Chat, SafeUser } from "../../../../utils/types";
 import ChatRow from "@/components/small/ChatRow/ChatRow";
 import { pusherClient } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
+import { useChat } from "@/context/ChatContext";
 
 interface ChatbarProps {
-	chats: (Chat | null)[];
-	chatRequests: (Chat | null)[];
 	sessionUser: SafeUser;
 }
 
-const Chatbar = ({ chats, chatRequests, sessionUser }: ChatbarProps) => {
+const Chatbar = ({ sessionUser }: ChatbarProps) => {
+	const { chats, chatRequests, addChat, addChatRequest } = useChat();
 	const [requestTab, setRequestTab] = useState(false);
-	const [requests, setRequests] = useState(chatRequests);
-	const [activeChats, setActiveChats] = useState(chats);
 	useEffect(() => {
 		pusherClient.subscribe(
 			toPusherKey(`chat:${sessionUser.id}:incoming_chat_requests`)
 		);
 		pusherClient.subscribe(toPusherKey(`chat:${sessionUser.id}:chats`));
 		const newChatHandler = (newChat: Chat) => {
-			setActiveChats((prev) => [...prev, newChat]);
+			addChat(newChat);
 		};
 		const chatRequestHandler = async ({ sender }: { sender: SafeUser }) => {
-			setRequests((prev) => [
-				...prev,
-				{ id: "", chatPartner: sender, messages: [], seenBy: [] },
-			]);
+			addChatRequest({ id: "", chatPartner: sender, seenBy: [] });
 		};
 		pusherClient.bind("incoming_chat_requests", chatRequestHandler);
 		pusherClient.bind("new_chat", newChatHandler);
@@ -58,32 +53,26 @@ const Chatbar = ({ chats, chatRequests, sessionUser }: ChatbarProps) => {
 					onClick={() => setRequestTab(true)}
 				>
 					Requests{" "}
-					{requests.length > 0 && (
+					{chatRequests.length > 0 && (
 						<span className="text-xs bg-primary text-white ml-2 flex items-center justify-center w-6 h-6 rounded-full">
-							{requests.length}
+							{chatRequests.length}
 						</span>
 					)}
 				</button>
 			</div>
 			{!requestTab
-				? activeChats.map(
+				? chats.map(
 						(chat) =>
 							chat && (
-								<ChatRow
-									sessionUser={sessionUser}
-									setChatRequests={setRequests}
-									key={chat.id}
-									chat={chat}
-								/>
+								<ChatRow sessionUser={sessionUser} key={chat.id} chat={chat} />
 							)
 				  )
-				: requests.map(
+				: chatRequests.map(
 						(chat) =>
 							chat && (
 								<ChatRow
 									sessionUser={sessionUser}
 									key={chat.id}
-									setChatRequests={setRequests}
 									isRequest={true}
 									chat={chat}
 								/>

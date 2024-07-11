@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 import { pusherClient } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
+import { useChat } from "@/context/ChatContext";
 
 interface ChatMessagesProps {
 	initialMessages: Message[];
@@ -21,10 +22,12 @@ const ChatMessages = ({
 }: ChatMessagesProps) => {
 	const scrollDownRef = useRef<HTMLDivElement>(null);
 	const [messages, setMessages] = useState(initialMessages);
+	const { updateChatLastMessage } = useChat();
 	useEffect(() => {
 		pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
 		const messageHandler = async ({ message }: { message: Message }) => {
 			setMessages((prev) => [message, ...prev]);
+			updateChatLastMessage(chatId, message, sessionUser, chatPartner);
 		};
 		pusherClient.bind("incoming-message", messageHandler);
 		return () => {
@@ -32,19 +35,23 @@ const ChatMessages = ({
 			pusherClient.unbind("incoming-message", messageHandler);
 			if (messages.length > 0) {
 				const lastMessage = messages[0];
+				const messageSender =
+					lastMessage.senderId === sessionUser.id ? sessionUser : chatPartner;
 				if (
-					!lastMessage.seenBy.includes(sessionUser.id) ||
-					!lastMessage.seenBy.includes(chatPartner.id)
-				)
+					(!lastMessage.seenBy.includes(sessionUser.id) ||
+						!lastMessage.seenBy.includes(chatPartner.id)) &&
+					lastMessage.senderId !== sessionUser.id
+				) {
 					fetch("/api/chat/send", {
 						method: "POST",
 						body: JSON.stringify({
 							text: lastMessage.text,
 							chatId: chatId,
-							chatPartner,
+							chatPartner: messageSender,
 							existingMessage: lastMessage,
 						}),
 					});
+				}
 			}
 		};
 	}, []);

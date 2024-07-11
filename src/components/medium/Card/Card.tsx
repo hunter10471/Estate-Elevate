@@ -5,7 +5,7 @@ import { GrLocation } from "react-icons/gr";
 import { LiaVectorSquareSolid } from "react-icons/lia";
 import { MdOutlineBed } from "react-icons/md";
 import { PiBathtub } from "react-icons/pi";
-import { CiPhone } from "react-icons/ci";
+import { CiMail, CiPhone } from "react-icons/ci";
 import { MdVerified } from "react-icons/md";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { FaCircle } from "react-icons/fa";
@@ -22,6 +22,8 @@ interface CardProps {
 	listingStatus: ListingStatus;
 	listedByName: string;
 	listedByAvatar: string | null;
+	listedByPhone: string | null;
+	listedByEmail: string | null;
 	id: string;
 	country: string;
 	state: string;
@@ -38,17 +40,16 @@ const Card = ({
 	listingStatus,
 	listedByName,
 	listedByAvatar,
+	listedByPhone,
+	listedByEmail,
 	id,
 	country,
 	state,
 	city,
 }: CardProps) => {
 	return (
-		<Link
-			href={`/properties/${id}`}
-			className="cursor-pointer transition-all hover:scale-95 w-[150px] md:w-[250px] flex-shrink-0"
-		>
-			<div className="w-full h-[150px] md:h-[200px] relative">
+		<div className="w-[150px] md:w-[250px] flex-shrink-0 max-h-[400px]">
+			<div className="w-full h-[150px] md:h-[200px] relative ">
 				<div className="bg-white bg-opacity-40 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
 					<MdOutlineCameraAlt size={17} /> {images && images.length}
 				</div>
@@ -65,8 +66,17 @@ const Card = ({
 						<span className="flex gap-1 font-bold mb-[2px]">
 							{listedByName} <MdVerified size={15} className="text-sky-500" />
 						</span>
-						<span className="text-gray-400 flex items-center font-medium">
-							<CiPhone className="text-gray-500" size={15} /> (305) 781-5855
+						<span className="text-gray-400 flex items-center font-medium gap-1">
+							{listedByPhone ? (
+								<>
+									<CiPhone className="text-gray-500" size={15} />{" "}
+									{listedByPhone}{" "}
+								</>
+							) : (
+								<>
+									<CiMail className="text-gray-500" size={15} /> {listedByEmail}
+								</>
+							)}
 						</span>
 					</div>
 				</div>
@@ -77,7 +87,7 @@ const Card = ({
 					fill
 				/>
 			</div>
-			<div className="p-2 font-medium w-full">
+			<div className="flex flex-col justify-between px-2 py-3 font-medium w-full h-[200px]">
 				<div className="flex justify-between w-full">
 					{listingStatus === ListingStatus.SALE ? (
 						<span className="text-emerald-400 gap-1 flex items-center text-xs">
@@ -105,9 +115,12 @@ const Card = ({
 					<span className=" md:text-lg font-bold">
 						${price.toLocaleString("en-US")}
 					</span>
-					<span className="text-sm md:text-base font-medium line-clamp-2">
+					<Link
+						href={`/properties/${id}`}
+						className="text-sm md:text-base font-medium line-clamp-2 hover:underline"
+					>
 						{title}
-					</span>
+					</Link>
 				</div>
 				<span className="flex text-xs items-center gap-1 my-3 font-normal">
 					<GrLocation size={12} /> {city}, {state}, {country}
@@ -125,7 +138,7 @@ const Card = ({
 					</span>
 				</div>
 			</div>
-		</Link>
+		</div>
 	);
 };
 

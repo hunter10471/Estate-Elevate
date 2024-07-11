@@ -9,7 +9,6 @@ import { getProperties } from "@/app/actions/propertyActions";
 import { ListingStatus, PropertyType } from "@prisma/client";
 import { PulseLoader } from "react-spinners";
 import Heading from "@/components/small/Heading/Heading";
-import { useQueryState } from "nuqs";
 import { useSearchParams } from "next/navigation";
 
 interface PropertyResultProps {
@@ -87,6 +86,8 @@ const PropertyResult = ({ allProperties }: PropertyResultProps) => {
 								key={item.id}
 								listedByName={item.listedBy.name}
 								listedByAvatar={item.listedBy.image}
+								listedByPhone={item.listedBy.phone}
+								listedByEmail={item.listedBy.email}
 								id={item.id}
 								country={item.country}
 								state={item.state}

@@ -1,6 +1,5 @@
 "use client";
-import React, { SetStateAction } from "react";
-import { Chat, SafeUser } from "../../../../utils/types";
+import { Chat, Message, SafeUser } from "../../../../utils/types";
 import Image from "next/image";
 import { FaCircle } from "react-icons/fa6";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
@@ -8,26 +7,24 @@ import { FaRegCircleCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { useChat } from "@/context/ChatContext";
+import { useEffect } from "react";
+import { pusherClient } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 
 interface ChatRowProps {
 	chat: Chat;
-	setChatRequests: SetStateAction<any>;
 	sessionUser: SafeUser;
 	isRequest?: boolean;
 }
 
-const ChatRow = ({
-	chat,
-	isRequest,
-	setChatRequests,
-	sessionUser,
-}: ChatRowProps) => {
+const ChatRow = ({ chat, isRequest, sessionUser }: ChatRowProps) => {
 	const router = useRouter();
+	const { removeChatRequest, updateChatSeenStatus, updateChatLastMessage } =
+		useChat();
 	const onAccept = async () => {
 		try {
-			setChatRequests((prev: (Chat | null)[]) =>
-				prev.filter((item) => chat.chatPartner.id !== item?.chatPartner.id)
-			);
+			removeChatRequest(chat);
 			await fetch(`/api/chat/accept`, {
 				method: "POST",
 				body: JSON.stringify({ chatPartner: chat.chatPartner }),
@@ -38,9 +35,7 @@ const ChatRow = ({
 	};
 	const onDeny = async () => {
 		try {
-			setChatRequests((prev: (Chat | null)[]) =>
-				prev.filter((item) => chat.chatPartner.id !== item?.chatPartner.id)
-			);
+			removeChatRequest(chat);
 			await fetch(`/api/chat/deny`, {
 				method: "POST",
 				body: JSON.stringify({ id: chat.chatPartner.id }),
@@ -54,17 +49,29 @@ const ChatRow = ({
 			return;
 		} else {
 			router.push(`/chat/${chat.id}`);
+			if (!chat.seenBy.includes(sessionUser.id))
+				updateChatSeenStatus(chat.id, sessionUser.id);
 		}
 	};
 	const formatTimestamp = (timestamp?: number) => {
 		if (!timestamp) return `Invalid timestamp ${timestamp}`;
 		return format(timestamp, "HH:mm");
 	};
-	console.log(chat.seenBy.push(sessionUser.id));
+	useEffect(() => {
+		pusherClient.subscribe(toPusherKey(`chat:${chat.id}`));
+		const messageHandler = async ({ message }: { message: Message }) => {
+			updateChatLastMessage(chat.id, message, sessionUser, chat.chatPartner);
+		};
+		pusherClient.bind("incoming-message", messageHandler);
+		return () => {
+			pusherClient.unsubscribe(toPusherKey(`chat:${chat.id}`));
+			pusherClient.unbind("incoming-message", messageHandler);
+		};
+	}, []);
 	return (
 		<div
 			onClick={navigateToChat}
-			className={`w-full flex gap-4  ${
+			className={`w-full flex gap-4 relative  ${
 				isRequest ? "" : "hover:bg-gray-200 cursor-pointer"
 			} transition-all p-2 rounded-xl`}
 		>
@@ -81,7 +88,9 @@ const ChatRow = ({
 				/>
 			</div>
 			<div className="flex flex-col w-full">
-				<span className="font-semibold">{chat.chatPartner.name}</span>
+				<span className="font-semibold line-clamp-1">
+					{chat.chatPartner.name}
+				</span>
 				<span
 					className={`text-sm line-clamp-1 ${
 						chat.seenBy.includes(sessionUser.id)

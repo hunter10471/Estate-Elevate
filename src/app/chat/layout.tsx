@@ -3,6 +3,7 @@ import { getChatRequests, getChats } from "../actions/chatActions";
 import Chatbar from "@/components/medium/Chatbar/Chatbar";
 import { getSessionUser } from "../../../utils/helpers";
 import { notFound } from "next/navigation";
+import { ChatProvider } from "@/context/ChatContext";
 
 const layout = async ({
 	children,
@@ -13,14 +14,12 @@ const layout = async ({
 	const sessionUser = await getSessionUser();
 	if (!sessionUser) return notFound();
 	return (
-		<div className="flex gap-4">
-			<Chatbar
-				sessionUser={sessionUser}
-				chats={chats[0]}
-				chatRequests={chats[1]}
-			/>
-			<div className="w-full">{children}</div>
-		</div>
+		<ChatProvider initialChatRequests={chats[1]} initialChats={chats[0]}>
+			<div className="flex gap-4">
+				<Chatbar sessionUser={sessionUser} />
+				<div className="w-full">{children}</div>
+			</div>
+		</ChatProvider>
 	);
 };
 
