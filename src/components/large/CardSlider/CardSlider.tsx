@@ -2,13 +2,17 @@
 import Card from "@/components/medium/Card/Card";
 import React, { useState } from "react";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import { PropertyWithListedBy } from "../../../../utils/types";
+import {
+	PropertyWithListedByAndLikedBy,
+	SafeUser,
+} from "../../../../utils/types";
 
 interface CardSliderProps {
-	data: PropertyWithListedBy[];
+	data: PropertyWithListedByAndLikedBy[];
+	user: SafeUser | null;
 }
 
-const CardSlider = ({ data }: CardSliderProps) => {
+const CardSlider = ({ data, user }: CardSliderProps) => {
 	const [current, setCurrent] = useState(0);
 	const [properties, setProperties] = useState(data || []);
 	const size = properties.length - 1;
@@ -60,17 +64,25 @@ const CardSlider = ({ data }: CardSliderProps) => {
 						style={{ transform: `translateX(-${current * 310}px)` }}
 						className={`flex gap-10 transition-all ease-in-out`}
 					>
-						{properties.map((property) => (
-							<Card
-								key={property.id}
-								{...property}
-								listingStatus={property.status}
-								listedByName={property.listedBy.name}
-								listedByAvatar={property.listedBy.image}
-								listedByEmail={property.listedBy.email}
-								listedByPhone={property.listedBy.phone}
-							/>
-						))}
+						{properties.map((property) => {
+							const isLiked = user
+								? property.likedBy.filter((item) => user.id === item.user.id)
+										.length > 0
+								: false;
+							return (
+								<Card
+									isLiked={isLiked}
+									sessionUser={user}
+									key={property.id}
+									{...property}
+									listingStatus={property.status}
+									listedByName={property.listedBy.name}
+									listedByAvatar={property.listedBy.image}
+									listedByEmail={property.listedBy.email}
+									listedByPhone={property.listedBy.phone}
+								/>
+							);
+						})}
 					</div>
 				</div>
 			</div>
