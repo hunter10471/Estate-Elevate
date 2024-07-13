@@ -1,14 +1,17 @@
 "use client";
 import NavUser from "@/components/medium/NavUser/NavUser";
-import { NavLink, SafeUser } from "../../../../utils/types";
+import { NavLink, Notification, SafeUser } from "../../../../utils/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoMenu } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
+import { useChat } from "@/context/ChatContext";
+import { useNotification } from "@/context/NotificationContext";
+import { pusherClient } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 
 interface NavLinksProps {
-	mobile?: boolean;
 	user: SafeUser | null;
 }
 
@@ -18,10 +21,15 @@ const links: NavLink[] = [
 	{ name: "Contact", path: "/contact" },
 ];
 
-const NavLinks = ({ mobile, user }: NavLinksProps) => {
-	const pathname = usePathname();
+const NavLinks = ({ user }: NavLinksProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const navContainer = useRef<HTMLDivElement>(null);
+	const pathname = usePathname();
+	const [notificationUnread, setNotificationUnread] = useState(false);
+	const [unread, setUnread] = useState(false);
+	const { chats } = useChat();
+	const { addNotification } = useNotification();
+	const path = usePathname();
 	const handleClickOutside = (e: React.MouseEvent<Document>) => {
 		if (
 			navContainer.current &&
@@ -49,13 +57,53 @@ const NavLinks = ({ mobile, user }: NavLinksProps) => {
 			);
 		};
 	}, [isOpen]);
+	useEffect(() => {
+		chats.forEach((chat) => {
+			chat && pusherClient.subscribe(toPusherKey(`chat:${chat.id}`));
+		});
+		const messageHandler = () => {
+			if (!path.includes("chat")) {
+				setUnread(true);
+			}
+		};
+		chats.forEach((chat) => {
+			chat && pusherClient.bind(`incoming-message`, messageHandler);
+		});
+		const notificationHandler = ({
+			notification,
+		}: {
+			notification: Notification;
+		}) => {
+			addNotification(notification);
+			setNotificationUnread(true);
+		};
+		if (user) pusherClient.subscribe(toPusherKey(`notification:${user.id}`));
+		pusherClient.bind(`incoming-notification`, notificationHandler);
+		return () => {
+			chats.forEach((chat) => {
+				if (chat) {
+					pusherClient.unsubscribe(toPusherKey(`chat:${chat.id}`));
+					pusherClient.unbind(`incoming-message`, messageHandler);
+					if (user)
+						pusherClient.unsubscribe(toPusherKey(`notification:${user.id}`));
+					pusherClient.unbind(`incoming-notification`, notificationHandler);
+				}
+			});
+		};
+	}, [chats, path]);
 	return (
 		<div>
 			<div
 				className={`hidden sm:flex items-center gap-6 lg:gap-12 font-medium font-heading select-none text-sm lg:text-base`}
 			>
 				{user ? (
-					<NavUser user={user} />
+					<NavUser
+						unread={unread}
+						setUnread={setUnread}
+						notificationUnread={notificationUnread}
+						setNotificationUnread={setNotificationUnread}
+						user={user}
+					/>
 				) : (
 					<>
 						<div className="flex sm:flex-row flex-col items-center gap-6 lg:gap-12 ">
@@ -112,7 +160,14 @@ const NavLinks = ({ mobile, user }: NavLinksProps) => {
 					size={25}
 				/>
 				{user ? (
-					<NavUser user={user} mobile />
+					<NavUser
+						unread={unread}
+						setUnread={setUnread}
+						notificationUnread={notificationUnread}
+						setNotificationUnread={setNotificationUnread}
+						user={user}
+						mobile
+					/>
 				) : (
 					<>
 						<div className="flex sm:flex-row flex-col items-center gap-6 lg:gap-12">

@@ -56,7 +56,7 @@ const Card = ({
 	return (
 		<div className="w-[150px] md:w-[250px] flex-shrink-0 max-h-[400px]">
 			<div className="w-full h-[150px] md:h-[200px] relative ">
-				<div className="bg-white bg-opacity-40 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
+				<div className="bg-black bg-opacity-30 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
 					<MdOutlineCameraAlt size={17} /> {images && images.length}
 				</div>
 				<div className="bg-white hidden md:flex items-center gap-2 absolute z-10 bottom-2 w-[90%] mx-[5%] px-2 py-1 rounded-xl">
@@ -119,8 +119,11 @@ const Card = ({
 					</div>
 				</div>
 				<div className="flex flex-col gap-2">
-					<span className=" md:text-lg font-bold">
-						${price.toLocaleString("en-US")}
+					<span className="flex items-center gap-1 md:text-lg font-bold">
+						${price.toLocaleString("en-US")}{" "}
+						{listingStatus === ListingStatus.RENT && (
+							<span className="text-xs font-normal">/ month</span>
+						)}
 					</span>
 					<Link
 						href={`/properties/${id}`}

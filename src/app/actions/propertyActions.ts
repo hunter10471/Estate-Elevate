@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { ListingStatus, Prisma, PropertyType } from "@prisma/client";
 import { getSessionUser } from "../../../utils/helpers";
+import { NotificationType } from "../../../utils/types";
 
 export const getProperties = async (
 	status?: ListingStatus | null,
@@ -169,6 +170,20 @@ export const getLikedProperties = async () => {
 export const addLike = async (userId: string, propertyId: string) => {
 	try {
 		revalidatePath("/properties/mine/liked");
+		const property = await getPropertyById(propertyId);
+		const sessionUser = await getSessionUser();
+
+		if (property?.listedBy.id !== sessionUser?.id) {
+			await fetch(`${process.env.URL}/api/notification`, {
+				method: "POST",
+				body: JSON.stringify({
+					receiverId: property?.listedBy.id,
+					senderId: userId,
+					propertyId,
+					type: NotificationType.LIKE_PROPERTY,
+				}),
+			});
+		}
 		return await prisma.likedProperty.create({
 			data: {
 				userId,

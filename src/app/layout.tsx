@@ -4,6 +4,10 @@ import Navbar from "@/components/large/Navbar/Navbar";
 import Footer from "@/components/large/Footer/Footer";
 import { getChatRequests, getChats } from "./actions/chatActions";
 import { ChatProvider } from "@/context/ChatContext";
+import { getSessionUser } from "../../utils/helpers";
+import { Notification } from "../../utils/types";
+import { getUserNotifications } from "./actions/notificationActions";
+import { NotificationProvider } from "@/context/NotificationContext";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -15,7 +19,12 @@ const RootLayout = async ({
 }: Readonly<{
 	children: React.ReactNode;
 }>) => {
-	const chats = await Promise.all([getChats(), getChatRequests()]);
+	const data = await Promise.all([getChats(), getChatRequests()]);
+	const user = await getSessionUser();
+	let notifications: Notification[] | undefined = [];
+	if (user) {
+		notifications = await getUserNotifications(user.id);
+	}
 	return (
 		<html lang="en">
 			<head>
@@ -27,9 +36,11 @@ const RootLayout = async ({
 				/>
 			</head>
 			<body>
-				<ChatProvider initialChatRequests={chats[1]} initialChats={chats[0]}>
+				<ChatProvider initialChatRequests={data[1]} initialChats={data[0]}>
 					<div className="container relative font-heading text-text overflow-hidden">
-						<Navbar />
+						<NotificationProvider initialNotifications={notifications}>
+							<Navbar />
+						</NotificationProvider>
 						<div className="mt-[120px]">{children}</div>
 					</div>
 					<Footer />

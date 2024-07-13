@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { MdOutlineNotifications } from "react-icons/md";
 import { BiMessageAltDetail } from "react-icons/bi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Link from "next/link";
-import { NavLink, SafeUser } from "../../../../utils/types";
+import { NavLink, Notification, SafeUser } from "../../../../utils/types";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { UserType } from "@prisma/client";
@@ -16,10 +16,16 @@ import { FaRegHeart, FaRegUser } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import NotificationsModal from "../NotificationsModal/NotificationsModal";
+import { useNotification } from "@/context/NotificationContext";
 
 interface NavUserProps {
 	mobile?: boolean;
-	user: SafeUser | null;
+	user: SafeUser;
+	notificationUnread: boolean;
+	setNotificationUnread: SetStateAction<any>;
+	unread: boolean;
+	setUnread: SetStateAction<any>;
 }
 
 const links: NavLink[] = [
@@ -28,35 +34,17 @@ const links: NavLink[] = [
 	{ name: "Contact", path: "/contact" },
 ];
 
-const NavUser = ({ mobile, user }: NavUserProps) => {
+const NavUser = ({
+	mobile,
+	user,
+	notificationUnread,
+	setNotificationUnread,
+	unread,
+	setUnread,
+}: NavUserProps) => {
 	const pathname = usePathname();
 	const [open, setOpen] = useState(false);
-	const [unread, setUnread] = useState(false);
-	const { chats } = useChat();
-	const path = usePathname();
-	useEffect(() => {
-		chats.forEach((chat) => {
-			chat && pusherClient.subscribe(toPusherKey(`chat:${chat.id}`));
-		});
 
-		const messageHandler = () => {
-			if (!path.includes("chat")) {
-				setUnread(true);
-			}
-		};
-		chats.forEach((chat) => {
-			chat && pusherClient.bind(`incoming-message`, messageHandler);
-		});
-
-		return () => {
-			chats.forEach((chat) => {
-				if (chat) {
-					pusherClient.unsubscribe(toPusherKey(`chat:${chat.id}`));
-					pusherClient.unbind(`incoming-message`, messageHandler);
-				}
-			});
-		};
-	}, [chats, path]);
 	return (
 		<div className="flex sm:flex-row-reverse flex-col items-center gap-8">
 			<div className="flex gap-4 z-[99999]">
@@ -65,14 +53,17 @@ const NavUser = ({ mobile, user }: NavUserProps) => {
 						{" "}
 						<BiMessageAltDetail
 							onClick={() => setUnread(false)}
-							className="cursor-pointer"
 							size={25}
 						/>{" "}
 						{unread && (
 							<span className="h-3 w-3 rounded-full absolute bg-green-500 -top-1 -left-1"></span>
 						)}
 					</Link>
-					<MdOutlineNotifications className="cursor-pointer" size={25} />
+					<NotificationsModal
+						setNotificationUnread={setNotificationUnread}
+						notificationUnread={notificationUnread}
+						user={user}
+					/>
 				</div>
 				<div
 					onClick={() => setOpen((prev) => !prev)}

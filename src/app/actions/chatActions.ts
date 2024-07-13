@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { fetchRedis, getSessionUser, sortId } from "../../../utils/helpers";
 import { getUserById } from "./userActions";
 import { Chat, Message } from "../../../utils/types";

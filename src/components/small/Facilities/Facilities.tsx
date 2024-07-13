@@ -106,13 +106,13 @@ const Facilities = ({
 			>
 				{!listing && (
 					<>
-						<span className="text-xs md:text-sm flex items-center  gap-2 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 p-2">
+						<span className="whitespace-nowrap text-xs md:text-sm flex items-center  gap-2 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 p-2">
 							{facilities.bedroom.icon} {bedrooms} {facilities.bedroom.title}
 						</span>
-						<span className="text-xs md:text-sm flex items-centerjustify-center gap-2 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 p-2">
+						<span className="whitespace-nowrap text-xs md:text-sm flex items-centerjustify-center gap-2 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 p-2">
 							{facilities.bathroom.icon} {bathrooms} {facilities.bathroom.title}
 						</span>
-						<span className="text-xs md:text-sm flex items-center  gap-2 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 p-2">
+						<span className="whitespace-nowrap text-xs md:text-sm flex items-center  gap-2 w-[45%] sm:w-[30%] md:w-1/4 lg:w-1/5 p-2">
 							{facilities.area.icon} {area} {facilities.area.title}
 						</span>
 					</>

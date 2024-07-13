@@ -4,7 +4,6 @@ import Button from "./Button";
 import { MdOutlineChat } from "react-icons/md";
 import { FiPhone } from "react-icons/fi";
 import { Slide, ToastContainer, toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 
 interface AddChatButtonProps {
@@ -51,7 +50,7 @@ const AddChatButton = ({ chatPartnerId, phone }: AddChatButtonProps) => {
 		}
 	};
 	return (
-		<div className="flex flex-col gap-2 my-2">
+		<div className="flex flex-col gap-2">
 			<ToastContainer />
 			<div className="flex gap-2 my-2">
 				<Button

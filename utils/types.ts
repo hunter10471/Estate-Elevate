@@ -57,6 +57,18 @@ export interface ChatRequest {
 	receiverId: string;
 }
 
+export interface Notification {
+	id: string;
+	senderId: string;
+	receiverId: string;
+	type: NotificationType;
+	timestamp: number;
+	propertyId?: string;
+	sender?: SafeUser;
+	property?: Property;
+	isNew?: boolean;
+}
+
 export interface ChatContextType {
 	chats: (Chat | null)[];
 	chatRequests: (Chat | null)[];
@@ -70,6 +82,12 @@ export interface ChatContextType {
 		chatPartner: SafeUser
 	) => void;
 	updateChatSeenStatus: (chatId: string, userId: string) => void;
+}
+
+export interface NotificationContextType {
+	notifications: Notification[];
+	addNotification: (notification: Notification) => void;
+	seenNotification: () => void;
 }
 
 export type FacilityKey =
@@ -101,3 +119,8 @@ export type PropertyWithListedBy = Property & {
 export type PropertyWithListedByAndLikedBy = PropertyWithListedBy & {
 	likedBy: (LikedProperty & { user: User; property: Property })[];
 };
+
+export enum NotificationType {
+	LIKE_PROPERTY = 0,
+	CHAT_REQUEST = 1,
+}

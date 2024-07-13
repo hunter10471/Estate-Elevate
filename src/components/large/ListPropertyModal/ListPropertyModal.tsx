@@ -35,7 +35,6 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
-import { revalidatePath } from "next/cache";
 import { CreateListingResponse } from "../../../../utils/types";
 import Image from "next/image";
 

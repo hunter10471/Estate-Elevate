@@ -25,7 +25,7 @@ const ChatMessages = ({
 	const { updateChatLastMessage } = useChat();
 	useEffect(() => {
 		pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
-		const messageHandler = async ({ message }: { message: Message }) => {
+		const messageHandler = ({ message }: { message: Message }) => {
 			setMessages((prev) => [message, ...prev]);
 			updateChatLastMessage(chatId, message, sessionUser, chatPartner);
 		};

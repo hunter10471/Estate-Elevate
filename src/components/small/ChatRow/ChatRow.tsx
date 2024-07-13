@@ -55,9 +55,7 @@ const ChatRow = ({ chat, isRequest, sessionUser }: ChatRowProps) => {
 	};
 	const formatTimestamp = (timestamp?: number) => {
 		if (!timestamp) return `Invalid timestamp ${timestamp}`;
-		return formatDistance(timestamp, new Date(), { addSuffix: true }).split(
-			"about"
-		)[1];
+		return format(timestamp, "HH:mm");
 	};
 	useEffect(() => {
 		pusherClient.subscribe(toPusherKey(`chat:${chat.id}`));

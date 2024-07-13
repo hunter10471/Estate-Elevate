@@ -18,6 +18,10 @@ import { ListingStatus } from "@prisma/client";
 import { FaCircle } from "react-icons/fa";
 import AddChatButton from "@/components/small/Button/AddChatButton";
 import { getSessionUser } from "../../../../utils/helpers";
+import { PiHandshake } from "react-icons/pi";
+import { RxValueNone } from "react-icons/rx";
+import { FaDollarSign } from "react-icons/fa6";
+import { TbCarCrane } from "react-icons/tb";
 
 interface PageProps {
 	params: { id: string };
@@ -34,7 +38,7 @@ const page = async ({ params: { id } }: PageProps) => {
 		<div>
 			<ImageSlider images={property.images} />
 			<div className="flex gap-5 justify-between my-5 lg:flex-row flex-col">
-				<div className="w-full md:w-[70%]">
+				<div className="w-full lg:w-[70%]">
 					<div className="flex items-start justify-between w-full mb-2 gap-2">
 						<Heading weight="medium" text={property.title} />
 
@@ -54,17 +58,23 @@ const page = async ({ params: { id } }: PageProps) => {
 							)}
 						</div>
 					</div>
-					{property.status === ListingStatus.SALE ? (
-						<span className="text-emerald-400 gap-1 flex items-center font-semibold">
-							<FaCircle size={8} />
-							For sale
+					<div className="flex gap-5 items-center text-sm">
+						{property.status === ListingStatus.SALE ? (
+							<span className="text-emerald-400 gap-1 flex items-center font-medium">
+								<FaDollarSign size={15} />
+								For sale
+							</span>
+						) : (
+							<span className="text-orange-400 gap-1 flex items-center font-medium">
+								<FaDollarSign size={15} />
+								For rent
+							</span>
+						)}
+						<span className="text-slate-600 gap-1 flex items-center font-medium">
+							<TbCarCrane size={20} />
+							Built in {property.yearBuilt}
 						</span>
-					) : (
-						<span className="text-orange-400 gap-1 flex items-center font-semibold">
-							<FaCircle size={8} />
-							For rent
-						</span>
-					)}
+					</div>
 					<PropertyDescription description={property.description} />
 					<Facilities
 						area={property.area}
@@ -85,12 +95,29 @@ const page = async ({ params: { id } }: PageProps) => {
 						</span>
 					</div>
 				</div>
-				<div className="w-auto max-w-[350px] h-full border-2 border-gray-200 rounded-lg p-4 flex flex-col">
-					<div className="flex flex-col pb-3 border-b-2 border-gray-300">
-						<span className="text-gray-500 text-sm">Price</span>
-						<h1 className="text-primary font-medium text-[24px]">
-							${property.price.toLocaleString("en-US")}
-						</h1>
+				<div className="w-full md:w-auto md:max-w-[350px] h-full border-2 border-gray-200 rounded-lg p-4 flex flex-col">
+					<div className="flex pb-3 border-b-2 border-gray-300 justify-between items-center">
+						<div className="flex flex-col">
+							<span className="text-gray-500 text-sm">Price</span>
+							<h1 className="text-primary font-medium text-[24px]">
+								${property.price.toLocaleString("en-US")}
+							</h1>
+							<h1 className="text-sm text-gray-500 font-normal">
+								{property.negotiable ? (
+									<span className="flex items-center gap-1">
+										{" "}
+										<PiHandshake size={18} className="text-green-400" />{" "}
+										Negotiable{" "}
+									</span>
+								) : (
+									<span className="flex items-center gap-1">
+										{" "}
+										<RxValueNone size={18} className="text-red-400" /> Not
+										Negotiable{" "}
+									</span>
+								)}
+							</h1>
+						</div>
 					</div>
 					<div className="flex flex-col py-3 border-b-2 border-gray-300">
 						<h1 className="font-medium text-[18px]">Owner Detail</h1>
@@ -108,6 +135,7 @@ const page = async ({ params: { id } }: PageProps) => {
 								<span className="text-gray-500 text-xs">Property Owner</span>
 							</div>
 						</div>
+						<p className="text-sm text-gray-500">{property.listedBy.bio}</p>
 						{user && property.listedBy.id !== user.id && (
 							<AddChatButton
 								phone={property.listedBy.phone}
@@ -126,6 +154,7 @@ const page = async ({ params: { id } }: PageProps) => {
 							</h1>
 						</div>
 						<Button
+							disabled
 							full
 							icon={<LuCalendarDays size={20} />}
 							primary

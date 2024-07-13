@@ -5,6 +5,7 @@ import { db } from "@/lib/redis.db";
 import { ZodError } from "zod";
 import { pusherServer } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
+import { NotificationType } from "../../../../../utils/types";
 
 export async function POST(req: Request) {
 	try {
@@ -43,12 +44,21 @@ export async function POST(req: Request) {
 				status: 400,
 			});
 		}
+		await fetch(`${process.env.URL}/api/notification`, {
+			method: "POST",
+			body: JSON.stringify({
+				receiverId: id,
+				senderId: userId,
+				type: NotificationType.CHAT_REQUEST,
+			}),
+		});
 		await db.sadd(`chat:${id}:incoming_chat_requests`, userId);
 		pusherServer.trigger(
 			toPusherKey(`chat:${id}:incoming_chat_requests`),
 			"incoming_chat_requests",
 			{ sender: session }
 		);
+
 		return new Response("OK");
 	} catch (error) {
 		if (error instanceof ZodError) {
