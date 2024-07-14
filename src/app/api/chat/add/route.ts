@@ -44,7 +44,7 @@ export async function POST(req: Request) {
 				status: 400,
 			});
 		}
-		await fetch(`${process.env.URL}/api/notification`, {
+		await fetch(`http://${process.env.VERCEL_URL}/api/notification`, {
 			method: "POST",
 			body: JSON.stringify({
 				receiverId: id,

@@ -174,7 +174,7 @@ export const addLike = async (userId: string, propertyId: string) => {
 		const sessionUser = await getSessionUser();
 
 		if (property?.listedBy.id !== sessionUser?.id) {
-			await fetch(`${process.env.URL}/api/notification`, {
+			await fetch(`http://${process.env.VERCEL_URL}/api/notification`, {
 				method: "POST",
 				body: JSON.stringify({
 					receiverId: property?.listedBy.id,
