@@ -5,6 +5,7 @@ import ChatRow from "@/components/small/ChatRow/ChatRow";
 import { pusherClient } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
 import { useChat } from "@/context/ChatContext";
+import { FaArrowRight } from "react-icons/fa";
 
 interface ChatbarProps {
 	sessionUser: SafeUser;
@@ -12,6 +13,7 @@ interface ChatbarProps {
 
 const Chatbar = ({ sessionUser }: ChatbarProps) => {
 	const { chats, chatRequests, addChat, addChatRequest } = useChat();
+	const [open, setOpen] = useState(false);
 	const [requestTab, setRequestTab] = useState(false);
 	useEffect(() => {
 		pusherClient.subscribe(
@@ -36,10 +38,26 @@ const Chatbar = ({ sessionUser }: ChatbarProps) => {
 		};
 	}, []);
 	return (
-		<div className="flex flex-col items-center flex-shrink-0 w-[320px] p-2 h-[calc(100vh-120px)] overflow-scroll overflow-x-hidden m-2">
-			<div className="flex justify-center gap-2 text-sm mb-5">
+		<div
+			className={`flex flex-col items-center relative flex-shrink-0 transition-all ease-in-out ${
+				open ? "w-full" : "w-[11%] md:w-full"
+			} max-w-[320px] min-w-[60px] p-2 h-[calc(100vh-120px)] overflow-scroll overflow-x-hidden m-2`}
+		>
+			<div className="justify-end w-full px-3 py-1 md:hidden flex">
 				<button
-					className={`px-4 py-2 rounded-xl transition-all ${
+					className={`transition-all ${open ? "rotate-180" : ""}`}
+					onClick={() => setOpen((prev) => !prev)}
+				>
+					<FaArrowRight />
+				</button>
+			</div>
+			<div
+				className={`transition-all ${
+					open ? "" : "opacity-0 md:opacity-100"
+				} flex justify-center gap-2 mb-5 lg:text-sm text-xs`}
+			>
+				<button
+					className={`px-2 lg:px-4 py-2 rounded-xl transition-all ${
 						!requestTab ? "bg-text text-white" : "text-text hover:bg-gray-300"
 					}`}
 					onClick={() => setRequestTab(false)}
@@ -64,13 +82,19 @@ const Chatbar = ({ sessionUser }: ChatbarProps) => {
 				? chats.map(
 						(chat) =>
 							chat && (
-								<ChatRow sessionUser={sessionUser} key={chat.id} chat={chat} />
+								<ChatRow
+									isOpen={open}
+									sessionUser={sessionUser}
+									key={chat.id}
+									chat={chat}
+								/>
 							)
 				  )
 				: chatRequests.map(
 						(chat) =>
 							chat && (
 								<ChatRow
+									isOpen={open}
 									sessionUser={sessionUser}
 									key={chat.id}
 									isRequest={true}

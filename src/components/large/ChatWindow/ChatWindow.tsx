@@ -24,8 +24,8 @@ const ChatWindow = ({
 			{!isMainPage ? (
 				<div className="flex flex-col justify-between h-full ">
 					{" "}
-					<div className="flex gap-5 items-center">
-						<div className="relative h-14 w-14">
+					<div className="flex gap-3 lg:gap-5 items-center">
+						<div className="relative lg:h-14 md:h-12 h-10 lg:w-14 md:w-12 w-10">
 							<Image
 								src={chatPartner.image || "/no-avatar.jpg"}
 								fill
@@ -33,7 +33,9 @@ const ChatWindow = ({
 								className="rounded-full object-cover"
 							/>
 						</div>
-						<h2 className="font-semibold text-lg">{chatPartner.name}</h2>
+						<h2 className="font-semibold lg:text-lg text-base">
+							{chatPartner.name}
+						</h2>
 					</div>
 					<ChatMessages
 						sessionUser={sessionUser}

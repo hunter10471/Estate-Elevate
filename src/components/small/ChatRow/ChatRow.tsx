@@ -6,7 +6,7 @@ import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { useRouter } from "next/navigation";
-import { format, formatDistance } from "date-fns";
+import { format } from "date-fns";
 import { useChat } from "@/context/ChatContext";
 import { useEffect } from "react";
 import { pusherClient } from "@/lib/pusher";
@@ -15,10 +15,11 @@ import { toPusherKey } from "@/lib/utils";
 interface ChatRowProps {
 	chat: Chat;
 	sessionUser: SafeUser;
+	isOpen: boolean;
 	isRequest?: boolean;
 }
 
-const ChatRow = ({ chat, isRequest, sessionUser }: ChatRowProps) => {
+const ChatRow = ({ chat, isRequest, sessionUser, isOpen }: ChatRowProps) => {
 	const router = useRouter();
 	const { removeChatRequest, updateChatSeenStatus, updateChatLastMessage } =
 		useChat();
@@ -71,11 +72,11 @@ const ChatRow = ({ chat, isRequest, sessionUser }: ChatRowProps) => {
 	return (
 		<div
 			onClick={navigateToChat}
-			className={`w-full flex gap-4 relative  ${
+			className={`w-full md:max-w-[240px] lg:max-w-[320px] flex gap-4 relative  ${
 				isRequest ? "" : "hover:bg-gray-200 cursor-pointer"
 			} transition-all p-2 rounded-xl`}
 		>
-			<div className="relative h-10 w-10 rounded-full flex-shrink-0">
+			<div className="relative lg:h-10 md:h-8 h-6 lg:w-10 md:w-8 w-6 rounded-full flex-shrink-0">
 				<Image
 					src={chat.chatPartner.image || "/no-avatar.jpg"}
 					fill
@@ -87,12 +88,12 @@ const ChatRow = ({ chat, isRequest, sessionUser }: ChatRowProps) => {
 					className="text-green-400 absolute -bottom-1 -right-0"
 				/>
 			</div>
-			<div className="flex flex-col">
-				<span className="font-semibold line-clamp-1">
+			<div className={`flex-col ${isOpen ? "flex" : "hidden md:flex"}`}>
+				<span className="lg:text-base sm:text-sm text-xs font-semibold line-clamp-1">
 					{chat.chatPartner.name}
 				</span>
 				<span
-					className={`text-sm line-clamp-1 ${
+					className={`lg:text-sm text-xs line-clamp-1 ${
 						chat.seenBy.includes(sessionUser.id)
 							? "text-gray-500"
 							: "font-semibold"
@@ -101,8 +102,12 @@ const ChatRow = ({ chat, isRequest, sessionUser }: ChatRowProps) => {
 					{chat.lastMessage?.text || `Started a chat with you!`}
 				</span>
 			</div>
-			<div className="flex flex-col gap-2 text-right flex-shrink-0 flex-grow">
-				<span className="text-gray-500 text-sm">
+			<div
+				className={`flex-col gap-2 text-right flex-shrink-0 flex-grow ${
+					isOpen ? "flex " : "hidden md:flex"
+				}`}
+			>
+				<span className="text-gray-500 lg:text-sm text-xs">
 					{formatTimestamp(chat.lastMessage?.timestamp || Date.now())}
 				</span>
 				{chat.lastMessage?.senderId === sessionUser.id && (
