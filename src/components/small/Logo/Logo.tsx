@@ -11,7 +11,7 @@ const Logo = ({ dark, small }: LogoProps) => {
 	return (
 		<Link
 			href={"/"}
-			className="flex flex-col items-center font-heading uppercase cursor-pointer"
+			className="flex flex-col items-center font-heading uppercase cursor-pointer w-fit"
 		>
 			<span className="-m-1">
 				<RiBuilding2Line

@@ -6,6 +6,7 @@ import { pusherClient } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
 import { useChat } from "@/context/ChatContext";
 import { FaArrowRight } from "react-icons/fa";
+import Image from "next/image";
 
 interface ChatbarProps {
 	sessionUser: SafeUser;
@@ -78,8 +79,9 @@ const Chatbar = ({ sessionUser }: ChatbarProps) => {
 					)}
 				</button>
 			</div>
-			{!requestTab
-				? chats.map(
+			{!requestTab ? (
+				chats.length > 0 ? (
+					chats.map(
 						(chat) =>
 							chat && (
 								<ChatRow
@@ -89,19 +91,30 @@ const Chatbar = ({ sessionUser }: ChatbarProps) => {
 									chat={chat}
 								/>
 							)
-				  )
-				: chatRequests.map(
-						(chat) =>
-							chat && (
-								<ChatRow
-									isOpen={open}
-									sessionUser={sessionUser}
-									key={chat.id}
-									isRequest={true}
-									chat={chat}
-								/>
-							)
-				  )}
+					)
+				) : (
+					<h2 className="text-center text-xs md:text-sm font-semibold text-gray-400 flex items-center mt-20 max-w-[200px]">
+						Chats that you have with others you will show up here
+					</h2>
+				)
+			) : chatRequests.length > 0 ? (
+				chatRequests.map(
+					(chat) =>
+						chat && (
+							<ChatRow
+								isOpen={open}
+								sessionUser={sessionUser}
+								key={chat.id}
+								isRequest={true}
+								chat={chat}
+							/>
+						)
+				)
+			) : (
+				<h2 className="text-center text-xs md:text-sm font-semibold text-gray-400 flex items-center mt-20 max-w-[200px]">
+					Requests that others send you will show up here
+				</h2>
+			)}
 		</div>
 	);
 };
