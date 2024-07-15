@@ -59,8 +59,8 @@ const Card = ({
 				<div className="bg-black bg-opacity-30 backdrop-blur-md px-2 py-1 rounded-lg text-white absolute right-2 top-2 z-[20] text-xs flex items-center gap-1">
 					<MdOutlineCameraAlt size={17} /> {images && images.length}
 				</div>
-				<div className="bg-white hidden md:flex items-center gap-2 absolute z-10 bottom-2 w-[90%] mx-[5%] px-2 py-1 rounded-xl">
-					<div className="relative w-10 h-10">
+				<div className="bg-white hidden md:flex items-center gap-2 absolute z-10 bottom-2 w-[95%] mx-[2%] px-2 py-1 rounded-xl">
+					<div className="relative w-8 h-8 flex-shrink-0">
 						<Image
 							className="rounded-full object-cover"
 							src={listedByAvatar || "/no-avatar.jpg"}

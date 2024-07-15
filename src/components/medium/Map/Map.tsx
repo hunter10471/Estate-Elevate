@@ -66,7 +66,7 @@ const Map = ({
 				>
 					<Popup>
 						<Link href={`/properties/${property.id}`} className="flex gap-4">
-							<div className="relative h-[120px] w-full">
+							<div className="relative h-[120px] w-[120px] flex-shrink-0">
 								<Image
 									alt="property"
 									className="object-cover rounded-xl"

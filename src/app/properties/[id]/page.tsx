@@ -35,7 +35,7 @@ const page = async ({ params: { id } }: PageProps) => {
 		? property.likedBy.filter((item) => item.user.id === user.id).length > 0
 		: false;
 	return (
-		<div>
+		<div className="min-h-[calc(100vh-100px)]">
 			<ImageSlider images={property.images} />
 			<div className="flex gap-5 justify-between my-5 lg:flex-row flex-col">
 				<div className="w-full lg:w-[70%]">
