@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useRef, useState } from "react";
 import { MdOutlineNotifications } from "react-icons/md";
 import { BiMessageAltDetail } from "react-icons/bi";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -44,7 +44,32 @@ const NavUser = ({
 }: NavUserProps) => {
 	const pathname = usePathname();
 	const [open, setOpen] = useState(false);
+	const modal = useRef<HTMLDivElement>(null);
+	const handleClickOutside = (e: React.MouseEvent<Document>) => {
+		if (modal.current && !modal.current.contains(e.target as Node)) {
+			setOpen(false);
+		}
+	};
 
+	useEffect(() => {
+		if (open) {
+			document.addEventListener(
+				"mousedown",
+				handleClickOutside as unknown as EventListener
+			);
+		} else {
+			document.removeEventListener(
+				"mousedown",
+				handleClickOutside as unknown as EventListener
+			);
+		}
+		return () => {
+			document.removeEventListener(
+				"mousedown",
+				handleClickOutside as unknown as EventListener
+			);
+		};
+	}, [open]);
 	return (
 		<div className="flex sm:flex-row-reverse flex-col items-center gap-8">
 			<div className="flex gap-4 z-[99999]">
@@ -80,7 +105,7 @@ const NavUser = ({
 					{mobile ? (
 						<div className="flex flex-col ">
 							<span className="font-semibold text-sm">{user?.name}</span>
-							<span className="text-xs">{user?.email}</span>
+							<span className="text-[10px]">{user?.email}</span>
 						</div>
 					) : (
 						<div className="hidden lg:flex flex-col ">
@@ -95,6 +120,7 @@ const NavUser = ({
 						/>
 					)}
 					<div
+						ref={modal}
 						className={`${
 							open ? "hidden sm:flex" : "hidden"
 						} select-none overflow-hidden bg-white transition-all duration-300 ease-in-out p-3 rounded-lg flex-col absolute ${

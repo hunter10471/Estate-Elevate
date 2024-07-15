@@ -67,7 +67,7 @@ const Input = ({
 						)}
 						<Field
 							as={name === "description" ? "textarea" : undefined}
-							rows={8}
+							rows={5}
 							className={`${
 								error ? "border-rose-400" : "border-gray-300"
 							} text-sm md:text-base w-full  px-4 py-2 ${

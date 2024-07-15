@@ -266,7 +266,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 			case STEPS.TYPE:
 				const { status } = formikState.values;
 				return (
-					<div className="flex flex-col gap-2 justify-between items-center mt-8">
+					<div className="flex gap-2 justify-between items-center mt-8">
 						<div
 							onClick={() =>
 								formikState.setFieldValue("status", ListingStatus.SALE)
@@ -321,9 +321,9 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 			case STEPS.LOCATION:
 				return (
 					<div className="h-full">
-						<div className="my-4 z-[9999]">
+						<div className="my-2 z-[9999]">
 							<CountrySelect label formik={formikState} />
-							<div className="flex gap-4 my-3">
+							<div className="flex gap-4 my-2">
 								<Input
 									name="state"
 									error={formikState.errors.state}
@@ -340,9 +340,9 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 								/>
 							</div>
 						</div>
-						<div className="h-[200px]">
+						<div className="h-[120px] xl:h-[200px]">
 							<Map
-								zoom={8}
+								zoom={7}
 								position={coordinates as LatLngExpression}
 								fullWidth
 							/>
@@ -396,7 +396,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 				};
 				return (
 					<div>
-						<div className="flex items-center justify-center border-2 border-dashed border-gray-300 mt-8 h-[200px] flex-col text-gray-500 mb-4">
+						<div className="flex items-center justify-center border-2 border-dashed border-gray-300 mt-8 h-[150px] xl:h-[200px] flex-col text-gray-500 mb-4">
 							<RiImageAddLine size={40} />
 							<UploadWidget
 								uwConfig={{
@@ -423,7 +423,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 										index === thumbnail
 											? "border-primary"
 											: "border-transparent"
-									} relative h-[80px] w-[80px] hover:border-primaryLight `}
+									} relative xl:h-[80px] h-[60px] xl:w-[80px] w-[60px] hover:border-primaryLight `}
 								>
 									<Image
 										onClick={() => setThumbnail(index)}
@@ -437,7 +437,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 										type="button"
 										className="p-1 rounded-full bg-white hover:scale-105 active:scale-95 transition-all absolute -right-2 -top-2 border-2"
 									>
-										<MdClose size={15} />
+										<MdClose size={10} />
 									</button>
 								</div>
 							))}
@@ -446,7 +446,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 				);
 			case STEPS.DESCRIPTION:
 				return (
-					<div className="flex flex-col gap-5 mt-5">
+					<div className="flex flex-col gap-2 mt-4">
 						<Input
 							name="title"
 							type="text"
@@ -466,7 +466,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 			case STEPS.PRICE:
 				const { negotiable } = formikState.values;
 				return (
-					<div className="my-5">
+					<div className="my-4">
 						<Input
 							name="price"
 							placeholder="Enter your property price"
@@ -476,7 +476,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 							dollar
 						/>
 						<label
-							className={` text-xs md:text-sm font-medium block mt-6 mb-2`}
+							className={` text-xs md:text-sm font-medium block mt-4 mb-2`}
 						>
 							Is the price negotiable?
 						</label>
@@ -536,7 +536,7 @@ const ListPropertyModal = ({ children, userId }: ListPropertyModal) => {
 								ref={modal}
 								className={`${
 									show ? "translate-y-[0%]" : "translate-y-[100%]"
-								} transition-all duration-500 ease-in-out flex flex-col justify-between bg-white max-w-[600px] w-[90vw] max-h-[700px] h-[90vh] rounded-xl`}
+								} transition-all duration-500 ease-in-out flex flex-col justify-between bg-white max-w-[600px] w-[90vw] min-h-[90vh] rounded-xl`}
 							>
 								<div className="mb-2 py-5 flex justify-center relative border-b-[1px] border-gray-300">
 									<Heading

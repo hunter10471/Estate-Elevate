@@ -6,8 +6,8 @@ import { MdOutlineEmail, MdOutlinePhone } from "react-icons/md";
 
 const page = () => {
 	return (
-		<div className="flex lg:flex-row flex-col gap-10  min-h-[calc(100vh-120px)] py-8">
-			<div className="flex flex-col flex-1">
+		<div className="flex lg:flex-row flex-col gap-[64px]  min-h-[calc(100vh-100px)]">
+			<div className="flex flex-col max-w-[600px]">
 				<span className=" text-primary font-semibold">Get in touch</span>
 				<Heading
 					text="Let's chat, Reach out to us today!"
@@ -15,8 +15,8 @@ const page = () => {
 				/>
 				<ContactForm />
 			</div>
-			<div className="flex justify-center flex-col items-center flex-1">
-				<div className="relative h-[60vh] w-full lg:block hidden">
+			<div className="flex flex-col lg:items-center ">
+				<div className="relative w-[450px] h-[400px] lg:block hidden mt-[100px]">
 					<Image src={"/contact-us.png"} fill alt="contact-us" />
 				</div>
 				<div className="flex flex-wrap gap-5">

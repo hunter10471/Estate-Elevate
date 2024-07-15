@@ -8,6 +8,7 @@ export default withAuth(
 		const isOnChat = req.nextUrl.pathname.startsWith("/chat");
 		const isOnLogin = req.nextUrl.pathname.startsWith("/auth/login");
 		const isOnRegister = req.nextUrl.pathname.startsWith("/auth/signup");
+		console.log(req.nextauth);
 		const token = req.nextauth.token;
 		if ((isOnEditProfile || isOnChat) && !token) {
 			return NextResponse.redirect(new URL("/auth/login", req.url));

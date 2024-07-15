@@ -43,7 +43,7 @@ const ContactForm = () => {
 			{(formikState) => {
 				const errors = formikState.errors;
 				return (
-					<Form className="flex flex-col gap-2 mt-2">
+					<Form className="flex flex-col gap-4 mt-2">
 						<ToastContainer />
 						<Input
 							name="name"

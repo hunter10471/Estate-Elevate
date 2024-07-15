@@ -37,12 +37,12 @@ const RootLayout = async ({
 			</head>
 			<body>
 				<ChatProvider initialChatRequests={data[1]} initialChats={data[0]}>
-					<div className="container relative font-heading text-text overflow-hidden">
-						<NotificationProvider initialNotifications={notifications}>
-							<Navbar />
-						</NotificationProvider>
-						<div className="mt-[120px]">{children}</div>
-					</div>
+					<NotificationProvider initialNotifications={notifications}>
+						<Navbar user={user} />
+						<div className="container relative font-heading text-text overflow-hidden">
+							<div className="mt-[120px]">{children}</div>
+						</div>
+					</NotificationProvider>
 					<Footer />
 				</ChatProvider>
 			</body>

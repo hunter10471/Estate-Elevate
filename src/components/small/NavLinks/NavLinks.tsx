@@ -148,7 +148,7 @@ const NavLinks = ({ user }: NavLinksProps) => {
 				ref={navContainer}
 				className={`flex sm:hidden ${
 					user ? "flex-col-reverse justify-end" : "flex-col justify-center"
-				}  items-center pt-[10%] gap-5 absolute h-screen min-w-[220px] w-[50%] top-0 right-0 bg-slate-900 text-white transition-all ease-in-out duration-500  ${
+				}  items-center pt-[10%] px-4 gap-5 absolute h-screen min-w-[230px] w-[50%] top-0 right-0 bg-slate-900 text-white transition-all ease-in-out duration-500  ${
 					isOpen
 						? "translate-x-[15%] opacity-100"
 						: "translate-x-[100%] opacity-0"

@@ -45,7 +45,7 @@ const CounterInput = ({
 	}, [value]);
 
 	return (
-		<div className="flex items-end justify-between gap-5 my-8">
+		<div className="flex items-end justify-between gap-6 my-4">
 			<div>
 				<h1 className="flex items-center gap-2 font-medium">
 					<Icon className="text-primaryDark mb-[2px]" size={25} />

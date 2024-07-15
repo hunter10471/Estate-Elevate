@@ -97,7 +97,7 @@ const Facilities = ({
 	];
 	let keyArr = data ? data : facilityKeys;
 	return (
-		<div className="my-8">
+		<div className="my-4">
 			{!listing && <Heading mediumSize text="Facilities" weight="medium" />}
 			<div
 				className={`mt-5 flex ${
